@@ -1,0 +1,55 @@
+/*Featured Post Title hover*/
+
+.featured-post-carousel h5 a:hover,
+.featured-post-carousel h5 a:focus {
+    color: #81db34;
+}
+
+.featured-post-carousel h2 a {
+    color: #fff;
+}
+
+.featured-post-carousel h2 a:hover,
+.featured-post-carousel h2 a:focus {
+    color: #81db34;
+}
+
+/*Logo By Text*/
+
+.post .post-excerpt {
+    background: rgba(255, 255, 255, 0.3);
+    -webkit-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.07);
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.07);
+    padding: 20px 15px;
+    -webkit-transition: all 100ms linear 0s;
+    transition: all 100ms linear 0s;
+}
+
+.post-title a:hover,
+.post-title a:focus {
+    color: #81db34;
+}
+
+/*Quote Post*/
+
+.post-format-quote .post-excerpt {
+    background-image: -moz-linear-gradient(0deg, #81db34 0%, #34d9da 100%);
+    background-image: -webkit-linear-gradient(0deg, #81db34 0%, #34d9da 100%);
+    background-image: -ms-linear-gradient(0deg, #81db34 0%, #34d9da 100%);
+}
+
+.post-format-quote .post-wrapper:hover .post-excerpt,
+.post-format-quote .post-wrapper:focus .post-excerpt {
+    background-image: -moz-linear-gradient(0deg, #81db34 0%, #34d9da 100%);
+    background-image: -webkit-linear-gradient(0deg, #81db34 0%, #34d9da 100%);
+    background-image: -ms-linear-gradient(0deg, #81db34 0%, #34d9da 100%);
+}
+
+/*Comment*/
+
+.comment .media-body h5 .reply-link {
+    background: -webkit-linear-gradient(330deg, #81db34 0%, #34d9da 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: #34d9da;
+}
