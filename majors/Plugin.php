@@ -356,10 +356,5 @@ $(document).ready(function() {
 });
 </script>';
         }
-        
-        if ($filename == 'theme-editor.php') {
-            echo '<style>.submit{display:none}</style>';
-            
-        }
     }
 }
