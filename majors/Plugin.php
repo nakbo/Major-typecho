@@ -352,7 +352,7 @@ class majors_Plugin implements Typecho_Plugin_Interface
         if ($filename == 'index.php') {
             echo '<script>
 $(document).ready(function() {
-  $("#start-link").append("<li><a href=\"./options-theme.php\">外观变量</a></li><li><a href=\"https://home.console.aliyun.com/\" target=\"_blank\">阿里云控制台</a></li><li><a href=\"http://console.krait.cn:8888\" target=\"_blank\">服务器控制台</a></li>");
+  $("#start-link").append("<li><a href=\"./options-theme.php\">外观变量</a></li>");
 });
 </script>';
         }
