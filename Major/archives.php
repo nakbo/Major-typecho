@@ -11,7 +11,7 @@ if (!defined('__TYPECHO_ROOT_DIR__')) exit;
 
 
 
-<section class="row content-wrap">
+<section class="row archives content-wrap">
     <div class="container">
         <div class="row Archives-box">
             <div class="post-Archive">
@@ -32,7 +32,7 @@ if (!defined('__TYPECHO_ROOT_DIR__')) exit;
                         $mon = $mon_tmp;
                         $output .= '<div class="archive-title"><h3>'.date('Y-m',$archives->created).'</h3><div class="archives" data-date="2017-6">'; 
                     }
-                    $output .= '<div class="brick"><a href="'.$archives->permalink .'"><span class="time">  '.date('d日',$archives->created).' </span>'. $archives->title .'</a></div>'; 
+                    $output .= '<div class="brick"><a href="'.$archives->permalink .'" data-toggle="tooltip" title="写于'.date('d日',$archives->created) . '的' . $archives->title .'"><span class="time">  '.date('d日',$archives->created).' </span>'. $archives->title .'</a></div>';
                 }
                 $output .= '</div></div></div>';
                 echo $output;
@@ -43,9 +43,16 @@ if (!defined('__TYPECHO_ROOT_DIR__')) exit;
     </div>
 </section>
 <style>
+
+    .archives {
+        background: white;
+    }
+
     .Archives-box {
         position: relative;
+        padding: 3em 0;
     }
+
     .post-Archive {
         max-width: 800px;
         margin-left: 35px;
@@ -55,7 +62,7 @@ if (!defined('__TYPECHO_ROOT_DIR__')) exit;
     .post-Archive:before {
         position: absolute;
         left: 34px;
-        top: 30px;
+        top: 75px;
         bottom: 40px;
         display: block;
         width: 2px;
@@ -112,6 +119,33 @@ if (!defined('__TYPECHO_ROOT_DIR__')) exit;
         left: -47px;
         margin-top: 5px
     }
+
+    @media (max-width: 900px) {
+        .Archives-box {
+            padding: 1.2em 0;
+        }
+        .post-Archive {
+            margin-left: 5px;
+            padding-left: 30px;
+        }
+        .post-Archive:before {
+            left: 15px;
+            top: 50px;
+        }
+        .post-Archive:after {
+            left: 10px;
+        }
+        #archives h3 {
+            font-size: 20px;
+        }
+        #archives h3:before {
+            left: -25px;
+        }
+        .time {
+            padding-right: 15px;
+        }
+    }
+
 </style>
 
 <?php $this->need('footer.php'); ?>

@@ -1,12 +1,18 @@
 <?php
 if (!defined('__TYPECHO_ROOT_DIR__')) exit;
-$this->need('function.php');
+include 'function.php';
 ?>
-<!DOCTYPE HTML>
-<html>
+<!DOCTYPE html>
+<html class="no-js">
 <head>
     <meta charset="<?php $this->options->charset(); ?>">
+    <meta name="author" content="Kraity,kraits@qq.com">
+    <meta http-equiv="x-dns-prefetch-control" content="on">
+    <link rel="dns-prefetch" href="//cdn.bootcss.com" />
+    <link rel="dns-prefetch" href="//secure.gravatar.com" />
     <meta http-equiv="content-language" content="zh-CN" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+    <meta name="renderer" content="webkit">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php $this->archiveTitle(array(
             'category'  =>  _t('%s '),
@@ -16,15 +22,19 @@ $this->need('function.php');
         ), '', ' - '); ?><?php $this->options->title(); ?></title>
     <meta name="keywords" content="<?php $this->options->keywords(); ?>" />
     <meta name="description" content="<?php $this->options->description(); ?>"/>
-    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <link rel="stylesheet" href="<?php $this->options->themeUrl(); ?>vendors/owl-carousel/assets/owl.carousel.css">
-    <link rel="stylesheet" href="<?php $this->options->themeUrl(); ?>vendors/magnific-popup/magnific-popup.css">
-
-    <link href="<?php $this->options->themeUrl(); ?>css/style.css" rel="stylesheet">
-    <link href="<?php $this->options->themeUrl(); ?>css/theme/green.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/animate.css/3.3.0/animate.min.css" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
     <script src="https://cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
-    <script src="https://cdn.bootcss.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <link href="<?php $this->options->themeUrl(); ?>css/style.css" rel="stylesheet" />
+    <script src="https://cdn.bootcss.com/modernizr/2.8.3/modernizr.min.js"></script>
     <script src="<?php $this->options->themeUrl(); ?>js/iconfont.js"></script>
+
+    <!--[if lt IE 9]>
+    <script src="//cdn.bootcss.com/html5shiv/r29/html5.min.js"></script>
+    <script src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
     <?php $this->header('description=&keywords=&generator=&template=&pingback=&xmlrpc=&wlw=&commentReply=&rss1=&rss2=&atom='); ?>
     <script type="text/javascript">
         jQuery(document).ready(function($) {
@@ -35,106 +45,184 @@ $this->need('function.php');
         });
     </script>
 </head>
+<body>
 
-<body class="home">
-<header class="row" id="header">
-    <div class="container">
-        <div class="top-header">
-            <div class="col-sm-6 logo-col text-center">
+<!--[if lt IE 8]>
+<div class="browsehappy" role="dialog"><?php _e('当前网页 <strong>不支持</strong> 你正在使用的浏览器. 为了正常的访问, 请 <a href="https://browsehappy.com">升级你的浏览器</a>'); ?>.</div>
+<![endif]-->
 
-            </div>
-            <div class="col-sm-6 menu-trigger-col">
-                <div class="menu-trigger pull-right">
-                    <div class="hamburger hamburger--spin-r">
-                        <div class="hamburger-box">
-                            <div class="hamburger-inner"></div>
+<div class="majors-h-shadow-layer"></div>
+<nav id="main-nav">
+    <div class="meuns-header">
+        <div class="blog-author" data-rippleria>
+            <div class="author-A1"><?php $this->options->majorM(); ?></div>
+        </div>
+        <ul role="navigation">
+            <li <?php if($this->is('index')): ?>class="active"<?php endif; ?>><a class="material-ripple" data-ripple-color="#2ecc71" href="<?php $this->options->siteUrl(); ?>"><span>首页</span></a></li>
+            <?php $this->widget('Widget_Contents_Page_List')->to($pages); ?>
+            <?php while($pages->next()): ?>
+                <li <?php if($this->is('page', $pages->slug)): ?>class="active"<?php endif; ?>><a class="material-ripple" data-ripple-color="#2ecc71" href="<?php $pages->permalink(); ?>"><span><?php $pages->title(); ?></span></a></li>
+            <?php endwhile; ?>
+        </ul>
+    </div>
+    <div class="meuns-footer">
+        <ul>
+            <li><a href="<?php $this->options->adminUrl(); ?>">LOGIN</a></li>
+        </ul>
+    </div>
+    <a href="#0" class="majors-h-close-menu">Close<span></span></a>
+</nav>
+
+<div id="major" data-rippleria>
+
+    <?php $formati=formati($format); //对$format进行布尔值赋值 return ?>
+    <?php switch ($formati) : case true : //执行return true ?>
+
+        <div class="major-main">
+            <div class="container">
+                <div class="majors-logo object">
+                    <a href="<?php $this->options->siteUrl(); ?>">
+                        <div class="logo-head shadow object">
+                            <ul>
+                                <?php if($this->options->logos): ?>
+                                <li>
+                                    <img src="<?php $this->options->logos(); ?>" />
+                                </li>
+                                <?php endif; ?>
+                            </ul>
                         </div>
-                    </div>
+                    </a>
                 </div>
             </div>
-        </div>
-        <div class="clear"></div>
-        <div class="menu-section">
-            <ul class="nav column-menu">
-                <li <?php if($this->is('index')): ?>class="active"<?php endif; ?>><a href="<?php $this->options->siteUrl(); ?>">首页</a></li>
-                <?php $this->widget('Widget_Contents_Page_List')->to($pages); ?>
-                <?php while($pages->next()): ?>
-                    <li <?php if($this->is('page', $pages->slug)): ?>class="active"<?php endif; ?>>
-                        <a href="<?php $pages->permalink(); ?>" title="<?php $pages->title(); ?>">
-                            <?php $pages->title(); ?>[<?php $pages->slug(); ?>]
-                        </a>
-                    </li>
-                <?php endwhile; ?>
-            </ul>
-        </div>
-    </div>
-</header>
-<script>
-    var forEach=function(t,o,r){if("[object Object]"===Object.prototype.toString.call(t))for(var c in t)Object.prototype.hasOwnProperty.call(t,c)&&o.call(r,t[c],c,t);else for(var e=0,l=t.length;l>e;e++)o.call(r,t[e],e,t)};
-    var hamburgers = document.querySelectorAll(".hamburger");
-    if (hamburgers.length > 0) {
-        forEach(hamburgers, function(hamburger) {
-            hamburger.addEventListener("click", function() {
 
-                this.classList.toggle("is-active");
-                if ( $(this).hasClass('active') ){
-                    $(this).removeClass('active');$('#header').removeClass('menu-active')
-                }else{
-                    $(this).addClass('active');$('#header').addClass('menu-active')
+        <?php // switch ($format) : case 'post':?>
+
+        <?php // break; default: //$format字符default 默认算法?>
+            <style>
+                .major-A0{
+                    background: black;
+                    <?php if($this->options->majorA0){ echo 'background: url('.$this->options->majorA0.') 50% 50% no-repeat;'; } ?>
+                    background-size: cover;
+                    -webkit-background-size: cover;
+                    -moz-background-size: cover;
+                    -o-background-size: cover;
+                    background-size: cover;
                 }
-
-            }, false);
-        });
-    }
-</script>
-<section class="row featured-post-carousel">
-    <div class="item post">
-        <div class="header-img">
-            <svg version="1.1" viewBox="0 0 100 100" preserveAspectRatio="none" class="svg-top">
-                <path class="large left" d="M0 0 L50 100 L0 100" fill="rgba(255,255,255, .1)"></path>
-                <path class="large right" d="M100 0 L50 100 L100 100" fill="rgba(255,255,255, .1)"></path>
-                <path class="medium left" d="M0 100 L50 100 L0 40" fill="rgba(255,255,255, .35)"></path>
-                <path class="medium right" d="M100 100 L50 100 L100 40" fill="rgba(255,255,255, .35)"></path>
-                <path class="small left" d="M0 100 L50 100 L0 70" fill="rgb(255, 255, 255)"></path>
-                <path class="small right" d="M100 100 L50 100 L100 70" fill="rgb(255, 255, 255)"></path>
-                <path d="M17 99.9 L50 77 L83 99.9 L0 100" fill="rgb(255, 255, 255)"></path>
-            </svg>
+                .major-A2{
+                    <?php if($this->options->majorA2){ echo 'background: url('.$this->options->majorA2.') 50% 50% no-repeat;'; } ?>
+                    background-size: cover;
+                    -webkit-background-size: cover;
+                    -moz-background-size: cover;
+                    -o-background-size: cover;
+                    background-size: cover;
+                }
+            </style>
+        <div class="major-1">
+             <div class="major-A0"></div>
+             <div class="major-A1"></div>
+             <div class="major-A2"></div>
         </div>
-        <div class="post-content">
+        <?php // endswitch; //结束 default 默认算法?>
+        <div class="major-t1">
             <div class="container">
-                <?php if($this->is('post')): ?>
-                    <div class="post-meta">
-                        <div class="post-meta-left">
-                            <div class="post-meta-left-head">
+                <div class="major-t1-meta">
+                    <?php if($this->is('post')): //是否为文章页?>
+                        <div class="post-meta">
+                            <div class="post-meta-A1">
                                 <img src="<?php echo 'https://secure.gravatar.com/avatar/'.md5($this->author->mail).'?s=40&r=G&d=mm'; ?>">
                             </div>
-                            <div class="post-meta-left-er">
-                                <span style="border-right:solid 1px #999; padding-right:5px;"><?php $this->date('F j, Y');?></span>
-                                <span>GOD</span>
+                            <div class="post-meta-A2">
+                                <span><?php $this->author->screenName();?></span>
                             </div>
                         </div>
-                    </div>
-                    <div class="clear"></div>
-                <?php else:?>
-                    <h5 class="post-meta"><i>in</i> Me</h5>
-                <?php endif;?>
-
-                <h2 class="title-white post-title" >
-                    <a>
-                        <?php if($this->is('index')){ echo widget_title($this->options->describes); }else{$this->archiveTitle(array('category'  => _t('%s '),'search'=> _t('所属关键字 %s '),'tag' => _t('所属标签 %s '),'author'=> _t('%s ')), ''); } ?>
-                    </a>
+                        <div class="clear"></div>
+                    <?php else://非文章页?>
+                        <div class="major-meta"><i>in</i> me</div>
+                    <?php endif; //结束是否为文章页?>
+                </div>
+                <h2 class="major-t1-title">
+                    <?php if($this->is('index')): //是首页?>
+                        <a>
+                            <?php echo widget_title($this->options->describes);?>
+                        </a>
+                    <?php else: //非首页?>
+                        <a>
+                            <?php $this->archiveTitle(array('category'  => _t('%s '),'search'=> _t('所属关键字 %s '),'tag' => _t('所属标签 %s '),'author'=> _t('%s ')), ''); ?>
+                        </a>
+                    <?php endif;//结束首页?>
                 </h2>
             </div>
         </div>
     </div>
-</section>
-<style>
-    .header-img {
-    <?php if($this->options->headjpg){ echo 'background: url('.$this->options->headjpg.') no-repeat center;'; } ?>
-        background-size: cover;
-        -webkit-background-size: cover;
-        -moz-background-size: cover;
-        -o-background-size: cover;
-        -ms-background-size: cover;
+    <?php endswitch; //结束 return ?>
+
+
+    <div class="majors-h-header">
+        <a class="majors-h-menu-trigger" href="#main-nav"><span></span></a>
+    </div>
+
+    <?php if(!$formati)://$formati 为flase时输出,使菜单在左边 ?>
+        <style>
+
+            .majors-h-header {
+                position: initial;
+            }
+            .majors-h-menu-trigger span {
+                background-color: #867A7A;
+            }
+            .majors-h-menu-trigger {
+                position: initial;
+            }
+            @media only screen and (min-width: 768px){
+                .majors-h-header {
+                    height: inherit;
+                }
+            }
+            .article-title {
+                padding-top: 0;
+            }
+            .article-title h3 {
+                margin-top: 0;
+            }
+        </style>
+    <?php endif;//这里结束为flase ?>
+        <script>
+            jQuery(document).ready(function($){
+                //open menu
+                $('.majors-h-menu-trigger').on('click', function(event){
+                    event.preventDefault();
+                    $('#main-nav').addClass('is-visible');
+                    $('.majors-h-shadow-layer').addClass('is-visible');
+                });
+                //close menu
+                $('.majors-h-close-menu').on('click', function(event){
+                    event.preventDefault();
+                    $('#main-nav').removeClass('is-visible');
+                    $('.majors-h-shadow-layer').removeClass('is-visible');
+                });
+            });
+
+        </script>
+
+
+</div>
+
+<script>
+    function randInt(min, max) {
+        var rand = min + Math.random() * (max - min);
+        rand = Math.round(rand);
+        return rand;
     }
-</style>
+
+    $('#major,.majors-post,.blog-author').click(function(e) {
+       /*e.preventDefault(); 它是不让click里的a标签点击后转跳*/
+        $(this).rippleria('changeColor','rgba('+randInt(0,255)+','+randInt(0,255)+','+randInt(0,255)+',0.'+randInt(3,5));
+    });
+
+    /*$(".majors-logo a").each(function(){
+     $(this).click(function(){
+     window.location.href = $(this).attr('href');
+     });
+     }); 解决e.preventDefault开启后不转接*/
+
+</script>
