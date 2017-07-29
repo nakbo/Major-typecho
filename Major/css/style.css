@@ -8,8 +8,8 @@ Description: 以科学、高端为主,采用兼容性开发!
 *//*! https://github.com/kraity/Major */
 
 body {
-    /*background: white;*/
-    background-color: #eee;
+    background: white;
+    /*background-color: #eee;*/
     margin: 0;
     padding: 0;
     height: 100%;
@@ -164,6 +164,33 @@ ul {
 #major>.major-main {
     position: relative;
     z-index: 1;
+}
+
+.major-icon {
+    background-color: transparent;
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    direction: rtl;
+    vertical-align: middle;
+    z-index: 7;
+    float: left;
+    margin-right: 10px;
+}
+.major-icon span {
+    position: relative;
+    color: #fff;
+    width: 33.33%;
+    height: 33.33%;
+    display: block;
+    background: #fff;
+    right: 0;
+}
+.major-icon span:nth-child(2) {
+    width: 66.66%;
+}
+.major-icon span:nth-child(3) {
+    width: 100%;
 }
 
 @media (max-width: 1400px) {
@@ -795,7 +822,6 @@ Main components
 }
 
 .major-2 {
-    margin: 20px 0;
     background: white;
 }
 
@@ -885,6 +911,10 @@ Main components
 .major-3 #major-posts .major-post {
     padding-right: 4px;
     padding-left: 4px;
+}
+
+.major-A7 {
+    background: #eee;
 }
 
 @media (min-width: 992px) {
