@@ -88,18 +88,4 @@ Github Major : [https://github.com/kraity/Major][13]
  1. 基于chivalric开发开源,非原创。
 
 
-  [1]: https://krait.cn
-  [2]: https://krait.cn/usr/uploads/2017/07/3806734515.jpg
-  [3]: https://krait.cn/usr/uploads/2017/07/2594699630.jpg
-  [4]: https://krait.cn/usr/uploads/2017/07/2875955591.jpg
-  [5]: https://krait.cn/usr/uploads/2017/07/3748259808.jpg
-  [6]: https://krait.cn/usr/uploads/2017/07/2257984473.jpg
-  [7]: https://krait.cn/usr/uploads/2017/12/3145454170.jpg
-  [8]: https://krait.cn/usr/uploads/2017/07/1785828101.jpg
-  [9]: https://krait.cn/usr/uploads/2017/12/785762519.jpg
-  [10]: https://krait.cn/usr/uploads/2017/07/3613092391.jpg
-  [11]: https://krait.cn/usr/uploads/2017/12/4024038124.jpg
-  [12]: https://krait.cn/usr/uploads/2017/12/2821034739.jpg
-  [13]: https://krait.cn/d/major
-  [14]: https://krait.cn/major/1628.html
-  [15]: https://krait.cn
+
