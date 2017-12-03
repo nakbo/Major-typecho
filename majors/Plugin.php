@@ -1,6 +1,6 @@
 <?php
 /**
- * Major Typecho主题配置插件
+ * Major 集成插件
  * 
  * @package majors 
  * @author 权那他
@@ -18,14 +18,19 @@ class majors_Plugin implements Typecho_Plugin_Interface
     public static function activate()
     {
         $msg = majors_Plugin::install();
+
+
+        //Helper::addPanel(4, 'majors/manage.php', 'MAJOR 配置', 'MAJOR 主题配置', 'administrator');
 			
 		//添加文章
-        Typecho_Plugin::factory('admin/write-post.php')->option = array('majors_Plugin', 'formatsSelect');       
+        Typecho_Plugin::factory('admin/write-post.php')->option = array('majors_Plugin', 'formatsSelect'); 
+
+        //添加views
+        Typecho_Plugin::factory('Widget_Archive')->beforeRender = array('majors_Plugin', 'viewsCounter');
 		
 		//编辑文章
 		Typecho_Plugin::factory('Widget_Contents_Post_Edit')->write = array('majors_Plugin', 'formatsSet');
         Typecho_Plugin::factory('index.php')->begin = array('majors_Plugin', 'Widget_index_begin');
-        Typecho_Plugin::factory('admin/footer.php')->end = array('majors_Plugin', 'Footeradmin');
         Typecho_Plugin::factory('Widget_Archive')->indexHandle = array('majors_Plugin', 'sticky');
         return _t($msg);
     }
@@ -39,12 +44,17 @@ class majors_Plugin implements Typecho_Plugin_Interface
      * @throws Typecho_Plugin_Exception
      */
     public static function deactivate(){
+        //Helper::removePanel(4, 'majors/manage.php');
+        $db = Typecho_Db::get();
+        $prefix = $db->getPrefix();
         $config = Typecho_Widget::widget('Widget_Options')->plugin('majors');
         $delmat = $config->delmat;
         if ($delmat == 0) {
-            $db = Typecho_Db::get();
-            $prefix = $db->getPrefix();
-            $db->query("ALTER TABLE `".$prefix."contents` DROP COLUMN `format`");
+            try {
+                $db->query("ALTER TABLE `".$prefix."contents` DROP COLUMN `format`");
+            } catch (Typecho_Db_Exception $e) {
+                throw new Typecho_Plugin_Exception('删除format字段失败');
+            }
         }
     }
     
@@ -100,11 +110,15 @@ class majors_Plugin implements Typecho_Plugin_Interface
 
         $db = Typecho_Db::get();
         $prefix = $db->getPrefix();
-
+        
+        // contents 表中若无 views 字段则添加
+        if (!array_key_exists('views', $db->fetchRow($db->select()->from('table.contents')))){
+            $db->query('ALTER TABLE `'. $prefix .'contents` ADD `views` INT(10) DEFAULT 0;');
+        }
+            
         // contents 表中若无 format 字段则添加
         if (!array_key_exists('format', $db->fetchRow($db->select()->from('table.contents')))) {
             $db->query("ALTER TABLE `".$prefix."contents` ADD `format` varchar(16) DEFAULT 'post'");
-
             return '成功创建 format 字段，插件启用成功，' . $configLink;
         } else {
             return 'format 字段已存在，插件启用成功，' . $configLink;
@@ -239,7 +253,104 @@ class majors_Plugin implements Typecho_Plugin_Interface
         $row = $db->fetchRow($db->select('format')->from('table.contents')->where('cid = ?', $cid));
 		return $row['format'];
 	}
+    
+    
+    /**
+     * 加入 beforeRender
+     * 
+     * @access public
+     * @return void
+     */
+    public static function viewsCounter()
+    {
+        // 访问计数
+        if (Typecho_Widget::widget('Widget_Archive')->is('single')) {
+            $db = Typecho_Db::get();
+            $cid = Typecho_Widget::widget('Widget_Archive')->cid;
+            $row = $db->fetchRow($db->select('views')->from('table.contents')->where('cid = ?', $cid));
+            $db->query($db->update('table.contents')->rows(array('views' => (int)$row['views']+1))->where('cid = ?', $cid));
+        }
+    }
 
+    /**
+     * 输出访问次数
+     *
+     * 语法: Views_Plugin::theViews();
+     * 输出: '访问: xx,xxx 次'
+     *
+     * 语法: Views_Plugin::theViews('有 ', ' 次点击');
+     * 输出: '有 xx,xxx 次点击'
+     *
+     * @access public
+     * @param string  $before 前字串
+     * @param string  $after  后字串
+     * @param bool    $echo   是否显示 (0 用于运算，不显示)
+     * @return string
+     */
+    public static function theViews($echo = 1)
+    {
+        $db = Typecho_Db::get();
+        $cid = Typecho_Widget::widget('Widget_Archive')->cid;
+        $row = $db->fetchRow($db->select('views')->from('table.contents')->where('cid = ?', $cid));
+        if ($echo){
+            echo number_format($row['views']);
+        }else{
+            return $row['views'];
+        }
+    }
+  
+     /**
+     * 输出浏览总数
+     *
+     *
+     * @access public
+     * @return string
+     */
+    
+    public static function sumViews()
+    {
+      $db = Typecho_Db::get();
+      $query= $db->select('sum(views) as num')->from('table.contents');
+      $result = $db->fetchAll($query);
+      echo $result[0][num];
+      
+    }
+
+    /**
+     * 输出最受欢迎文章
+     *
+     * 语法: Views_Plugin::theMostViewed();
+     *
+     * @access public
+     * @param int     $limit  文章数目
+     * @param string  $before 前字串
+     * @param string  $after  后字串
+     * @return string
+     */
+    public static function theMostViewed($limit = 10, $before = '<br/> - ( 访问: ', $after = ' 次 ) ')
+    {
+        $db = Typecho_Db::get();
+        $options = Typecho_Widget::widget('Widget_Options');
+        $limit = is_numeric($limit) ? $limit : 10;
+        $posts = $db->fetchAll($db->select()->from('table.contents')
+                 ->where('type = ? AND status = ? AND password IS NULL', 'post', 'publish')
+                 ->order('views', Typecho_Db::SORT_DESC)
+                 ->limit($limit)
+                 );
+
+        if ($posts) {
+            foreach ($posts as $post) {
+                $result = Typecho_Widget::widget('Widget_Abstract_Contents')->push($post);
+                $post_views = number_format($result['views']);
+                $post_title = htmlspecialchars($result['title']);
+                $permalink = $result['permalink'];
+                echo "<li><a href='$permalink' title='$post_title'>$post_title</a><span style='font-size:70%'>$before $post_views $after</span></li>\n";
+            }
+
+        } else {
+            echo "<li>N/A</li>\n";
+        }
+    }
 
 
     /**
@@ -338,23 +449,4 @@ class majors_Plugin implements Typecho_Plugin_Interface
         }
     }
     
-    
-    /**
-     * 后台参数
-     *
-     * @author 那他
-     */
-    public static function Footeradmin()
-    {
-        
-        $url = $_SERVER['PHP_SELF'];
-        $filename = substr($url, strrpos($url, '/') + 1);
-        if ($filename == 'index.php') {
-            echo '<script>
-$(document).ready(function() {
-  $("#start-link").append("<li><a href=\"./options-theme.php\">外观变量</a></li>");
-});
-</script>';
-        }
-    }
 }
