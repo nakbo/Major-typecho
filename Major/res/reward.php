@@ -1,4 +1,6 @@
-﻿<div class="rewards">
+<?php if (!defined('__TYPECHO_ROOT_DIR__')) exit; ?>
+
+<div class="rewards">
     <p class="reward-bg"></p>
     <div class="reward-com">
         <div class="reward-comint">
