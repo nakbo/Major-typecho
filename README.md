@@ -7,30 +7,6 @@ Major,这是一款采用兼容性开发的 Typecho 主题，科创出品,原创�
 
 **开源引源**: 引源C7sky的评论样式,以及GIT里开源的JS插件。
 
-## 预览图片 ##
-
-![sy.jpg][2]
-
-![nav.jpg][3]
-
-![wz.jpg][4]
-
-![yj.jpg][5]
-
-![wzy.jpg][6]
-
-![wzyl.jpg][7]
-
-![plq.jpg][8]
-
-![ds.jpg][9]
-
-![zzy.jpg][10]
-
-![yqlj.jpg][11]
-
-![gdy.jpg][12]
-
 ## 下载 ##
 Github Major : [https://github.com/kraity/Major][13]
 
@@ -90,17 +66,6 @@ Github Major : [https://github.com/kraity/Major][13]
 
 
   [1]: https://krait.cn
-  [2]: https://krait.cn/usr/uploads/2017/07/3806734515.jpg
-  [3]: https://krait.cn/usr/uploads/2017/07/2594699630.jpg
-  [4]: https://krait.cn/usr/uploads/2017/07/2875955591.jpg
-  [5]: https://krait.cn/usr/uploads/2017/07/3748259808.jpg
-  [6]: https://krait.cn/usr/uploads/2017/07/2257984473.jpg
-  [7]: https://krait.cn/usr/uploads/2017/12/3145454170.jpg
-  [8]: https://krait.cn/usr/uploads/2017/07/1785828101.jpg
-  [9]: https://krait.cn/usr/uploads/2017/12/785762519.jpg
-  [10]: https://krait.cn/usr/uploads/2017/07/3613092391.jpg
-  [11]: https://krait.cn/usr/uploads/2017/12/4024038124.jpg
-  [12]: https://krait.cn/usr/uploads/2017/12/2821034739.jpg
   [13]: https://krait.cn/d/major
   [14]: https://krait.cn/major/1628.html
   [15]: https://krait.cn
