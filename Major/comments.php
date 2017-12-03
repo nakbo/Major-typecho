@@ -19,7 +19,7 @@ function threadedComments($comments, $options) {
     }
     ?>
 
-    <li id="li-<?php $comments->theId(); ?>" class="comment even thread-even depth-<?php echo $depth ?> comment-body<?php
+    <li id="li-<?php $comments->theId(); ?>" class="comment-list-item comment even thread-even depth-<?php echo $depth ?> comment-body<?php
     if ($comments->levels > 0) {
         echo ' comment-child';
         $comments->levelsAlt(' comment-level-odd', ' comment-level-even');
@@ -32,15 +32,31 @@ function threadedComments($comments, $options) {
             <footer class="comment-meta">
                 <div class="comment-author vcard">
                     <?php $comments->gravatar(40); ?>
-                    <b class="fn <?php echo $commentClass; ?>" itemprop="author">
+                    <b class="fn <?php echo $commentClass; ?> " itemprop="author">
                         <?php echo $author; ?>
                     </b>
                 </div>
                 <!-- .comment-author -->
 
+                <?php if ($comments->url) :?>
+                    <div class="comment-metadata major-text">
+                        <?php
+                        $commentUrl = '<a href="' . $comments->url . '"target="_blank"' . ' rel="external nofollow">' . $comments->url . '</a>';
+                        echo $commentUrl;
+                        ?>
+                    </div>
+                <?php endif;?>
+
+                <div class="comment-metadata">
+                    <span class="icon-location-pin"></span>
+                    <?php
+                    echo $comments->ip;
+                    ?>
+                </div>
+
                 <div class="comment-metadata">
                     <a href="" itemprop="url">
-                        <time class="liveTime" data-lta-value="<?php $comments->date('c'); ?>"></time>
+                        <time class="liveTime" id="liveTime" data-lta-value="<?php $comments->date('c'); ?>"></time>
                     </a>
                 </div>
                 <!-- .comment-metadata -->
@@ -48,7 +64,7 @@ function threadedComments($comments, $options) {
             </footer>
             <!-- .comment-meta -->
 
-            <div class="comment-content">
+            <div class="comment-content  major-text">
                 <?php $comments->content(); ?>
             </div>
             <!-- .comment-content -->
@@ -67,7 +83,7 @@ function threadedComments($comments, $options) {
     </li>
 <?php } ?>
 
-<div id="comments">
+<div id="comments" data-no-instant>
     <div class="comment-respond">
     <?php $this->comments()->to($comments); ?>
 
@@ -82,7 +98,15 @@ function threadedComments($comments, $options) {
                 </div>
                 <h4 id="response" class="comment-reply-title">
                     <span>发表评论</span>
-                    <small><?php $this->commentsNum(_t('暂无评论'), _t('仅有 1 条评论'), _t('已有 %d 条评论')); ?></small>
+                    <small>
+                        <span class="response">
+                            <?php if($this->user->hasLogin()): ?>
+                                <a href="<?php $this->options->profileUrl(); ?>"><?php $this->user->screenName(); ?></a>(已登录) <a href="<?php $this->options->logoutUrl(); ?>" class="icon-logout"></a>
+                            <?php else: ?>
+                                你是访客 <a href="<?php $this->options->loginUrl(); ?>" class="icon-login"></a>
+                            <?php endif; ?>
+                        </span>
+                    </small>
                     <?php $comments->cancelReply('取消回复'); ?>
                 </h4>
                 <form method="post" action="<?php $this->commentUrl() ?>" id="comment-form" class="comment-form" role="form">
@@ -125,7 +149,6 @@ function threadedComments($comments, $options) {
                         </p>
                     </div>
                     <div class="comment-form-extra">
-                        <span class="response"><?php if($this->user->hasLogin()): ?> You are <a href="<?php $this->options->profileUrl(); ?>"><?php $this->user->screenName(); ?></a> here, do you want to <span data-microtip="点击后将会登出,你确定登出吗?" data-microtip-position="top-left"><a href="<?php $this->options->logoutUrl(); ?>">logout</a></span> ?<?php endif; ?></span>
 
                     </div>
                 </form>
@@ -135,104 +158,41 @@ function threadedComments($comments, $options) {
         <?php if ($comments->have()): ?>
             <?php $comments->listComments(); ?>
             <?php $comments->pageNav('&laquo;', '&raquo;'); ?>
+
         <?php endif; ?>
 
     </div>
 </div>
 
-<script type="text/javascript" src="<?php $this->options->themeUrl(); ?>vendors/liveTimeAgo/jquery.liveTimeAgo.js"></script>
 <script type="text/javascript">
-    $(function(){
-        $('.liveTime').liveTimeAgo({
-            translate: {
-                'year': '% 年前',
-                'years': '% 年前',
-                'month':'% 个月前',
-                'months':'% 个月前',
-                'day': '% 天前',
-                'days': '% 天前',
-                'hour': '% 小时前',
-                'hours': '% 小时前',
-                'minute': '% 分钟前',
-                'minutes': '% 分钟前',
-                'seconds': '几秒钟前',
-                'error': '未知的时间',
-            }
-        });
-    })
+    function iasNew() {
+        try
+        {
+            var iasCent = jQuery.ias({
+                container:  '.comment-list',    //大容器
+                item:       '.comment-list-item.depth-1',    //循环容器
+                pagination: '.page-navigator li',    //分页容器
+                next:       '.next a'    //下一页的class
+            });
+
+            iasCent.extension(new IASTriggerExtension({
+                text: '加载更多', //此选项为需要点击时的文字
+                html: '<div class="iasBtn"><a class="btn" href="javascript:;" role="button" data-no-instant>{text}</a></div>',
+                offset: 1 //load多少页后显示加载更多按钮
+            }));
+            iasCent.extension(new IASSpinnerExtension());    //加载时的图片
+            iasCent.extension(new IASNoneLeftExtension({text: "已经没有更多评论了"}));    //到底后显示的文字
+
+            iasCent.on('rendered', function(items) {
+                liveTimeGo();
+            });
+        }
+        catch(err) {}
+    }
+    iasNew();
 </script>
 
-<script type = "text/javascript">
-    (function () {
-        window.TypechoComment = {
-            dom : function (id) {
-                return document.getElementById(id);
-            },
-            create : function (tag, attr) {
-                var el = document.createElement(tag);
-                for (var key in attr) {
-                    el.setAttribute(key, attr[key]);
-                }
-                return el;
-            },
-
-            reply : function (cid, coid) {
-                var comment = this.dom(cid), parent = comment.parentNode,
-                    response = this.dom('<?php echo $this->respondId(); ?>'),
-                    input = this.dom('comment-parent'),
-                    form = 'form' == response.tagName ? response : response.getElementsByTagName('form')[0],
-                    textarea = response.getElementsByTagName('textarea')[0];
-
-                if (null == input) {
-                    input = this.create('input', {
-                        'type' : 'hidden',
-                        'name' : 'parent',
-                        'id'   : 'comment-parent'
-                    });
-
-                    form.appendChild(input);
-                }
-
-                input.setAttribute('value', coid);
-
-                if (null == this.dom('comment-form-place-holder')) {
-                    var holder = this.create('div', {
-                        'id' : 'comment-form-place-holder'
-                    });
-
-                    response.parentNode.insertBefore(holder, response);
-                }
-
-                comment.appendChild(response);
-                this.dom('cancel-comment-reply-link').style.display = '';
-
-                if (null != textarea && 'text' == textarea.name) {
-                    textarea.focus();
-                }
-
-                return false;
-            },
-
-            cancelReply : function () {
-                var response = this.dom('<?php echo $this->respondId(); ?>'),
-                    holder = this.dom('comment-form-place-holder'),
-                    input = this.dom('comment-parent');
-
-                if (null != input) {
-                    input.parentNode.removeChild(input);
-                }
-
-                if (null == holder) {
-                    return true;
-                }
-
-                this.dom('cancel-comment-reply-link').style.display = 'none';
-                holder.parentNode.insertBefore(response, holder);
-                return false;
-            }
-        };
-    })();
-
+<script>
     <?php if(!$this->user->hasLogin()): ?>
     function getCommentCookie(name){
         var arr,reg=new RegExp("(^| )"+name+"=([^;]*)(;|$)");
@@ -248,4 +208,131 @@ function threadedComments($comments, $options) {
     }
     addCommentInputValue();
     <?php endif; ?>
+
+    (function () {
+        window.TypechoComment = {
+            dom : function (id) {
+                return document.getElementById(id);
+            },
+            create : function (tag, attr) {
+                var el = document.createElement(tag);
+                for (var key in attr) {
+                    el.setAttribute(key, attr[key]);
+                }
+                return el;
+            },
+            reply : function (cid, coid) {
+                var comment = this.dom(cid), parent = comment.parentNode,
+                    response = this.dom('<?php echo $this->respondId(); ?>'),
+                    input = this.dom('comment-parent'),
+                    form = 'form' == response.tagName ? response : response.getElementsByTagName('form')[0],
+                    textarea = response.getElementsByTagName('textarea')[0];
+                if (null == input) {
+                    input = this.create('input', {
+                        'type' : 'hidden',
+                        'name' : 'parent',
+                        'id'   : 'comment-parent'
+                    });
+                    form.appendChild(input);
+                }
+                input.setAttribute('value', coid);
+                if (null == this.dom('comment-form-place-holder')) {
+                    var holder = this.create('div', {
+                        'id' : 'comment-form-place-holder'
+                    });
+                    response.parentNode.insertBefore(holder, response);
+                }
+                comment.appendChild(response);
+                this.dom('cancel-comment-reply-link').style.display = '';
+                if (null != textarea && 'text' == textarea.name) {
+                    textarea.focus();
+                }
+                return false;
+            },
+            cancelReply : function () {
+                var response = this.dom('<?php echo $this->respondId(); ?>'),
+                    holder = this.dom('comment-form-place-holder'),
+                    input = this.dom('comment-parent');
+                if (null != input) {
+                    input.parentNode.removeChild(input);
+                }
+                if (null == holder) {
+                    return true;
+                }
+                this.dom('cancel-comment-reply-link').style.display = 'none';
+                holder.parentNode.insertBefore(response, holder);
+                return false;
+            }
+        };
+    })();
 </script>
+<script type = "text/javascript" data-no-instant>
+    (function() {
+        var event = document.addEventListener ? {
+            add: 'addEventListener',
+            focus: 'focus',
+            load: 'DOMContentLoaded'
+        } : {
+            add: 'attachEvent',
+            focus: 'onfocus',
+            load: 'onload'
+        };
+        document[event.add](event.load, function() {
+            var r = document.getElementById('<?php echo $this->respondId(); ?>');
+            if (null != r) {
+                var forms = r.getElementsByTagName('form');
+                if (forms.length > 0) {
+                    var f = forms[0],
+                        textarea = f.getElementsByTagName('textarea')[0],
+                        added = false;
+                    if (null != textarea && 'text' == textarea.name) {
+                        textarea[event.add](event.focus, function() {
+                            if (!added) {
+                                var input = document.createElement('input');
+                                input.type = 'hidden';
+                                input.name = '_';
+                                input.value = (function() {
+                                    var _a8C5A = //'xr'
+                                            '8d0' + //'vI'
+                                            'vI' + /* 'mj'//'mj' */ '' + //'P'
+                                            '06' + 'd' //'chS'
+                                            + //'wo'
+                                            '0ef' + '41' //'9G'
+                                            + '8c8' //'R'
+                                            + //'p1'
+                                            'd0' + //'mi'
+                                            'mi' + 'baf' //'lu'
+                                            + 'c' //'dm'
+                                            + //'ED'
+                                            '1a9' + //'Lh'
+                                            'd9' + '6' //'luM'
+                                            + //'xH'
+                                            'f1' + //'W'
+                                            '2c7' + 'f' //'f'
+                                            + //'9'
+                                            '9' + //'Nd'
+                                            'Nd' + /* '8ys'//'8ys' */ '' + '' ///*'6Yc'*/'6Yc'
+                                            + //'H'
+                                            '0',
+                                        _LceE8M = [
+                                            [3, 5],
+                                            [16, 18],
+                                            [31, 32],
+                                            [31, 32],
+                                            [31, 33]
+                                        ];
+                                    for (var i = 0; i < _LceE8M.length; i++) {
+                                        _a8C5A = _a8C5A.substring(0, _LceE8M[i][0]) + _a8C5A.substring(_LceE8M[i][1]);
+                                    }
+                                    return _a8C5A;
+                                })();
+                                f.appendChild(input);
+                                added = true;
+                            }
+                        });
+                    }
+                }
+            }
+        });
+    })();
+</script><!--</nocompress>-->

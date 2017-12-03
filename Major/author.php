@@ -2,12 +2,12 @@
 
 <?php $this->need('header.php'); ?>
 
-<div class="authors">
+    <div class="authors">
         <div class="authot-inner">
             <div class="author-top">
                 <p class="author-hello">Good <?php $this->author() ?>!</p>
                 <div class="author-user">
-                    <img src="<?php echo 'https://secure.gravatar.com/avatar/'.md5($this->author->mail).'?s=100&r=G&d=mm'; ?>" alt="" class="author-user-photo">
+                    <img src="<?php echo Major::getGravatar($this->author->mail,"100"); ?>" alt="" class="author-user-photo">
                     <span class="author-user-notif"><?php $this->author('uid'); ?></span>
                 </div>
                 <div class="author-users">
@@ -26,8 +26,18 @@
             </div>
         </div>
     </div>
+
+<div class="authors-post">
+    <div class="container">
+        <?php include 'res/articleList.php'; //映入统一文章列表 ?>
+    </div>
 </div>
 
-<?php include 'lister.php'; //映入统一文章列表 ?>
+    <div class="major-4 object">
+        <div class="pageNav-in">
+            <?php $this->pageNav('&laquo;', '&raquo;'); ?>
+        </div>
+    </div>
+
 
 <?php $this->need('footer.php'); ?>
