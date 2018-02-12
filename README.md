@@ -1,11 +1,12 @@
 ## 新Major ##
 
-Major,这是一款采用兼容性开发的 Typecho 主题，科创出品,原创主题,采用兼容性开发!
+Theme Major
+这是一款采用兼容性开发的 Typecho 主题，科创出品,原创主题,采用兼容性开发!
 
 ## 关于Mjaor ##
 **Mjaor作者**: [权那他][1] 就是我!
 
-**开源引源**: 引源C7sky的评论样式,以及GIT里开源的JS插件。
+**开源引源**: 引源C7sky的评论样式,以及Git里开源的JS插件。
 
 ## 下载 ##
 Github Major : [https://github.com/kraity/Major][13]
