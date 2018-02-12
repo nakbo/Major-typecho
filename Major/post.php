@@ -13,27 +13,6 @@
                 <div class="reMarct post-content post-text major-text" data-wow-offset="10" itemprop="articleBody">
                     <?php $this->content(); ?>
                 </div>
-
-                <div style="text-align: right;padding-bottom: 15px;">
-                    <div style="color:#2f050f;margin: 0 15px;"><a href="https://shop249188747.taobao.com" data-vbtype="iframe" class="shop-fim" style="color:#000;" target="_blank">那他鞋店</a><span><a href="https://shop249188747.taobao.com" data-vbtype="iframe" class="shop-fim" style="color:#000;font-size: 70%;margin-left: 7px;" target="_blank">点击逛店铺</a></span></div>
-                    <div style="border-bottom: 1px solid #ECECEC;height:26px;line-height:26px;">
-                        <div style="text-align:center;color:#2f050f;font-size:12px;letter-spacing:6px;display:inline-block;*display:inline;*zoom:1;margin:0 auto;">
-                            <p style="height:26px;line-height:26px;">店内热销款! 抢完为止!</p>
-                            <div style="height:3px;position:relative;top: -7px;">
-                                <span style="border-bottom:3px solid #ee1655;float:left;vertical-align:top;padding:0 10px;height:0px;line-height:0px;width:100px;"></span><span style="border-bottom:3px solid #2c020e;float:left;vertical-align:top;padding:0 10px;height:0px;line-height:0px;width:100px;"></span>
-                            </div>
-                        </div>
-                    </div>
-                    <script type="text/javascript">
-                        $(document).ready(function(){
-                            $('.shop-fim').venobox({
-                                framewidth: '100%',
-                                frameheight: '100vh',
-                                border: '0'
-                            });
-                        });
-                    </script>
-                </div>
                 <?php include 'res/PostFooter.php'; ?>
             </article>
 
@@ -192,24 +171,6 @@
          }
         tocs();
         });
-        /*function reMarct() {
-         var resizeMax = document.body.clientWidth;
-         var objMart = document.getElementsByClassName('reMarct')[0];
-         var objMct = document.getElementsByClassName("sidebar")[0];
-         if(resizeMax >1330){
-         var h = objMct.offsetHeight - 170;
-         var hh = objMart.offsetHeight;
-         if(h > hh){
-         objMart.style.minHeight = h+"px";
-         }
-         }else{
-         objMart.style.minHeight = "0";
-         }
-         }
-         reMarct();
-         $(window).resize(function() {
-         reMarct();
-         });*/
 
     </script>
 <?php $this->need('footer.php'); ?>
