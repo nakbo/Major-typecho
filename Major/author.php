@@ -27,11 +27,9 @@
         </div>
     </div>
 
-<div class="authors-post">
-    <div class="container">
+    <div class="authors-post">
         <?php include 'res/articleList.php'; //映入统一文章列表 ?>
     </div>
-</div>
 
     <div class="major-4 object">
         <div class="pageNav-in">
