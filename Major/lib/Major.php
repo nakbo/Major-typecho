@@ -9,7 +9,7 @@ class Major {
      *
      * @var string
      */
-    public static $majorv = "1.5";
+    public static $majorv = "1.7";
 
     public static function personal(){
         $db = Typecho_Db::get();
@@ -21,15 +21,27 @@ class Major {
     /**
      * @return string
      */
-    public static function getGravatar($mail,$s)
+    public static function getGravatar($mail,$s,$u,$t)
     {
-        $secure = "https://secure.gravatar.com/avatar/";
-        $dt = "953de4234df55c1c973abb1c1588dc2e";
-        $s = "?s=".$s;
-        $r = "&r=G";
-        $d = "&d=";
-        $avatar = $secure.md5($mail).$s.$r.$d.$secure.$dt.$s.$r;
-        return $avatar;
+        switch ($t){
+            case 'gr':
+                $secure = "https://secure.gravatar.com/avatar/";
+                $dt = "953de4234df55c1c973abb1c1588dc2e";
+                $s = "?s=".$s;
+                $r = "&r=G";
+                $d = "&d=";;
+                return $gr = $secure.md5($mail).$s.$r.$d.$secure.$dt.$s.$r;
+
+                break;
+            case 'ma':
+                return $ma = $u;
+        }
+    }
+
+    public static function artCount($cid){
+        $db=Typecho_Db::get ();
+        $rs=$db->fetchRow ($db->select ('table.contents.text')->from ('table.contents')->where ('table.contents.cid=?',$cid)->order ('table.contents.cid',Typecho_Db::SORT_ASC)->limit (1));
+        return mb_strlen($rs['text'], 'UTF-8');
     }
 
     /**
@@ -83,6 +95,27 @@ class Major {
         }
 
         $str=<<<EOT
+<script type="text/javascript" src="./js/jquery.js"></script>
+<script type="text/javascript">
+	$(function() {
+		var Gra1 = $("#useGravatar-ma"),
+			Gra0 = $("#useGravatar-gr");
+		if(!Gra1.is(":checked")) {
+			var Grat = $("#typecho-option-item-masterImgUrl-1");
+			Grat.attr("style","color:#999")
+			.find("input").attr("disabled","disabled");
+			Gra1.click(function() {
+				Grat.removeAttr("style")
+				.find("input").removeAttr("disabled");
+			});
+			Gra0.click(function() {
+				Grat.attr("style","color:#999")
+				.find("input").attr("disabled","disabled");
+			});
+		}
+	});
+	</script>       
+        
 <style>
    .majorPv{
      font-size:15px;
