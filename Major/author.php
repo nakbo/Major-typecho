@@ -7,7 +7,7 @@
             <div class="author-top">
                 <p class="author-hello">Good <?php $this->author() ?>!</p>
                 <div class="author-user">
-                    <img src="<?php echo Major::getGravatar($this->author->mail,"100"); ?>" alt="" class="author-user-photo">
+                    <img src="<?php echo Major::getGravatar($this->author->mail,"100",$this->options->masterImgUrl,$this->options->useGravatar); ?>" alt="" class="author-user-photo">
                     <span class="author-user-notif"><?php $this->author('uid'); ?></span>
                 </div>
                 <div class="author-users">

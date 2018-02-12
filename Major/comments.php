@@ -114,26 +114,28 @@ function threadedComments($comments, $options) {
                     <div class="comment-form-main">
                         <div class="comment-textarea-wrapper rippleria-dark" data-rippleria>
                             <p class="comment-form-comment"><label for="comment">评论</label>
-                                <textarea id="comment" name="text" onclick='document.getElementById("comment-form-do").style.display="block";' cols="45" rows="8" aria-required="true" required="required" placeholder="发泄你的牢骚,留下你的笔言!"><?php $this->remember('text',false); ?></textarea>
+                                <textarea id="textarea" name="text" onclick='document.getElementById("comment-form-do").style.display="block";' cols="45" rows="8" aria-required="true" required="required" placeholder="发泄你的牢骚,留下你的笔言!"><?php $this->remember('text',false); ?></textarea>
                             </p>
                             <div class="comment-form-toolbar">
+                              <?php if(isset($this->options->plugins['activated']['Smilies'])) Smilies_Plugin::output(); ?>
+                              
                             </div>
                         </div>
 
                         <?php if(!$this->user->hasLogin()): ?>
                             <div class="comment-form-fields" id="comment-form-do">
-                                <p class="comment-form-author rippleria-dark" data-rippleria>
+                                <p class="comment-form-author">
                                     <label for="author">昵称</label> <span class="required">*</span>
 
                                     <input type="text" name="author" maxlength="12" id="author" placeholder="昵称" value="" required>
 
                                 </p>
-                                <p class="comment-form-email rippleria-dark" data-rippleria>
+                                <p class="comment-form-email parentCls">
                                     <label for="email">邮箱</label> <span class="required">*</span>
 
-                                    <input type="email" name="mail" id="mail" placeholder="邮箱" value="" <?php if ($this->options->commentsRequireMail): ?> required<?php endif; ?>>
+                                    <input type="email" name="mail" id="mail" placeholder="邮箱" value="" class="inputElem" <?php if ($this->options->commentsRequireMail): ?> required<?php endif; ?>>
                                 </p>
-                                <p class="comment-form-url rippleria-dark" data-rippleria>
+                                <p class="comment-form-url">
                                     <label for="url">网站</label>
 
                                     <input type="url" name="url" id="url" placeholder="网站" value="" <?php if ($this->options->commentsRequireURL): ?> required<?php endif; ?>>
@@ -165,6 +167,10 @@ function threadedComments($comments, $options) {
 </div>
 
 <script type="text/javascript">
+    $(document).ready(function() {
+        $('#textarea').textareafullscreen();
+    });
+
     function iasNew() {
         try
         {

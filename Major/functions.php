@@ -1,7 +1,6 @@
 <?php
 if (!defined('__TYPECHO_ROOT_DIR__')) exit;
 
-
 require_once('lib/Major.php');
 
 /**
@@ -13,26 +12,30 @@ require_once('lib/Major.php');
 function themeConfig($form) {
 
     Major::getVersion();
+
+    $useGravatar = new Typecho_Widget_Helper_Form_Element_Radio('useGravatar',
+        array('gr' => _t('使用公认头像'),
+            'ma' => _t('使用自定头像'),
+        ),
+        'gr', _t('引用头像方式'), _t('默认禁止，公认头像是全球公认头像,使用的邮箱是管理员的邮箱.自定头像是你自己自定义的头像,在本页上方设置即可.'));
+    $form->addInput($useGravatar);
     
-    $masterImgUrl = new Typecho_Widget_Helper_Form_Element_Text('masterImgUrl', NULL, 'https://secure.gravatar.com/avatar/4e4559eceb7fbd4bca7925710592b1b9?s=70&r=G&d=mm', _t('主人的头像地址[暂时停用]'), _t('此处填入头像地址,用于主页头部显示,文章页时显示作者头像'));
+    $masterImgUrl = new Typecho_Widget_Helper_Form_Element_Text('masterImgUrl', NULL, 'https://secure.gravatar.com/avatar/4e4559eceb7fbd4bca7925710592b1b9?s=70&r=G&d=mm', _t('自定头像'), _t('此处填入头像地址,用于主页头部显示,文章页时显示作者头像 '));
     $form->addInput($masterImgUrl);
 
-    $majorA0 = new Typecho_Widget_Helper_Form_Element_Text('majorA0', NULL, 'https://wx2.sinaimg.cn/mw1024/d60fbcc9ly1fgf6vgmprwj21ek11e7wh.jpg', _t('MajorA0大图'), _t('此处填入头部大图路径,A0和A2之间有一成opacity: 0.5黑色透明层,A1是最里一张,合理搭配就是3D效果'));
+    $majorA0 = new Typecho_Widget_Helper_Form_Element_Text('majorA0', NULL, 'https://wx2.sinaimg.cn/mw1024/d60fbcc9ly1fgf6vgmprwj21ek11e7wh.jpg', _t('Mat 头图'), _t('此处填入头部大图路径,注意是超链接形式.'));
     $form->addInput($majorA0->addRule('xssCheck', _t('请不要在链接中使用特殊字符')));
-
-    $majorA2 = new Typecho_Widget_Helper_Form_Element_Text('majorA2', NULL, 'https://wx2.sinaimg.cn/large/006U7bU2gy1fm2bwg6lh5j31hc0s0acv.jpg', _t('MajorA2大图'), _t('此处填入头部大图路径,A0和A2之间有一成opacity: 0.5黑色透明层,A2是最外一张,透明度opacity: 0.7,合理搭配就是3D效果'));
-    $form->addInput($majorA2->addRule('xssCheck', _t('请不要在链接中使用特殊字符')));
 
     $rewardJson = new Typecho_Widget_Helper_Form_Element_Textarea('rewardJson', NULL, '{"name":"那他","uImg":"https://secure.gravatar.com/avatar/953de4234df55c1c973abb1c1588dc2e?s=100&r=G&d=mm","codeImg":"https://wx4.sinaimg.cn/large/006U7bU2gy1fl6dogepplj30u00u0gps.jpg"}', _t('打赏Json'), _t('此处填入打赏的Json。'));
     $form->addInput($rewardJson);
 
-    $socialJson = new Typecho_Widget_Helper_Form_Element_Textarea('socialJson', NULL, '{s:"github",u:"https://github.com/kraity"},{s:"weibo",u:"https://weibo.com/Kraity"},{s:"weixin",u:"javascript:;"},{s:"mail",u:"https://krait.cn/d/mailme"}', _t('社交Json'), _t('此处填入社交的Json。'));
+    $socialJson = new Typecho_Widget_Helper_Form_Element_Textarea('socialJson', NULL, '{s:"github",u:"https://github.com/kraity"},{s:"weibo",u:"https://weibo.com/Kraity"},{s:"weixin",u:"javascript:;"},{s:"mail",u:"https://krait.cn/t/mailme"}', _t('社交Json'), _t('此处填入社交的Json。'));
     $form->addInput($socialJson);
   
-    $quoteLg = new Typecho_Widget_Helper_Form_Element_Text('quoteLg', NULL, '<p>Hey Guys!</p><i>我们正在开发中</i>', _t('应用语录'), _t('此处填入应用语录,它将在头部的博主下展示.'));
+    $quoteLg = new Typecho_Widget_Helper_Form_Element_Text('quoteLg', NULL, '<p>理科男</p><i>高中生</i>', _t('应用语录'), _t('此处填入应用语录,它将在头部的博主下展示.'));
     $form->addInput($quoteLg);
 
-    $leftright = new Typecho_Widget_Helper_Form_Element_Text('leftright', NULL, 'Copyright &copy; 2017 那他工作室', _t('页脚版权'), _t('此处填入页脚版权,它用于在页脚显示的版权声明。如有需要,亲手动去修改文件。'));
+    $leftright = new Typecho_Widget_Helper_Form_Element_Text('leftright', NULL, 'Copyright &copy; 2017 那他工作室 , 渝ICP备18001767号', _t('页脚版权'), _t('此处填入页脚版权,它用于在页脚显示的版权声明。如有需要,亲手动去修改文件。'));
     $form->addInput($leftright);
 
     $logos = new Typecho_Widget_Helper_Form_Element_Text('logos', NULL, 'https://krait.cn/usr/Major/images/logo-white-green.png', _t('Logo路径'), _t('此处填入Logo路径,它是在头部显示的Logo图片,建议务必填写'));
@@ -121,40 +124,4 @@ function theNext($widget, $default = NULL){
     } else {
         echo $default;
     }
-}
-
-function ampInit($archive)
-{
-    if ($archive->is('single')) {
-        $archive->content = str_replace('<img','<amp-img width="900" height="675" layout="responsive" ',$archive->content);
-        $archive->content = str_replace('img>','amp-img>',$archive->content);
-        $archive->content = str_replace('<!- toc end ->','',$archive->content);
-        $archive->content = str_replace('javascript:content_index_toggleToc()','#',$archive->content);
-    }
-
-}
-
-
-function get_post_img($archive)
-{
-    $cid = $archive->cid;
-    $db = Typecho_Db::get();
-    $rs = $db->fetchRow($db->select('table.contents.text')
-        ->from('table.contents')
-        ->where('cid=?', $cid));
-    $text = $rs['text'];
-    $pattern = '/\<img.*?src\=\"(.*?)\"[^>]*>/i';
-    $patternMD = '/\!\[.*?\]\((http(s)?:\/\/.*?(jpg|png))/i';
-    $patternMDfoot = '/\[.*?\]:\s*(http(s)?:\/\/.*?(jpg|png))/i';
-    if (preg_match($patternMDfoot, $text, $img)) {
-        $img_url = $img[1];
-    } else if (preg_match($patternMD, $text, $img)) {
-        $img_url = $img[1];
-    } else if (preg_match($pattern, $text, $img)) {
-        preg_match("/(?:\()(.*)(?:\))/i", $img[0], $result);
-        $img_url = $img[1];
-    } else {
-        $img_url ='https://wx2.sinaimg.cn/large/006U7bU2gy1fhx6t0d00vj31hc0u0jwz.jpg';
-    }
-    return $img_url;
 }

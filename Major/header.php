@@ -21,12 +21,13 @@ if (!defined('__TYPECHO_ROOT_DIR__')) exit;?>
     <link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/bootstrap/3.3.6/css/bootstrap.min.css">
     <script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
     <script type="text/javascript" src="//cdn.bootcss.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-    <link href="<?php $this->options->themeUrl(); ?>css/style.css" rel="stylesheet" />
+    <link href="<?php $this->options->themeUrl("style.css?v="); echo Major::$majorv; ?>" rel="stylesheet" />
     <link href="//cdn.bootcss.com/simple-line-icons/2.4.1/css/simple-line-icons.css" rel="stylesheet">
     <script src="<?php $this->options->themeUrl('js/jquery-ias.js'); ?>"></script>
     <script src="//cdn.bootcss.com/modernizr/2.8.3/modernizr.min.js"></script>
     <script src="<?php $this->options->themeUrl(); ?>js/iconfont.js" data-no-instant></script>
     <script src="<?php $this->options->themeUrl(); ?>js/toast.script.js"></script>
+    <script type="text/javascript" src="<?php $this->options->themeUrl(); ?>js/venobox.js"></script>
 
     <?php if ($this->is('post')): ?>
         <link rel="amphtml" href="<?php $this->permalink() ?>?amp=1">
@@ -86,69 +87,95 @@ if (!defined('__TYPECHO_ROOT_DIR__')) exit;?>
             </div>
         </div>
         <div class="major-1">
-            <div class="major-A0" id="major-A0"></div>
+            <div class="major-A0" id="major-A0" data-mata0="<?php $this->options->majorA0(); ?>"></div>
             <div class="major-A1"></div>
-            <div class="major-A2" id="major-A2"></div>
+            <div class="major-A2"></div>
+            <svg version="1.1" viewBox="0 0 100 100" preserveAspectRatio="none" class="major-svgm">
+                <path d="M0 100 L3 50 L50 100 L0 100" fill="rgb(95, 66, 135)"></path>
+                <path d="M1 100 L12 0 L30 100 L0 100" fill="rgb(95, 66, 135)"></path>
+                <path d="M0 100 L30 50 L40 100 L0 100" fill="rgb(95, 66, 135)"></path>
+                <!--path d="M0 100 L3 99 L40 100 L0 100" fill="rgb(250, 250, 250)"></path-->
+            </svg>
             <script>
+                var MatA0 = $("#major-A0").data("mata0");
+                var MatA0Liner ="to bottom, rgba(53, 52, 154, 0.5), rgba(53, 52, 154, 0.5), rgba(0,0,0,0.5)), ";
                 $("#major-A0").css({
-                    "background":"black",
-                    <?php if($this->options->majorA2){ echo '"background":"url('.$this->options->majorA0.') 50% 50% no-repeat",'; } ?>
-                    "background-size":"cover",
-                    "-webkit-background-size":"cover",
-                    "-moz-background-size":"cover",
-                    "-o-background-size":"cover"
-                });
-                $("#major-A2").css({
-                    <?php if($this->options->majorA2){ echo '"background":"url('.$this->options->majorA2.') 50% 50% no-repeat",'; } ?>
+                    //"background": "-moz-linear-gradient( "+MatA0Liner+"url("+MatA0+") 50% 50% / cover no-repeat ",
+                    //"background": "-webkit-linear-gradient( "+MatA0Liner+"url("+MatA0+") 50% 50% / cover no-repeat ",
+                    "background": "linear-gradient( "+MatA0Liner+"url("+MatA0+") 50% 50% / cover no-repeat ",
                     "background-size":"cover",
                     "-webkit-background-size":"cover",
                     "-moz-background-size":"cover",
                     "-o-background-size":"cover"
                 });
             </script>
+            <style>
+                .major-A2{
+                    background: #5F4287;
+                    background: -moz-linear-gradient(<?php $MatGrad = "135deg, rgb(80, 50, 171) 0%, rgb(102, 64, 218) 13%, rgb(99, 69, 191) 34%,rgb(100, 67, 199) 52%, rgb(93, 46, 169) 74%, rgb(71, 54, 119) 91%, rgb(74, 59, 119) 100%"; echo $MatGrad; ?>);
+                    background: -webkit-linear-gradient(<?php echo $MatGrad; ?>);
+                    background: linear-gradient(<?php echo $MatGrad; ?>);
+                    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#14c757', endColorstr='#25a7f2', GradientType=1);
+                }
+            </style>
         </div>
         <div class="major-t1 major-tr">
             <div class="container">
                 <div class="major-right">
-                    <div class="major-master">
+                    <div class="major-master major-hen">
                         <div class="master-author">
-                            <img src="<?php echo Major::getGravatar(Major::personal()[mail],"100"); ?>">
+                            <img src="<?php echo Major::getGravatar(Major::personal()[mail],"100",$this->options->masterImgUrl,$this->options->useGravatar); ?>">
                             <span class="master-author-note"></span>
                         </div>
                         <div class="master-info">
                             <div class="info-box">
                                 <p class="info-name"><?php echo Major::personal()[screenName]; ?></p>
-                                <p class="info-infos"><?php echo Major::personal()[mail]; ?></p>
+                                <p class="info-infos">
+                                    <a href="mailto:<?php echo Major::personal()[mail]; ?>" class="info-mail"><svg class="icon" aria-hidden="true"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-mail"></use></svg></a>
+                                </p>
                             </div>
                         </div>
                     </div>
                     <div class="clear"></div>
                     <div class="major-shows">
                         <h4>
-                          <?php $this->options->quoteLg(); ?>
+                            <?php $this->options->quoteLg(); ?>
                         </h4>
                     </div>
                 </div>
             </div>
         </div>
+        <div class="major-t1 major-t1n">
+            <div class="container">
+                <div class="maj-nav">
+                    <ul class="maj-ul" role="navigation">
+                        <li <?php if($this->is('index')): ?>class="active"<?php endif; ?>>
+                            <a class="material-ripple" data-ripple-color="#2ecc71" href="<?php $this->options->siteUrl(); ?>">
+                                <span>首页</span></a>
+                        </li>
+                        <?php $this->widget('Widget_Contents_Page_List')->to($pages); ?>
+                        <?php while($pages->next()): ?>
+                            <li <?php if($this->is('page', $pages->slug)): ?>class="active"<?php endif; ?>>
+                                <a class="material-ripple" data-ripple-color="#2ecc71" href="<?php $pages->permalink(); ?>">
+                                    <span><?php $pages->title(); ?></span></a>
+                            </li>
+                        <?php endwhile; ?>
+                    </ul>
+                </div>
+            </div>
+        </div>
     </div>
-    <nav id="main-nav">
-        <div class="menus-header">
+    <div class="major-na is-visible">
+        <div class="major-nabox">
             <ul role="navigation">
-                <li <?php if($this->is('index')): ?>class="active"<?php endif; ?>>
-                    <a class="material-ripple" data-ripple-color="#2ecc71" href="<?php $this->options->siteUrl(); ?>">
-                        <span>首页</span></a>
-                </li>
-                <?php $this->widget('Widget_Contents_Page_List')->to($pages); ?>
-                <?php while($pages->next()): ?>
-                    <li <?php if($this->is('page', $pages->slug)): ?>class="active"<?php endif; ?>>
-                        <a class="material-ripple" data-ripple-color="#2ecc71" href="<?php $pages->permalink(); ?>">
-                            <span><?php $pages->title(); ?></span></a>
-                    </li>
-                <?php endwhile; ?>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
             </ul>
         </div>
-    </nav>
+    </div>
 </div>
 
-
+<div class="major-dr"><div class="major-drk"></div></div>

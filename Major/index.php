@@ -1,10 +1,10 @@
-﻿<?php
+<?php
 /**
  * 新Major 科创出品,原创主题,采用兼容性开发!
  * 
  * @package Major
  * @author 权那他
- * @version 1.5
+ * @version 1.7
  * @link https://krait.cn
  */
 
@@ -12,26 +12,8 @@ if (!defined('__TYPECHO_ROOT_DIR__')) exit;
 $this->need('header.php'); 
 ?>
 
-<div class="major-bread">
-    <div class="container">
-        <h4><?php echo Major::personal()[screenName];?>的后院</h4>
-        <p>以下是后院的文章作品, 望你指点迷津。</p>
-        <div class="major-bth"></div>
-    </div> 
-</div>
-
 <div class="major-3 object" id="main" role="main">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-9">
-                <?php include 'res/articleList.php'; //映入统一文章列表 ?>
-            </div>
-            <div class="col-md-3 sidebar">
-                <?php $this->need('sidebar.php'); ?>
-            </div>
-        </div>
-
-    </div>
+    <?php include 'res/articleList.php'; //映入统一文章列表 ?>
 </div>
 
 <div class="major-about">

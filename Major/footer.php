@@ -2,80 +2,76 @@
 
 <?php include 'res/reward.php'; ?>
 
-<div class="footer-to">
-    <ul class="ft-nav">
-        <?php $this->widget('Widget_Contents_Page_List')->to($pages); ?>
-        <?php while($pages->next()): ?>
-            <li class="ft-to-1 <?php if($this->is('page', $pages->slug)): ?>active<?php endif; ?>">
-                <a data-hover="<?php $pages->title(); ?>" href="<?php $pages->permalink(); ?>"><span><?php $pages->title(); ?></span></a>
-            </li>
-        <?php endwhile; ?>
-    </ul>
-</div>
-
 <div class="footer-top">
     <div class="social">
+        <!--div class="footer-topsvg">
+            <svg version="1.1" viewBox="0 0 100 100" preserveAspectRatio="none">
+                <path d="M0 100 L10 50 L100 100 L0 100" fill="rgb(95, 66, 135)"></path>
+                <path d="M10 100 L35 0 L70 100 L0 100" fill="rgb(95, 66, 135)"></path>
+                <path d="M0 100 L70 50 L70 100 L0 100" fill="rgb(95, 66, 135)"></path>
+            </svg>
+        </div-->
         <ul class="social-nav" id="social-nav"></ul>
         <script type="text/javascript">
             function socialJson() {
                 var socialJson=[<?php $this->options->socialJson(); ?>];
                 var social = "";
                 for(var o in socialJson){
-                    social=social+'<li class=\"social_'+socialJson[o].s+'\"><a href=\"'+socialJson[o].u+'\"><svg class=\"icon\" aria-hidden=\"true\"><use xmlns:xlink=\"http://www.w3.org/1999/xlink\" xlink:href=\"#icon-'+socialJson[o].s+'\"></use></svg></a></li>';
+                    social=social+'<li class=\"social_'+socialJson[o].s+'\" data-no-instant><a href=\"'+socialJson[o].u+'\" class=\"sola_'+socialJson[o].s+'\"><svg class=\"icon\" aria-hidden=\"true\"><use xmlns:xlink=\"http://www.w3.org/1999/xlink\" xlink:href=\"#icon-'+socialJson[o].s+'\"></use></svg></a></li>';
                 }
                 document.getElementById("social-nav").innerHTML=social;
             }
             socialJson();
+            document.getElementsByClassName("sola_weibo")[0].setAttribute("data-vbtype","iframe");
+            $(document).ready(function(){
+                $('.sola_weibo').venobox({
+                    framewidth: '90%',
+                    frameheight: '100vh',
+                    border: '0'
+                });
+            });
         </script>
     </div>
 </div>
 
 <footer class="footer text-muted" role="contentinfo">
-    <svg version="1.1" viewBox="0 0 100 100" preserveAspectRatio="none" class="svg-bomm">
+    <!--svg version="1.1" viewBox="0 0 100 100" preserveAspectRatio="none" class="svg-bomm">
         <path class="small left" d="M0 0 L50 0 L0 33.3" fill="rgb(238, 238, 238)"></path>
         <path class="small right" d="M100 0 L50 0 L100 33.3" fill="rgb(238, 238, 238)"></path>
         <path d="M0 0 L50 50 L100 0 L0 0" fill="rgb(238, 238, 238)"></path>
-    </svg>
+    </svg-->
     <div>
         <div class="container">
             <div class="footer-t">
-                <p><?php $this->options->leftright();?></p>
-                <p>Powered by <a href="http://typecho.org" target="_blank">Typecho</a> • Theme <a href="https://github.com/kraity/Major" rel="nofollow" target="_blank">Major</a></p>
+                <p><a href="https://github.com/kraity/Major" rel="nofollow" target="_blank">Major v<?php echo Major::$majorv; ?></a>, 执行 <a href="https://en.wikipedia.org/wiki/MIT_License" target="_blank">MIT</a> 许可证开源,<a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"target="_blank">CC BY NC SA 4.0</a> 版权协议。</p>
+                <p><?php $this->options->leftright();?> , Powered by <a href="http://typecho.org" target="_blank">Typecho</a> , Theme <a href="https://github.com/kraity/Major" rel="nofollow" target="_blank">Major</a></p>
             </div>
         </div>
     </div>
 </footer>
 
+<!-- Matomo -->
+<script type="text/javascript">
+    var _paq = _paq || [];
+    /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
+    _paq.push(['trackPageView']);
+    _paq.push(['enableLinkTracking']);
+    (function() {
+        var u="//piwik.krait.cn/";
+        _paq.push(['setTrackerUrl', u+'piwik.php']);
+        _paq.push(['setSiteId', '2']);
+        var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+        g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+    })();
+</script>
+<!-- End Matomo Code -->
+
 <script type="text/javascript">
     $(function(){
         $('body').running();
-    })
+    });
 </script>
 
-<script type="text/javascript" src="<?php $this->options->themeUrl(); ?>js/mp.mansory.min.js" data-no-instant></script>
-<script type="text/javascript">
-    function majorsMpmansory(){
-        $("#major-posts").mpmansory({
-            childrenClass: 'majors-post',
-            columnClasses: 'major-post',
-            breakpoints: {
-                lg: 6,
-                md: 6,
-                sm: 6,
-                xs: 12
-            },
-            distributeBy: {
-                order: false,
-                height: false,
-                attr: 'data-order',
-                attrOrder: 'asc'
-            },
-            onload: function(items) {
-            }
-        });
-    }
-    majorsMpmansory();
-</script>
 <script>
     function randInt(min, max) {
         var rand = min + Math.random() * (max - min);
@@ -148,7 +144,7 @@ MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
 
 <script>
     function majorMlog(){
-        console.log('\n %c Major author 那他 <https://krait.cn>  %c 新Major v<?php echo majorv; ?> \n\n','color:rgb(255, 255, 255);background:rgb(50, 190, 166);padding:5px 0;border-radius:3px 0 0 3px;', 'color:rgb(255, 255, 255);background:rgb(0, 0, 0);padding:5px 0;border-radius:0 3px 3px 0;');
+        console.log('\n %c Theme Major by 权那他 <https://krait.cn>  %c 版本 v<?php echo Major::$majorv; ?> \n\n','color:rgb(255, 255, 255);background:rgb(50, 190, 166);padding:5px 0;border-radius:3px 0 0 3px;', 'color:rgb(255, 255, 255);background:rgb(0, 0, 0);padding:5px 0;border-radius:0 3px 3px 0;');
     }
     majorMlog();
 </script>
@@ -170,12 +166,17 @@ MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
                 }
                 Prism.highlightAll(true,null);
             }
+            if(typeof tocs === "function") {
+                tocs();
+            }
         }
         majorsMtheme();
         majorsMenu();
-        majorsMpmansory();
         majorsMsvg();
         liveTimeGo();
+        if(typeof tocs === "function") {
+            tocs();
+        }
     });
     InstantClick.init('mousedown');
 </script>

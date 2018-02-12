@@ -9,15 +9,7 @@ if (!defined('__TYPECHO_ROOT_DIR__')) exit;
 ?>
 <?php $this->need('header.php'); ?>
 
-    <div class="major-bread">
-        <div class="container">
-            <h4><?php echo Major::personal()[screenName];?>的后院</h4>
-            <p>以下是后院的文章作品归档.</p>
-            <div class="major-bth"></div>
-        </div>
-    </div>
-
-    <div class="row archives content-wrap">
+    <div class="archives content-wrap">
         <div class="container">
             <article class="major-article content-wrap" itemscope itemtype="http://schema.org/BlogPosting">
                 <div class="post-archive">
@@ -38,12 +30,11 @@ if (!defined('__TYPECHO_ROOT_DIR__')) exit;
                             $mon = $mon_tmp;
                             $output .= '<div class="arc-falt"><div class="arc-date">'.date('Y-m',$archives->created).'</div><div class="aec-lists" data-date="2017-6">';
                         }
-                        $output .= '<div class="arc-list-item majors-post"><a href="'.$archives->permalink .'" data-toggle="tooltip" title="写于'.date('d日',$archives->created) . '的' . $archives->title .'"><span class="time">  '.date('d日',$archives->created).' </span>'. $archives->title .'</a></div>';
+                        $output .= '<div class="arc-list-item"><a href="'.$archives->permalink .'" data-toggle="tooltip" title="写于'.date('d日',$archives->created) . '的' . $archives->title .'"><span class="time">  '.date('d日',$archives->created).' </span>'. $archives->title .'</a></div>';
                     }
                     $output .= '</div></div></div>';
                     echo $output;
                     ?>
-
                 </div>
                 <?php include 'res/PostFooter.php'; ?>
             </article>

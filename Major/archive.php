@@ -1,31 +1,9 @@
 <?php if (!defined('__TYPECHO_ROOT_DIR__')) exit; ?>
 <?php $this->need('header.php'); ?>
 
-<div class="major-bread">
-    <div class="container">
-        <h4><?php echo Major::personal()[screenName]; ?>的后院</h4>
-        <p><?php $this->archiveTitle(array(
-                'category'  =>  _t('分类 %s 下的文章'),
-                'search'    =>  _t('包含关键字 %s 的文章'),
-                'tag'       =>  _t('标签 %s 下的文章'),
-                'author'    =>  _t('%s 发布的文章')
-            ), '', ''); ?></p>
-        <div class="major-bth"></div>
-    </div>
-</div>
 
 <div class="major-3 object" id="main" role="main">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-9">
-                <?php include 'res/articleList.php'; //映入统一文章列表 ?>
-            </div>
-            <div class="col-md-3 sidebar">
-                <?php $this->need('sidebar.php'); ?>
-            </div>
-        </div>
-
-    </div>
+    <?php include 'res/articleList.php'; //映入统一文章列表 ?>
 </div>
 
 <div class="major-4 object">
