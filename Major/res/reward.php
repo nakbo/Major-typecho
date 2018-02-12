@@ -1,26 +1,27 @@
 <?php if (!defined('__TYPECHO_ROOT_DIR__')) exit; ?>
 
-<div class="rewards">
-    <p class="reward-bg"></p>
-    <div class="reward-com">
-        <div class="reward-comint">
-            <h3 class="reward-title"><span class="reward-urd">加载中...</span><span class="reward-close"></span></h3>
-            <div class="reward-ud">
-                <div class="reward-intor">
-                    <a class="reward-imx"><img class="reward-hg"></a>
-                    <p class="reward-ue">加载中...</p>
-                    <img class="reward-code">
+<div id="rewards">
+    <div class="rewards" >
+        <div class="reward-com">
+            <div class="reward-comint">
+                <h3 class="reward-title"><span class="reward-urd">加载中...</span></h3>
+                <div class="reward-ud">
+                    <div class="reward-intor">
+                        <a class="reward-imx"><img class="reward-hg"></a>
+                        <p class="reward-ue">加载中...</p>
+                        <img class="reward-code">
+                    </div>
                 </div>
-            </div>
-            <div class="reward-pt">
-                <p class="reward-paybox">
-                    <span class="reward-paywar">打赏无悔，概不退款</span>
-                </p>
+                <div class="reward-pt">
+                    <p class="reward-paybox">
+                        <a class="reward-pay" href="https://krait.cn/about.html#reward">收款记录</a>
+                        <span class="reward-paywar">打赏无悔，概不退款</span>
+                    </p>
+                </div>
             </div>
         </div>
     </div>
 </div>
-
 <script type="text/javascript">
     function rewardLoad() {
         var rewardJson = [<?php $this->options->rewardJson(); ?>];
@@ -32,5 +33,4 @@
         $(".reward-code").attr("src",reward.codeImg);
     }
     rewardLoad();
-
 </script>

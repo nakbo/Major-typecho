@@ -1,34 +1,49 @@
 <?php if (!defined('__TYPECHO_ROOT_DIR__')) exit; ?>
 
-<div class="row content-wrap" id="major-posts">
+
+<div class="major-posts" id="major-posts">
     <?php if ($this->have()): ?>
         <?php while($this->next()): $newFormat = majors_Plugin::getFormat();?>
 
-        <article class="majors-post" itemscope itemtype="http://schema.org/BlogPosting" data-rippleria>
-            <?php switch ($newFormat) : case 'aside':?>
-                <?php if($this->fields->thumbUrl) :?>
+        <article class="majors-post <?php echo $newFormat;?>" <?php if ( $newFormat == 'aside'){
+            echo 'style="background: linear-gradient(rgb(238, 238, 238), rgba(255, 255, 255, 0.7), rgb(238, 238, 238)) center center, url('.$this->fields->thumbUrl.');"';
+        }?> itemscope itemtype="http://schema.org/BlogPosting" data-rippleria>
+            <div class="majors-postContent">
+                <?php switch ($newFormat) : case 'aside':?>
+                    <?php if($this->fields->thumbUrl) :?>
 
-                    <a href="<?php $this->permalink() ?>">
-                        <div class="A3-image row"><img src="<?php $this->fields->thumbUrl(); ?>" class="grow" /></div>
-                    </a>
-                <?php endif;?>
-            <?php endswitch;?>
+                        <a href="<?php $this->permalink() ?>">
+                            <div class="A3-image row"><img src="<?php $this->fields->thumbUrl(); ?>" class="grow" /></div>
+                        </a>
+                    <?php endif;?>
 
-            <h3 class="post-title" itemprop="name headline">
-                <div class="title-img">
-                    <img src="<?php echo 'https://secure.gravatar.com/avatar/'.md5($this->author->mail).'?s=40&r=G&d=mm'; ?>">
+                <?php break; case 'quote':?>
+                    <svg class="icon quote-icon" aria-hidden="true">
+                        <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-xiaoxi1"></use>
+                    </svg>
+                <?php break; endswitch;?>
+
+
+                <?php if($newFormat!=="quote"){?>
+                <h3 class="post-title" itemprop="name headline">
+                    <a itemtype="url" href="<?php $this->permalink() ?>"><?php $this->sticky(); $this->title(); ?></a>
+                </h3>
+                <?php }?>
+
+                <div class="post-contents major-text" itemprop="articleBody">
+                    <p><?php if($newFormat=="quote"){ $this->content(); }else{ $this->excerpt(143, '...');} ?></p>
                 </div>
-                <a itemtype="url" href="<?php $this->permalink() ?>"><?php $this->sticky(); $this->title(); ?></a>
-            </h3>
-            <div class="post-contents major-text" itemprop="articleBody">
-                <p><?php $this->excerpt(77, '...'); ?> <span class="read-more"><a href="<?php $this->permalink() ?>">加载全文</a></span></p>
+                <footer class="row major-text">
+                    <div class="response-count">
+                        <div class="master-title-img">
+                            <img src="<?php echo Major::getGravatar($this->author->mail,"100",$this->options->masterImgUrl,$this->options->useGravatar); ?>">
+                        </div>
+                        <time datetime="<?php $this->date('c'); ?>" itemprop="datePublished"><?php $this->date('F j, Y');?></time>
+                        <span class="intro-eye"><?php majors_Plugin::theViews(); ?> view</span>
+                        <span class="read-more"><a href="<?php $this->permalink() ?>">加载全文</a></span>
+                    </div>
+                </footer>
             </div>
-            <footer class="row">
-                <div class="response-count">
-                    <span class="intro-eye"><?php majors_Plugin::theViews(); ?> view</span>
-                    <time datetime="<?php $this->date('c'); ?>" itemprop="datePublished"><?php $this->date('F j, Y');?></time>
-                </div>
-            </footer>
         </article>
 
     <?php endwhile; ?>
@@ -48,7 +63,9 @@
 
         </script>
     <?php endif; ?>
+
 </div>
+
 <div class="pagination" style="display:none">
     <?php $this->pageLink('下一页','next'); ?>
 </div>
@@ -74,7 +91,6 @@
 
 
             iasArt.on('rendered', function(items) {
-                majorsMpmansory();
                 $.Toast("加载成功!", "成功加载了下一页作品.", "success", {
                     has_icon:true,
                     has_close_btn:true,
