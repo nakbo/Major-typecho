@@ -4,13 +4,6 @@
 
 <div class="footer-top">
     <div class="social">
-        <!--div class="footer-topsvg">
-            <svg version="1.1" viewBox="0 0 100 100" preserveAspectRatio="none">
-                <path d="M0 100 L10 50 L100 100 L0 100" fill="rgb(95, 66, 135)"></path>
-                <path d="M10 100 L35 0 L70 100 L0 100" fill="rgb(95, 66, 135)"></path>
-                <path d="M0 100 L70 50 L70 100 L0 100" fill="rgb(95, 66, 135)"></path>
-            </svg>
-        </div-->
         <ul class="social-nav" id="social-nav"></ul>
         <script type="text/javascript">
             function socialJson() {
@@ -35,36 +28,14 @@
 </div>
 
 <footer class="footer text-muted" role="contentinfo">
-    <!--svg version="1.1" viewBox="0 0 100 100" preserveAspectRatio="none" class="svg-bomm">
-        <path class="small left" d="M0 0 L50 0 L0 33.3" fill="rgb(238, 238, 238)"></path>
-        <path class="small right" d="M100 0 L50 0 L100 33.3" fill="rgb(238, 238, 238)"></path>
-        <path d="M0 0 L50 50 L100 0 L0 0" fill="rgb(238, 238, 238)"></path>
-    </svg-->
     <div>
         <div class="container">
             <div class="footer-t">
-                <p><a href="https://github.com/kraity/Major" rel="nofollow" target="_blank">Major v<?php echo Major::$majorv; ?></a>, 执行 <a href="https://en.wikipedia.org/wiki/MIT_License" target="_blank">MIT</a> 许可证开源,<a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"target="_blank">CC BY NC SA 4.0</a> 版权协议。</p>
                 <p><?php $this->options->leftright();?> , Powered by <a href="http://typecho.org" target="_blank">Typecho</a> , Theme <a href="https://github.com/kraity/Major" rel="nofollow" target="_blank">Major</a></p>
             </div>
         </div>
     </div>
 </footer>
-
-<!-- Matomo -->
-<script type="text/javascript">
-    var _paq = _paq || [];
-    /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
-    _paq.push(['trackPageView']);
-    _paq.push(['enableLinkTracking']);
-    (function() {
-        var u="//piwik.krait.cn/";
-        _paq.push(['setTrackerUrl', u+'piwik.php']);
-        _paq.push(['setSiteId', '2']);
-        var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
-        g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
-    })();
-</script>
-<!-- End Matomo Code -->
 
 <script type="text/javascript">
     $(function(){
