@@ -29,7 +29,8 @@ function threadedComments($comments, $options) {
     $comments->alt(' comment-odd', ' comment-even');
     ?>">
         <article id="<?php $comments->theId(); ?>" class="comment-body">
-            <footer class="comment-meta">
+            <footer class="comment-meta" data-toggle="tooltip"
+                    data-placement="left" title="[<?php echo $comments->date();?>][<?php echo "IP:".$comments->ip;?>]">
                 <div class="comment-author vcard">
                     <?php $comments->gravatar(40); ?>
                     <b class="fn <?php echo $commentClass; ?> " itemprop="author">
@@ -37,22 +38,6 @@ function threadedComments($comments, $options) {
                     </b>
                 </div>
                 <!-- .comment-author -->
-
-                <?php if ($comments->url) :?>
-                    <div class="comment-metadata major-text">
-                        <?php
-                        $commentUrl = '<a href="' . $comments->url . '"target="_blank"' . ' rel="external nofollow">' . $comments->url . '</a>';
-                        echo $commentUrl;
-                        ?>
-                    </div>
-                <?php endif;?>
-
-                <div class="comment-metadata">
-                    <span class="icon-location-pin"></span>
-                    <?php
-                    echo $comments->ip;
-                    ?>
-                </div>
 
                 <div class="comment-metadata">
                     <a href="" itemprop="url">
@@ -103,18 +88,18 @@ function threadedComments($comments, $options) {
                             <?php if($this->user->hasLogin()): ?>
                                 <a href="<?php $this->options->profileUrl(); ?>"><?php $this->user->screenName(); ?></a>(已登录) <a href="<?php $this->options->logoutUrl(); ?>" class="icon-logout"></a>
                             <?php else: ?>
-                                你是访客 <a href="<?php $this->options->loginUrl(); ?>" class="icon-login"></a>
+                                <span id="noUserText">你是访客</span> <a href="<?php $this->options->loginUrl(); ?>" class="icon-login"></a>
                             <?php endif; ?>
                         </span>
                     </small>
                     <?php $comments->cancelReply('取消回复'); ?>
                 </h4>
                 <form method="post" action="<?php $this->commentUrl() ?>" id="comment-form" class="comment-form" role="form">
-                    <div class="author-infos guest"><img src="//gravatar.com/avatar/?d=mm&s=100" width="100" class="avatar"></div>
+                    <div class="author-infos guest" id="comment-form-avatar"><img src="<?php Typecho_Widget::widget('Widget_Options')->plugin('majors')->serverGravatar();?>/?d=mm&s=100" width="100" class="avatar"></div>
                     <div class="comment-form-main">
                         <div class="comment-textarea-wrapper rippleria-dark" data-rippleria>
                             <p class="comment-form-comment"><label for="comment">评论</label>
-                                <textarea id="textarea" name="text" onclick='document.getElementById("comment-form-do").style.display="block";' cols="45" rows="8" aria-required="true" required="required" placeholder="发泄你的牢骚,留下你的笔言!"><?php $this->remember('text',false); ?></textarea>
+                                <textarea style="" id="textarea" name="text"  <?php if(!$this->user->hasLogin()): ?> onclick='document.getElementById("comment-form-do").style.display="block";'<?php endif; ?>  cols="45" rows="8" aria-required="true" required="required" placeholder="发泄你的牢骚,留下你的笔言!"><?php $this->remember('text',false); ?></textarea>
                             </p>
                             <div class="comment-form-toolbar">
                               <?php if(isset($this->options->plugins['activated']['Smilies'])) Smilies_Plugin::output(); ?>
@@ -131,15 +116,19 @@ function threadedComments($comments, $options) {
 
                                 </p>
                                 <p class="comment-form-email parentCls">
-                                    <label for="email">邮箱</label> <span class="required">*</span>
+                                    <label for="email">邮箱</label> <?php if ($this->options->commentsRequireMail): ?><span class="required">*</span><?php endif; ?>
 
                                     <input type="email" name="mail" id="mail" placeholder="邮箱" value="" class="inputElem" <?php if ($this->options->commentsRequireMail): ?> required<?php endif; ?>>
                                 </p>
                                 <p class="comment-form-url">
-                                    <label for="url">网站</label>
+                                    <label for="url">网站</label> <?php if ($this->options->commentsRequireURL): ?><span class="required">*</span><?php endif; ?>
 
                                     <input type="url" name="url" id="url" placeholder="网站" value="" <?php if ($this->options->commentsRequireURL): ?> required<?php endif; ?>>
 
+                                </p>
+                                <p class="comment-form-fast">
+                                    <label for="url">输入QQ号快速评论</label>
+                                    <input placeholder="输入QQ号快速评论" id="qqNum" type="text">
                                 </p>
                             </div>
                         <?php endif; ?>
@@ -182,8 +171,7 @@ function threadedComments($comments, $options) {
             });
 
             iasCent.extension(new IASTriggerExtension({
-                text: '加载更多', //此选项为需要点击时的文字
-                html: '<div class="iasBtn"><a class="btn" href="javascript:;" role="button" data-no-instant>{text}</a></div>',
+                html: '<div class="iasBtn"><button class="mdui-textfield-icon mdui-btn mdui-btn-icon" role="button" data-no-instant><i class="mdui-icon material-icons">add</i></button></div>',
                 offset: 1 //load多少页后显示加载更多按钮
             }));
             iasCent.extension(new IASSpinnerExtension());    //加载时的图片
@@ -208,11 +196,45 @@ function threadedComments($comments, $options) {
             return null;
     }
     function addCommentInputValue(){
-        document.getElementById('author').value = getCommentCookie('<?php echo md5($this->request->getUrlPrefix()); ?>__typecho_remember_author');
-        document.getElementById('mail').value = getCommentCookie('<?php echo md5($this->request->getUrlPrefix()); ?>__typecho_remember_mail');
-        document.getElementById('url').value = getCommentCookie('<?php echo md5($this->request->getUrlPrefix()); ?>__typecho_remember_url');
+        var authorGet = getCommentCookie('<?php echo md5($this->request->getUrlPrefix()); ?>__typecho_remember_author');
+        var md5Get = '<?php echo md5($this->request->getUrlPrefix()); ?>';
+        document.getElementById('author').value = authorGet;
+        if(authorGet){
+            document.getElementById("noUserText").innerHTML= '你好,'+authorGet;
+        }
+        document.getElementById('mail').value = getCommentCookie(md5Get+'__typecho_remember_mail');
+        document.getElementById('url').value = getCommentCookie(md5Get+'__typecho_remember_url');
+        document.getElementById("comment-form-avatar").getElementsByTagName("img")[0].src = "<?php Typecho_Widget::widget('Widget_Options')->plugin('majors')->serverGravatar();?>/" + md5(getCommentCookie(md5Get+'__typecho_remember_mail')) + "?s=100&r=G&d=mm";
     }
+
+    $(document).on("input propertychange", "#qqNum", function(event) {
+        event.preventDefault();
+        var tval = $(this).val();
+        var mt = window.setTimeout(function() {
+            var nval = $("#qqNum").val();
+            if (nval.length > 0 && tval == $("#qqNum").val()) {
+                $.ajax({
+                    url: '<?php $this->options->index("obtain/quik"); ?>?qq=' + nval,
+                    dataType: 'jsonp',
+                    jsonpCallback: 'portraitCallBack',
+                    scriptCharset: "GBK",
+                    contentType: "text/html; charset=GBK",
+                    success: function(data) {
+                        console.log('portraitCallBack success:'+data[nval][6]+' and '+nval + '@qq.com');
+                        document.getElementById("comment-form-avatar").getElementsByTagName("img")[0].src = 'https://q2.qlogo.cn/headimg_dl?dst_uin='+nval+'&spec=100';
+                        $('#author').val(data[nval][6]);
+                        $('#mail').val(nval + '@qq.com');
+                        $('#url').val('https://user.qzone.qq.com/'+nval);
+                        document.getElementById("noUserText").innerHTML= '你好,'+data[nval][6];
+                    }
+                })
+            }
+        }, 400)
+    });
+
     addCommentInputValue();
+    <?php else:?>
+        document.getElementById("comment-form-avatar").getElementsByTagName("img")[0].src = "<?php Typecho_Widget::widget('Widget_Options')->plugin('majors')->serverGravatar();?>/" + md5("<?php $this->author->mail(); ?>") + "?s=100&r=G&d=mm";
     <?php endif; ?>
 
     (function () {

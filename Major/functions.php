@@ -17,35 +17,41 @@ function themeConfig($form) {
         array('gr' => _t('使用公认头像'),
             'ma' => _t('使用自定头像'),
         ),
-        'gr', _t('引用头像方式'), _t('默认禁止，公认头像是全球公认头像,使用的邮箱是管理员的邮箱.自定头像是你自己自定义的头像,在本页上方设置即可.'));
+        'gr', _t('引用头像方式'), _t('默认启用公认头像，公认头像是全球公认头像(Gravatar),使用的邮箱是管理员的邮箱.自定头像是你自己自定义的头像,在这里的下方设置即可.'));
     $form->addInput($useGravatar);
     
-    $masterImgUrl = new Typecho_Widget_Helper_Form_Element_Text('masterImgUrl', NULL, 'https://secure.gravatar.com/avatar/4e4559eceb7fbd4bca7925710592b1b9?s=70&r=G&d=mm', _t('自定头像'), _t('此处填入头像地址,用于主页头部显示,文章页时显示作者头像 '));
+    $masterImgUrl = new Typecho_Widget_Helper_Form_Element_Text('masterImgUrl', NULL, 'https://secure.gravatar.com/avatar/4e4559eceb7fbd4bca7925710592b1b9?s=70&r=G&d=mm', _t('自定头像'), _t('此处填入头像地址,用于mat头部显示,文章页时显示作者头像 '));
     $form->addInput($masterImgUrl);
 
-    $majorA0 = new Typecho_Widget_Helper_Form_Element_Text('majorA0', NULL, 'https://wx2.sinaimg.cn/mw1024/d60fbcc9ly1fgf6vgmprwj21ek11e7wh.jpg', _t('Mat 头图'), _t('此处填入头部大图路径,注意是超链接形式.'));
+    $majorA0 = new Typecho_Widget_Helper_Form_Element_Text('majorA0', NULL, 'https://wx4.sinaimg.cn/large/006U7bU2gy1fomyar7zqij31v20p0kct.jpg', _t('Mat 头图'), _t('此处填入mat头部大图路径,注意是超链接形式.'));
     $form->addInput($majorA0->addRule('xssCheck', _t('请不要在链接中使用特殊字符')));
+
+    $matAAble = new Typecho_Widget_Helper_Form_Element_Checkbox('matAAble',
+        array(
+            'A1' => _t('渲染夹层黑色'),
+            'A2' => _t('渲染夹层紫红色'),
+            'svgMountain' => _t('渲染夹层大山')
+        ),
+        array('A1','svgMountain'), _t('渲染Mat头图组件'));
+    $form->addInput($matAAble->multiMode());
 
     $rewardJson = new Typecho_Widget_Helper_Form_Element_Textarea('rewardJson', NULL, '{"name":"那他","uImg":"https://secure.gravatar.com/avatar/953de4234df55c1c973abb1c1588dc2e?s=100&r=G&d=mm","codeImg":"https://wx4.sinaimg.cn/large/006U7bU2gy1fl6dogepplj30u00u0gps.jpg"}', _t('打赏Json'), _t('此处填入打赏的Json。'));
     $form->addInput($rewardJson);
 
     $socialJson = new Typecho_Widget_Helper_Form_Element_Textarea('socialJson', NULL, '{s:"github",u:"https://github.com/kraity"},{s:"weibo",u:"https://weibo.com/Kraity"},{s:"weixin",u:"javascript:;"},{s:"mail",u:"https://krait.cn/t/mailme"}', _t('社交Json'), _t('此处填入社交的Json。'));
     $form->addInput($socialJson);
-  
-    $quoteLg = new Typecho_Widget_Helper_Form_Element_Text('quoteLg', NULL, '<p>理科男</p><i>高中生</i>', _t('应用语录'), _t('此处填入应用语录,它将在头部的博主下展示.'));
-    $form->addInput($quoteLg);
 
-    $leftright = new Typecho_Widget_Helper_Form_Element_Text('leftright', NULL, 'Copyright &copy; 2017 那他工作室 , 渝ICP备18001767号', _t('页脚版权'), _t('此处填入页脚版权,它用于在页脚显示的版权声明。如有需要,亲手动去修改文件。'));
+    $postright = new Typecho_Widget_Helper_Form_Element_Text('postright', NULL, '执行 CC BY NC SA 4.0 版权协议', _t('文章版权'), _t('此处填入文章版权,它用于在文章末尾显示的文章版权声明。'));
+    $form->addInput($postright);
+
+    $leftright = new Typecho_Widget_Helper_Form_Element_Text('leftright', NULL, 'Copyright &copy; 2017 那他工作室 , 渝ICP备18001767号', _t('页脚版权'), _t('此处填入页脚版权,它用于在页脚显示的版权声明。'));
     $form->addInput($leftright);
-
-    $logos = new Typecho_Widget_Helper_Form_Element_Text('logos', NULL, 'https://krait.cn/usr/Major/images/logo-white-green.png', _t('Logo路径'), _t('此处填入Logo路径,它是在头部显示的Logo图片,建议务必填写'));
-    $form->addInput($logos->addRule('xssCheck', _t('请不要在链接中使用特殊字符')));
 
     $useMathjax = new Typecho_Widget_Helper_Form_Element_Radio('useMathjax',
         array('able' => _t('启用'),
             'disable' => _t('禁止'),
         ),
-        'able', _t('Mathjax设置'), _t('默认禁止，启用则会对内容页进行数学公式渲染，仅支持 $公式$ 和 $$公式$$ '));
+        'able', _t('Mathjax设置'), _t('默认启用，启用则会对内容页进行数学公式渲染，仅支持 $公式$ 和 $$公式$$ '));
     $form->addInput($useMathjax);
 
     $useBlock = new Typecho_Widget_Helper_Form_Element_Checkbox('useBlock',

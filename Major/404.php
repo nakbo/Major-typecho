@@ -23,7 +23,7 @@
         .error h2 {
             color: #fff;
             text-align: center;
-            margin: 20px 0;
+            margin: 0 0 10px;
         }
         .error a,
         .error a:hover,
@@ -49,7 +49,7 @@
 <body>
 <div class="error">
     <h2>Error!</h2>
-    <p>你访问的页面,已经失效</p>
+    <p>你访问的页面,没有找到内容,已经失效</p>
     <a href="<?php $this->options->siteUrl(); ?>">返回首页</a>
 </div>
 </body>

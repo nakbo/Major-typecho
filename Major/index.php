@@ -4,7 +4,7 @@
  * 
  * @package Major
  * @author 权那他
- * @version 1.7
+ * @version 1.8
  * @link https://krait.cn
  */
 
@@ -20,16 +20,16 @@ $this->need('header.php');
     <div class="container">
         <div class="about-infor" id="about-infor">
             <?php Typecho_Widget::widget('Widget_Stat')->to($stat); ?>
-            <div class="about-x count">
-                <h3><span class="animateNum" data-animatetarget="<?php $stat->publishedPostsNum() ?>"></span></h3>
+            <div class="about-x count" id="sumPostClick">
+                <h3><span class="animateNum" id="sumPost" data-animatetarget="<?php $stat->publishedPostsNum() ?>"></span></h3>
                 <i></i>
             </div>
-            <div class="about-x count">
-                <h3><span class="animateNum" data-animatetarget="<?php $stat->publishedCommentsNum() ?>"></span></h3>
+            <div class="about-x count" id="sumComClick">
+                <h3><span class="animateNum" id="sumCom" data-animatetarget="<?php $stat->publishedCommentsNum() ?>"></span></h3>
                 <i></i>
             </div>
-            <div class="about-x count">
-                <h3><span class="animateNum" data-animatetarget="<?php majors_Plugin::sumViews(); ?>"></span></h3>
+            <div class="about-x count" id="sumViewClick">
+                <h3><span class="animateNum" id="sumView" data-animatetarget="<?php majors_Plugin::sumViews(); ?>"></span></h3>
                 <i></i>
             </div>
             <div class="about-x namets">Posts</div>
@@ -38,5 +38,18 @@ $this->need('header.php');
         </div>
     </div>
 </div>
+<script>
+    var $$ = mdui.JQ;
+    function infoSum(c,m) {
+        $$(c).on('click', function () {
+            mdui.snackbar({
+                message: m
+            });
+        });
+    }
+    infoSum('#sumPostClick','本站的文章数:'+$("#sumPost").data("animatetarget"));
+    infoSum('#sumComClick','本站的评论数:'+$("#sumCom").data("animatetarget"));
+    infoSum('#sumViewClick','本站的浏览数:'+$("#sumView").data("animatetarget"));
+</script>
 
 <?php $this->need('footer.php'); ?>

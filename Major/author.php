@@ -31,11 +31,4 @@
         <?php include 'res/articleList.php'; //映入统一文章列表 ?>
     </div>
 
-    <div class="major-4 object">
-        <div class="pageNav-in">
-            <?php $this->pageNav('&laquo;', '&raquo;'); ?>
-        </div>
-    </div>
-
-
 <?php $this->need('footer.php'); ?>
