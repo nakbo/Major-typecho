@@ -9,7 +9,7 @@ class Major {
      *
      * @var string
      */
-    public static $majorv = "1.7";
+    public static $majorv = "1.8";
 
     public static function personal(){
         $db = Typecho_Db::get();
@@ -23,9 +23,10 @@ class Major {
      */
     public static function getGravatar($mail,$s,$u,$t)
     {
+        $secure = Typecho_Widget::widget('Widget_Options')->plugin('majors')->serverGravatar;
         switch ($t){
             case 'gr':
-                $secure = "https://secure.gravatar.com/avatar/";
+                $secure = $secure."/";
                 $dt = "953de4234df55c1c973abb1c1588dc2e";
                 $s = "?s=".$s;
                 $r = "&r=G";
