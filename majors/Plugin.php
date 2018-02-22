@@ -21,6 +21,8 @@ class majors_Plugin implements Typecho_Plugin_Interface
 
 
         //Helper::addPanel(4, 'majors/manage.php', 'MAJOR 配置', 'MAJOR 主题配置', 'administrator');
+
+        Helper::addRoute("route_to_obtainQQ","/obtain/quik","majors_Action",'obtainQQ');
 			
 		//添加文章
         Typecho_Plugin::factory('admin/write-post.php')->option = array('majors_Plugin', 'formatsSelect'); 
@@ -33,9 +35,12 @@ class majors_Plugin implements Typecho_Plugin_Interface
         Typecho_Plugin::factory('index.php')->begin = array('majors_Plugin', 'Widget_index_begin');
         Typecho_Plugin::factory('Widget_Archive')->indexHandle = array('majors_Plugin', 'sticky');
 
-        //添加btn在编辑窗口 来自Jrotty
+        //添加btn在编辑窗口 来自Jrotty/hongweipeng
         Typecho_Plugin::factory('admin/write-post.php')->bottom = array('majors_Plugin', 'areas');
         Typecho_Plugin::factory('admin/write-page.php')->bottom = array('majors_Plugin', 'areas');
+
+        //添加LT21的Gravatar Server
+        Typecho_Plugin::factory('Widget_Abstract_Comments')->gravatar = array('majors_Plugin', 'reGravatar');
 
         return _t($msg);
     }
@@ -50,6 +55,9 @@ class majors_Plugin implements Typecho_Plugin_Interface
      */
     public static function deactivate(){
         //Helper::removePanel(4, 'majors/manage.php');
+
+        Helper::removeRoute("route_to_obtainQQ");
+
         $db = Typecho_Db::get();
         $prefix = $db->getPrefix();
         $config = Typecho_Widget::widget('Widget_Options')->plugin('majors');
@@ -93,6 +101,26 @@ class majors_Plugin implements Typecho_Plugin_Interface
           'sticky_cids', NULL, '',
           '置顶文章的 cid', '按照排序输入, 请以半角逗号或空格分隔 cid.');
         $form->addInput($sticky_cids);
+
+        /** Gravatar服务器 **/
+        $serverGravatar = new Typecho_Widget_Helper_Form_Element_Radio( 'serverGravatar',  array(
+            'https://gravatar.cat.net/avatar'        =>  'cat Gravatar 镜像 ( https://gravatar.cat.net )',
+            'https://cdn.v2ex.com/gravatar'   =>  'v2ex Gravatar 镜像 ( https://cdn.v2ex.com )',
+            'https://cn.gravatar.com/avatar'        =>  'Gravatar CN ( https://cn.gravatar.com )',
+            'https://secure.gravatar.com/avatar'   =>  'Gravatar Secure ( https://secure.gravatar.com )'),
+            'https://gravatar.cat.net/avatar', _t('Gravatar选择服务器'), _t('替换Gravatar头像服务器') );
+        $form->addInput($serverGravatar->multiMode());
+
+        /** Gravatar默认头像 **/
+        $defaultGravatar = new Typecho_Widget_Helper_Form_Element_Radio( 'defaultGravatar',  array(
+            'mm'            =>  '<img src=https://secure.gravatar.com/avatar/926f6ea036f9236ae1ceec566c2760ea?s=32&r=G&forcedefault=1&d=mm height="32" width="32" /> 神秘人物',
+            'blank'         =>  '<img src=https://secure.gravatar.com/avatar/926f6ea036f9236ae1ceec566c2760ea?s=32&r=G&forcedefault=1&d=blank height="32" width="32" /> 空白',
+            ''				=>  '<img src=https://secure.gravatar.com/avatar/926f6ea036f9236ae1ceec566c2760ea?s=32&r=G&forcedefault=1&d= height="32" width="32" /> Gravatar 标志',
+            'identicon'     =>  '<img src=https://secure.gravatar.com/avatar/926f6ea036f9236ae1ceec566c2760ea?s=32&r=G&forcedefault=1&d=identicon height="32" width="32" /> 抽象图形（自动生成）',
+            'wavatar'       =>  '<img src=https://secure.gravatar.com/avatar/926f6ea036f9236ae1ceec566c2760ea?s=32&r=G&forcedefault=1&d=wavatar height="32" width="32" /> Wavatar（自动生成）',
+            'monsterid'     =>  '<img src=https://secure.gravatar.com/avatar/926f6ea036f9236ae1ceec566c2760ea?s=32&r=G&forcedefault=1&d=monsterid height="32" width="32" /> 小怪物（自动生成）'),
+            'mm', _t('Gravatar选择默认头像'), _t('当评论者没有设置Gravatar头像时默认显示该头像') );
+        $form->addInput($defaultGravatar->multiMode());
 
 		$formats = new Typecho_Widget_Helper_Form_Element_Checkbox('format', array(
             'aside'=>'日志', 
@@ -556,6 +584,37 @@ class majors_Plugin implements Typecho_Plugin_Interface
         </script>
         <script type="text/javascript" src="https://cdn.bootcss.com/prettify/r298/prettify.js"></script>
         <?php
+    }
+
+    public static function reGravatar($size, $rating, $default, $comments)
+    {
+        $default = Typecho_Widget::widget('Widget_Options')->plugin('majors')->defaultGravatar;
+        $url = self::gravatarUrl($comments->mail, $size, $rating, $default, $comments->request->isSecure());
+        echo '<img class="avatar" src="' . $url . '" alt="' . $comments->author . '" width="' . $size . '" height="' . $size . '" />';
+    }
+
+    /**
+     * 获取gravatar头像地址 来自LT21的Gravatar Server
+     *
+     * @param string $mail
+     * @param int $size
+     * @param string $rating
+     * @param string $default
+     * @param bool $isSecure
+     * @return string
+     */
+    public static function gravatarUrl($mail, $size, $rating, $default, $isSecure = false)
+    {
+        //$url = $isSecure ? 'https://secure.gravatar.com' : Typecho_Widget::widget('Widget_Options')->plugin('majors')->serverGravatar;
+        $url = Typecho_Widget::widget('Widget_Options')->plugin('majors')->serverGravatar;
+        $url .= '/';
+        if (!empty($mail)) {
+            $url .= md5(strtolower(trim($mail)));
+        }
+        $url .= '?s=' . $size;
+        $url .= '&amp;r=' . $rating;
+        $url .= '&amp;d=' . $default;
+        return $url;
     }
     
 }
