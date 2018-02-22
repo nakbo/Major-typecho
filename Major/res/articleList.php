@@ -5,10 +5,9 @@
     <?php if ($this->have()): ?>
         <?php while($this->next()): $newFormat = majors_Plugin::getFormat();?>
 
-        <article class="majors-post <?php echo $newFormat;?>" <?php if ( $newFormat == 'aside'){
-            echo 'style="background: linear-gradient(rgb(238, 238, 238), rgba(255, 255, 255, 0.7), rgb(238, 238, 238)) center center, url('.$this->fields->thumbUrl.');"';
-        }?> itemscope itemtype="http://schema.org/BlogPosting" data-rippleria>
+        <article class="majors-post <?php echo $newFormat;?>  mdui-ripple" itemscope itemtype="http://schema.org/BlogPosting">
             <div class="majors-postContent">
+
                 <?php switch ($newFormat) : case 'aside':?>
                     <?php if($this->fields->thumbUrl) :?>
 
@@ -19,10 +18,9 @@
 
                 <?php break; case 'quote':?>
                     <svg class="icon quote-icon" aria-hidden="true">
-                        <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-xiaoxi1"></use>
+                        <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-xiaoxi2"></use>
                     </svg>
                 <?php break; endswitch;?>
-
 
                 <?php if($newFormat!=="quote"){?>
                 <h3 class="post-title" itemprop="name headline">
@@ -31,34 +29,34 @@
                 <?php }?>
 
                 <div class="post-contents major-text" itemprop="articleBody">
-                    <p><?php if($newFormat=="quote"){ $this->content(); }else{ $this->excerpt(143, '...');} ?></p>
+                    <?php if($newFormat=="quote"){ $this->content(); }else{ echo '<p>'; $this->excerpt(143, '...'); echo '<span class="read-more"><a href="'. $this->permalink.'">加载全文</a></span></p>';} ?>
                 </div>
                 <footer class="row major-text">
                     <div class="response-count">
-                        <div class="master-title-img">
-                            <img src="<?php echo Major::getGravatar($this->author->mail,"100",$this->options->masterImgUrl,$this->options->useGravatar); ?>">
-                        </div>
-                        <time datetime="<?php $this->date('c'); ?>" itemprop="datePublished"><?php $this->date('F j, Y');?></time>
-                        <span class="intro-eye"><?php majors_Plugin::theViews(); ?> view</span>
-                        <span class="read-more"><a href="<?php $this->permalink() ?>">加载全文</a></span>
+                        <time class="post-mated" datetime="<?php $this->date('c'); ?>" itemprop="datePublished"><?php $this->date('F j, Y');?></time>
+                        <span class="post-mated intro-eye">View <?php majors_Plugin::theViews(); ?></span>
                     </div>
                 </footer>
+
             </div>
         </article>
 
     <?php endwhile; ?>
     <?php else: ?>
-        <div>没有哦!#F5F4F4</div>
-
+        <div class="postError">
+            <h3>Error!</h3>
+            <p>没有找到内容,请换别的关键字进行检索!</p>
+            <a href="<?php $this->options->siteUrl(); ?>">返回首页</a>
+        </div>
         <script>
-            $.Toast("抱歉!", "没有找到与关键词相符合的结果.", "error", {
+            $.Toast("Error!", "没有找到内容,请换别的关键字进行检索!", "error", {
                 has_icon:true,
                 has_close_btn:true,
                 fullscreen:false,
                 timeout:0,
                 sticky:false,
                 has_progress:true,
-                rtl:false,
+                rtl:false
             });
 
         </script>
@@ -82,8 +80,7 @@
             });
 
             iasArt.extension(new IASTriggerExtension({
-                text: '加载更多', //此选项为需要点击时的文字
-                html: '<div class="iasBtn"><a class="btn" href="javascript:;" role="button" data-no-instant>{text}</a></div>',
+                html: '<div class="iasBtn"><button class="mdui-textfield-icon mdui-btn mdui-btn-icon" role="button" data-no-instant><i class="mdui-icon material-icons">add</i></button></div>',
                 offset: 1 //load多少页后显示加载更多按钮
             }));
             iasArt.extension(new IASSpinnerExtension());    //加载时的图片
