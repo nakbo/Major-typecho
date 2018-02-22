@@ -13,9 +13,7 @@
                     </div>
                 </div>
                 <div class="reward-pt">
-                    <p class="reward-paybox">
-                        <span class="reward-paywar">打赏无悔，概不退款</span>
-                    </p>
+                    <p class="reward-paybox"><span class="reward-paywar">打赏无悔，概不退款</span></p>
                 </div>
             </div>
         </div>
