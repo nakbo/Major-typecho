@@ -4,14 +4,14 @@ if (!defined('__TYPECHO_ROOT_DIR__')) exit;?>
 <html class="no-js">
 <head>
     <meta charset="<?php $this->options->charset(); ?>">
-    <meta name="author" content="<?php echo Major::personal()[screenName]; ?>,<?php echo Major::personal()[mail]; ?>">
+    <meta name="author" content="<?php echo Major::personal()['screenName']; ?>,<?php echo Major::personal()['mail']; ?>">
     <meta name="renderer" content="webkit">
     <meta http-equiv="content-language" content="zh-CN" />
     <meta http-equiv="x-dns-prefetch-control" content="on">
     <link rel="icon" href="/favicon.ico">
     <link rel="dns-prefetch" href="//cdn.bootcss.com" />
     <link rel="dns-prefetch" href="//secure.gravatar.com" />
-    <link rel="dns-prefetch" href="<?php Typecho_Widget::widget('Widget_Options')->plugin('majors')->serverGravatar();?>/" />
+    <link rel="dns-prefetch" href="<?php Typecho_Widget::widget('Widget_Options')->plugin('majors')->serverGravatar();?>" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php $this->archiveTitle(array(
             'category'  =>  _t('%s '),
@@ -24,15 +24,20 @@ if (!defined('__TYPECHO_ROOT_DIR__')) exit;?>
     <link rel="stylesheet" href="//cdn.bootcss.com/mdui/0.4.0/css/mdui.min.css">
     <script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
     <script type="text/javascript" src="//cdn.bootcss.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-    <link href="<?php $this->options->themeUrl("style.css?v="); echo Major::$majorv; ?>" rel="stylesheet" />
+    <link href="<?php $this->options->themeUrl("style.css?v="); echo Major::$Major[2]; ?>" rel="stylesheet" />
     <link href="//cdn.bootcss.com/simple-line-icons/2.4.1/css/simple-line-icons.css" rel="stylesheet">
-    <script src="<?php $this->options->themeUrl("js/jquery-ias.js?v="); echo Major::$majorv; ?>" data-no-instant></script>
+    <link href="<?php $this->options->socialJsonUrl(); ?>" rel="stylesheet">
+    <script src="<?php $this->options->themeUrl("js/jquery-ias.js?v="); echo Major::$Major[2]; ?>" data-no-instant></script>
     <script src="//cdn.bootcss.com/modernizr/2.8.3/modernizr.min.js"></script>
-    <script src="<?php $this->options->themeUrl("js/iconfont.js?v="); echo Major::$majorv; ?>" data-no-instant></script>
     <script src="//cdn.bootcss.com/mdui/0.4.0/js/mdui.min.js"></script>
     <script src="<?php $this->options->themeUrl("js/toast.script.js"); ?>"></script>
     <script type="text/javascript" src="<?php $this->options->themeUrl("js/venobox.js"); ?>"></script>
     <script src="//cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.min.js"></script>
+    <script type="text/javascript">
+        window.bzName = "<?php echo Major::personal()['screenName']; ?>";
+        window.bzRoal = "BLOGGER";
+        window.bzMail = "<?php echo Major::personal()['mail']; ?>";
+    </script>
     <!--[if lt IE 9]>
     <script src="//cdn.bootcss.com/html5shiv/r29/html5.min.js"></script>
     <script src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
@@ -52,10 +57,10 @@ if (!defined('__TYPECHO_ROOT_DIR__')) exit;?>
             <div class="major-A0" id="major-A0" data-mata0="<?php $this->options->majorA0(); ?>"></div>
             <div class="major-A1"></div>
             <div class="major-A2"></div>
-            <svg version="1.1" viewBox="0 0 100 100" preserveAspectRatio="none" class="major-svgMountain">
-                <path d="M0 100 L3 50 L50 100 L0 100"></path>
-                <path d="M1 100 L12 0 L30 100 L0 100"></path>
-                <path d="M0 100 L30 50 L40 100 L0 100"></path>
+            <svg version="1.1" viewBox="0 0 100 100" preserveAspectRatio="none" class="major-svgMountain svgMountainAble">
+                <path d="M50 100 L97 50 L100 100 L0 100"></path>
+                <path d="M70 100 L88 0 L99 100 L0 100"></path>
+                <path d="M60 100 L70 50 L100 100 L0 100"></path>
             </svg>
             <script>
                 var AAble = eval('<?php echo json_encode($this->options->matAAble);?>');
@@ -68,12 +73,12 @@ if (!defined('__TYPECHO_ROOT_DIR__')) exit;?>
                 <div class="major-right">
                     <div class="major-master">
                         <div class="master-author">
-                            <img id="major-bloggerAvatar" src="<?php echo Major::getGravatar(Major::personal()[mail],"100",$this->options->masterImgUrl,$this->options->useGravatar); ?>">
+                            <img id="major-bloggerAvatar" src="<?php echo Major::getGravatar(Major::personal()['mail'],"100",$this->options->masterImgUrl,$this->options->useGravatar); ?>">
                             <span class="master-author-note"></span>
                         </div>
                         <div class="master-info">
                             <div class="info-box">
-                                <p class="major-bloggerName info-name" id="major-bloggerName"><?php echo Major::personal()[screenName]; ?></p>
+                                <p class="major-bloggerName info-name" id="major-bloggerName"><?php echo Major::personal()['screenName']; ?></p>
                                 <p class="major-bloggerRoal user-roal" id="major-bloggerRoal">BLOGGER</p>
                             </div>
                         </div>
@@ -86,10 +91,18 @@ if (!defined('__TYPECHO_ROOT_DIR__')) exit;?>
                         <script type="text/javascript">
                             function socialJsonTr() {
                                 var socialJson=[<?php $this->options->socialJson(); ?>];var social = "";
-                                for(var o in socialJson){social=social+'<li class=\"social_'+socialJson[o].s+'\" data-no-instant><button class="mdui-textfield-icon mdui-btn mdui-btn-icon"><a href=\"'+socialJson[o].u+'\" class=\"sola_'+socialJson[o].s+'\"><svg class=\"icon\" aria-hidden=\"true\"><use xmlns:xlink=\"http://www.w3.org/1999/xlink\" xlink:href=\"#icon-'+socialJson[o].s+'\"></use></svg></a></button></li>';}
+                                for(var o in socialJson){social=social+'<li class=\"social_'+socialJson[o].s+'\" data-no-instant><button class="mdui-textfield-icon mdui-btn mdui-btn-icon"><a href=\"'+socialJson[o].u+'\" class=\"sola_'+socialJson[o].s+'\"><i class=\"icon iconfont icon-'+socialJson[o].s+'\"></i></a></button></li>';}
                                 document.getElementById("social-nav-Tr").innerHTML=social;
                             }
                             socialJsonTr();
+                            document.getElementsByClassName("sola_weibo")[0].setAttribute("data-vbtype","iframe");
+                            $(document).ready(function(){
+                                $('.sola_weibo').venobox({
+                                    framewidth: '90%',
+                                    frameheight: '100vh',
+                                    border: '0'
+                                });
+                            });
                         </script>
                     </div>
                 </div>
@@ -101,9 +114,7 @@ if (!defined('__TYPECHO_ROOT_DIR__')) exit;?>
                     <ul class="maj-ul" role="navigation">
                         <li>
                             <button id="maj-moreUl">
-                                <svg class="icon maj-moreIcon" aria-hidden="true">
-                                    <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-shixincaidan"></use>
-                                </svg>
+                                <i class="mdui-icon material-icons">&#xe8eb;</i>
                             </button>
                         </li>
 
@@ -153,10 +164,9 @@ if (!defined('__TYPECHO_ROOT_DIR__')) exit;?>
 <div class="major-mdui-drawer">
     <div class="mdui-drawer mdui-drawer-close mdui-shadow-1" id="drawer">
         <ul class="mdui-list">
-            <li class="mdui-card-header">
-                <img class="mdui-card-header-avatar" id="mdui-card-header-avatar" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"/>
-                <div class="mdui-card-header-title" id="mdui-card-header-title"></div>
-                <div class="mdui-card-header-subtitle" id="mdui-card-header-subtitle"></div>
+            <li class="mdui-list-item mdui-ripple drawer-master">
+                <i class="mdui-list-item-icon mdui-icon material-icons">bubble_chart</i>
+                <div class="mdui-list-item-content" id="drawer-masterName"></div>
             </li>
             <li class="mdui-list-item mdui-ripple" onclick="javascript:linkGo('<?php $this->options->siteUrl(); ?>')">
                 <i class="mdui-list-item-icon mdui-icon material-icons">home</i>
@@ -193,8 +203,7 @@ if (!defined('__TYPECHO_ROOT_DIR__')) exit;?>
         </ul>
     </div>
     <script>
-        function cardLoad() {var bloggerName=$("#major-bloggerName").html();var bloggerAvatar=$("#major-bloggerAvatar").attr("src");var bloggerRoal=$("#major-bloggerRoal").html();$("#mdui-card-header-title").html(bloggerName);$("#mdui-card-header-avatar").attr("src",bloggerAvatar);$("#mdui-card-header-subtitle").html(bloggerRoal);}
-        cardLoad();
+        document.getElementById("drawer-masterName").innerHTML= window.bzName;
         var inst = new mdui.Drawer('#drawer',{overlay: true});
         $("#toggle").click(function(){inst.toggle();});
         function linkGo(l){window.location.href=l;}
@@ -204,9 +213,32 @@ if (!defined('__TYPECHO_ROOT_DIR__')) exit;?>
 
 <div class="major-tools">
     <div class="container">
-        <button class="mdui-textfield-icon mdui-btn mdui-float-right mdui-btn-icon maj-share" id="maj-share">
-            <i class="mdui-icon material-icons">share</i>
-        </button>
+        <ul class="tools-box mdui-float-right">
+            <li>
+                <button class="mdui-textfield-icon mdui-btn mdui-btn-icon maj-share" id="maj-share">
+                    <i class="mdui-icon material-icons">share</i>
+                </button>
+            </li>
+            <li>
+                <a href="#rewards" class="mdui-textfield-icon mdui-btn mdui-btn-icon maj-share" id="rewards-me" data-vbtype="inline" data-no-instant>
+                    <i class="mdui-icon material-icons">attach_money</i>
+                </a>
+            </li>
+        </ul>
+        <script type="text/javascript">
+            $(document).ready(function(){
+                $('#rewards-me').venobox({
+                    framewidth: '380px',
+                    frameheight: '100%',
+                    border: '0'
+                });
+            });
+        </script>
+        <style>
+            .tools-box li{
+                display:inline;
+            }
+        </style>
         <div id="maj-share-post" style="display: none">
             <ul class="maj-share-post">
                 <li class="mdui-list-item" onclick="javascript:shareGo('weibo')"><a href="javascript:;" class="mdui-ripple">分享到 新浪微博</a></li>
@@ -217,10 +249,9 @@ if (!defined('__TYPECHO_ROOT_DIR__')) exit;?>
                 <li class="mdui-list-item" onclick="javascript:shareGo('google')"><a href="javascript:;" class="mdui-ripple">分享到 Google+</a></li>
             </ul>
         </div>
-
         <script>
             function shareGo(g) {
-                var linkShare=window.location.href;var titleShare=document.title;var screenName=$("#major-bloggerName").html();var siteUrl=document.location.protocol+"//"+document.domain;var l=linkShare;
+                var linkShare=window.location.href;var titleShare=document.title;var screenName=window.bzName;var siteUrl=document.location.protocol+"//"+document.domain;var l=linkShare;
                 switch(g){case"weibo":l="http://service.weibo.com/share/share.php?appkey=&title="+titleShare+"&url="+linkShare+"&pic=&searchPic=false&style=simple";break;case"qzone":l="http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url="+linkShare+"&title="+titleShare+"&site="+siteUrl;break;case"facebook":l="https://www.facebook.com/sharer/sharer.php?u="+linkShare;break;case"telegram":l="https://telegram.me/share/url?url="+linkShare+"&text="+titleShare;break;case"twitter":l="https://twitter.com/intent/tweet?text="+titleShare+"&url="+linkShare+"&via="+screenName;break;case"google":l="https://plus.google.com/share?url="+linkShare;break}
                 window.open(l);
             }

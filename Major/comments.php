@@ -17,6 +17,16 @@ function threadedComments($comments, $options) {
     } else {
         $author = $comments->author;
     }
+
+    $secure = Typecho_Widget::widget('Widget_Options')->plugin('majors')->serverGravatar;
+    $s = "100";
+    $secure = $secure."/";
+    $s = "?s=".$s;
+    $r = "&r=G";
+    $d = "&d=";
+    $qqUrl="https://api.krait.cn/api/headimg_dl/".$comments->mail;
+    $avatar= $secure.md5($comments->mail).$s.$r.$d.$qqUrl;
+
     ?>
 
     <li id="li-<?php $comments->theId(); ?>" class="comment-list-item comment even thread-even depth-<?php echo $depth ?> comment-body<?php
@@ -29,10 +39,10 @@ function threadedComments($comments, $options) {
     $comments->alt(' comment-odd', ' comment-even');
     ?>">
         <article id="<?php $comments->theId(); ?>" class="comment-body">
-            <footer class="comment-meta" data-toggle="tooltip"
-                    data-placement="left" title="[<?php echo $comments->date();?>][<?php echo "IP:".$comments->ip;?>]">
+            <footer class="comment-meta">
                 <div class="comment-author vcard">
-                    <?php $comments->gravatar(40); ?>
+                    <img class="avatar" src="<?php echo $avatar; ?>" alt="<?php echo $comments->author; ?>" width="40" height="40">
+                    <?php /*$comments->gravatar(40);*/ ?>
                     <b class="fn <?php echo $commentClass; ?> " itemprop="author">
                         <?php echo $author; ?>
                     </b>
@@ -55,7 +65,7 @@ function threadedComments($comments, $options) {
             <!-- .comment-content -->
 
             <div class="comment-actions">
-                <?php $comments->reply('回复'); ?>
+                <?php $comments->reply('<i class="icon-action-undo icons" style="margin-right:3px;"></i>回复'); ?>
                 <!-- .comment-actions -->
             </div>
         </article>
@@ -70,11 +80,7 @@ function threadedComments($comments, $options) {
 
 <div id="comments" data-no-instant>
     <div class="comment-respond">
-    <?php $this->comments()->to($comments); ?>
-
-        <div class="comments-title">
-            <span class="comment-num"><?php $this->commentsNum(_t('暂无评论'), _t('仅有 1 条评论'), _t('已有 %d 条评论')); ?></span>
-        </div>
+    <?php $this->comments()->to($comments); /*$this->commentsNum(_t('暂无评论'), _t('仅有 1 条评论'), _t('已有 %d 条评论'));*/ ?>
 
         <?php if($this->allow('comment')): ?>
             <div id="<?php $this->respondId(); ?>" class="respond">
@@ -97,7 +103,7 @@ function threadedComments($comments, $options) {
                 <form method="post" action="<?php $this->commentUrl() ?>" id="comment-form" class="comment-form" role="form">
                     <div class="author-infos guest" id="comment-form-avatar"><img src="<?php Typecho_Widget::widget('Widget_Options')->plugin('majors')->serverGravatar();?>/?d=mm&s=100" width="100" class="avatar"></div>
                     <div class="comment-form-main">
-                        <div class="comment-textarea-wrapper rippleria-dark" data-rippleria>
+                        <div class="comment-textarea-wrapper mdui-ripple">
                             <p class="comment-form-comment"><label for="comment">评论</label>
                                 <textarea style="" id="textarea" name="text"  <?php if(!$this->user->hasLogin()): ?> onclick='document.getElementById("comment-form-do").style.display="block";'<?php endif; ?>  cols="45" rows="8" aria-required="true" required="required" placeholder="发泄你的牢骚,留下你的笔言!"><?php $this->remember('text',false); ?></textarea>
                             </p>
@@ -115,7 +121,7 @@ function threadedComments($comments, $options) {
                                     <input type="text" name="author" maxlength="12" id="author" placeholder="昵称" value="" required>
 
                                 </p>
-                                <p class="comment-form-email parentCls">
+                                <p class="comment-form-email">
                                     <label for="email">邮箱</label> <?php if ($this->options->commentsRequireMail): ?><span class="required">*</span><?php endif; ?>
 
                                     <input type="email" name="mail" id="mail" placeholder="邮箱" value="" class="inputElem" <?php if ($this->options->commentsRequireMail): ?> required<?php endif; ?>>
@@ -134,13 +140,18 @@ function threadedComments($comments, $options) {
                         <?php endif; ?>
 
                         <p class="form-submit">
-                            <button name="submit" type="submit" id="submit" class="submit"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-send"></use></svg></button>
+                            <button name="submit" type="submit" id="submit" class="submit"><i class="icon iconfont icon-send"></i></button>
                             <?php $security = $this->widget('Widget_Security'); ?>
                             <input type="hidden" name="_" value="<?php echo $security->getToken($this->request->getReferer())?>">
                         </p>
                     </div>
                     <div class="comment-form-extra">
-
+                        <div class="comment-receiveMail">
+                            <label class="mdui-checkbox">
+                                <input type="checkbox" name="receiveMail" id="receiveMail" value="yes" checked />
+                                <i class="mdui-checkbox-icon"></i>别人回复时接收邮件提醒
+                            </label>
+                        </div>
                     </div>
                 </form>
             </div>
@@ -171,11 +182,11 @@ function threadedComments($comments, $options) {
             });
 
             iasCent.extension(new IASTriggerExtension({
-                html: '<div class="iasBtn"><button class="mdui-textfield-icon mdui-btn mdui-btn-icon" role="button" data-no-instant><i class="mdui-icon material-icons">add</i></button></div>',
+                html: '<div class="iasBtn mdui-ripple"><span>下一页</span><button class="mdui-textfield-icon mdui-btn mdui-btn-icon" role="button" data-no-instant><i class="mdui-icon material-icons">&#xe913;</i></button></div>',
                 offset: 1 //load多少页后显示加载更多按钮
             }));
             iasCent.extension(new IASSpinnerExtension());    //加载时的图片
-            iasCent.extension(new IASNoneLeftExtension({text: "已经没有更多评论了"}));    //到底后显示的文字
+            iasCent.extension(new IASNoneLeftExtension({text: '<span>深入低了</span><i class="mdui-icon material-icons">&#xe3f1;</i>'}));    //到底后显示的文字
 
             iasCent.on('rendered', function(items) {
                 liveTimeGo();
@@ -210,11 +221,11 @@ function threadedComments($comments, $options) {
     $(document).on("input propertychange", "#qqNum", function(event) {
         event.preventDefault();
         var tval = $(this).val();
-        var mt = window.setTimeout(function() {
+        var qqNum = window.setTimeout(function() {
             var nval = $("#qqNum").val();
             if (nval.length > 0 && tval == $("#qqNum").val()) {
                 $.ajax({
-                    url: '<?php $this->options->index("obtain/quik"); ?>?qq=' + nval,
+                    url: 'https://api.krait.cn/api/?it=fcg_bin&qq=' + nval,
                     dataType: 'jsonp',
                     jsonpCallback: 'portraitCallBack',
                     scriptCharset: "GBK",
@@ -228,6 +239,18 @@ function threadedComments($comments, $options) {
                         document.getElementById("noUserText").innerHTML= '你好,'+data[nval][6];
                     }
                 })
+            }
+        }, 400)
+    });
+
+    $(document).on("input propertychange", "#mail", function(event) {
+        event.preventDefault();
+        var tval = $(this).val();
+        var mail = window.setTimeout(function() {
+            var nval = $("#mail").val();
+            if (nval.length > 0 && tval == $("#mail").val()) {
+                document.getElementById("noUserText").innerHTML= '你好,'+$("#author").val();
+                document.getElementById("comment-form-avatar").getElementsByTagName("img")[0].src = "<?php Typecho_Widget::widget('Widget_Options')->plugin('majors')->serverGravatar();?>/" + md5($("#mail").val()) + "?s=100&r=G&d=mm";
             }
         }, 400)
     });

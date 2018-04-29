@@ -1,4 +1,20 @@
-<?php if (!defined('__TYPECHO_ROOT_DIR__')) exit;?>
+<?php if (!defined('__TYPECHO_ROOT_DIR__')) exit;
+
+$newFormat = majors_Plugin::getFormat();
+
+switch ($newFormat){
+    case 'status':
+        return;
+        break;
+    case 'chat':
+        return;
+        break;
+    case 'quote':
+        return;
+        break;
+    default:
+}
+?>
 
 <?php $this->need('header.php'); ?>
 
@@ -7,17 +23,17 @@
             <article class="major-article article-shadow content-wrap" itemscope itemtype="http://schema.org/BlogPosting">
                 <div class="post-header">
                     <div class="article-title">
-                        <h3><?php $this->sticky(); $this->title(); ?></h3>
+                        <h2><?php $this->sticky(); $this->title(); ?></h2>
                     </div>
                 </div>
                 <div class="post-content major-text" data-wow-offset="10" itemprop="articleBody">
                     <?php $this->content(); ?>
                 </div>
-
-                <?php include 'res/PostFooter.php'; ?>
             </article>
         </div>
     </div>
+
+<?php //include 'res/PostFooter.php'; ?>
 
     <nav class="toc" id="toc">
         <ul id="posTitles"></ul>

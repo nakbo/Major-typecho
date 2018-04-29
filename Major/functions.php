@@ -23,7 +23,7 @@ function themeConfig($form) {
     $masterImgUrl = new Typecho_Widget_Helper_Form_Element_Text('masterImgUrl', NULL, 'https://secure.gravatar.com/avatar/4e4559eceb7fbd4bca7925710592b1b9?s=70&r=G&d=mm', _t('自定头像'), _t('此处填入头像地址,用于mat头部显示,文章页时显示作者头像 '));
     $form->addInput($masterImgUrl);
 
-    $majorA0 = new Typecho_Widget_Helper_Form_Element_Text('majorA0', NULL, 'https://wx4.sinaimg.cn/large/006U7bU2gy1fomyar7zqij31v20p0kct.jpg', _t('Mat 头图'), _t('此处填入mat头部大图路径,注意是超链接形式.'));
+    $majorA0 = new Typecho_Widget_Helper_Form_Element_Text('majorA0', NULL, 'https://wx4.sinaimg.cn/large/006U7bU2gy1fomyar7zqij31v20p0kct.jpg', _t('Matic 头图'), _t('此处填入matic头部大图路径,注意是超链接形式.'));
     $form->addInput($majorA0->addRule('xssCheck', _t('请不要在链接中使用特殊字符')));
 
     $matAAble = new Typecho_Widget_Helper_Form_Element_Checkbox('matAAble',
@@ -32,19 +32,22 @@ function themeConfig($form) {
             'A2' => _t('渲染夹层紫红色'),
             'svgMountain' => _t('渲染夹层大山')
         ),
-        array('A1','svgMountain'), _t('渲染Mat头图组件'));
+        array('A1','svgMountain'), _t('Matic头图渲染组件'));
     $form->addInput($matAAble->multiMode());
 
     $rewardJson = new Typecho_Widget_Helper_Form_Element_Textarea('rewardJson', NULL, '{"name":"那他","uImg":"https://secure.gravatar.com/avatar/953de4234df55c1c973abb1c1588dc2e?s=100&r=G&d=mm","codeImg":"https://wx4.sinaimg.cn/large/006U7bU2gy1fl6dogepplj30u00u0gps.jpg"}', _t('打赏Json'), _t('此处填入打赏的Json。'));
     $form->addInput($rewardJson);
 
-    $socialJson = new Typecho_Widget_Helper_Form_Element_Textarea('socialJson', NULL, '{s:"github",u:"https://github.com/kraity"},{s:"weibo",u:"https://weibo.com/Kraity"},{s:"weixin",u:"javascript:;"},{s:"mail",u:"https://krait.cn/t/mailme"}', _t('社交Json'), _t('此处填入社交的Json。'));
+    $socialJsonUrl = new Typecho_Widget_Helper_Form_Element_Text('socialJsonUrl', NULL, '//at.alicdn.com/t/font_569951_69c7busrd3tk2o6r.css', _t('社交Json Font class'), _t('此处填入阿里巴巴矢量图标库中你的项目中Font class的在线链接.'));
+    $form->addInput($socialJsonUrl);
+
+    $socialJson = new Typecho_Widget_Helper_Form_Element_Textarea('socialJson', NULL, '{s:"github",u:"https://github.com/kraity"},{s:"mayun",u:"https://gitee.com/kraity"},{s:"weibo",u:"https://weibo.com/Kraity"},{s:"weixin",u:"javascript:;"},{s:"mail",u:"https://krait.cn/t/mailme"}', _t('社交Json'), _t('此处填入社交的Json。'));
     $form->addInput($socialJson);
 
-    $postright = new Typecho_Widget_Helper_Form_Element_Text('postright', NULL, '执行 CC BY NC SA 4.0 版权协议', _t('文章版权'), _t('此处填入文章版权,它用于在文章末尾显示的文章版权声明。'));
-    $form->addInput($postright);
+    $viceLeftright = new Typecho_Widget_Helper_Form_Element_Text('viceLeftright', NULL, '执行 CC BY NC SA 4.0 版权协议', _t('副页脚版权'), _t('此处填入页脚版权,它用于在页脚显示的版权声明,第一行'));
+    $form->addInput($viceLeftright);
 
-    $leftright = new Typecho_Widget_Helper_Form_Element_Text('leftright', NULL, 'Copyright &copy; 2017 那他工作室 , 渝ICP备18001767号', _t('页脚版权'), _t('此处填入页脚版权,它用于在页脚显示的版权声明。'));
+    $leftright = new Typecho_Widget_Helper_Form_Element_Text('leftright', NULL, 'Copyright &copy; 2017 那系工作室 , 渝ICP备18001767号', _t('页脚版权'), _t('此处填入页脚版权,它用于在页脚显示的版权声明,第二行'));
     $form->addInput($leftright);
 
     $useMathjax = new Typecho_Widget_Helper_Form_Element_Radio('useMathjax',
