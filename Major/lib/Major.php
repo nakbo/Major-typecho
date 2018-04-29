@@ -9,11 +9,17 @@ class Major {
      *
      * @var string
      */
-    public static $majorv = "1.8";
+    public static $Major = array("Krait","Major","1.9","权那他","1525014000");
 
+
+    /**
+     * Major personal
+     *
+     * @var string
+     */
     public static function personal(){
         $db = Typecho_Db::get();
-        $query= $db->select('uid','name','screenName','mail','url','group')->from('table.users')->where('uid = ?', 1);
+        $query= $db->select("uid","name","screenName","mail","url","group")->from('table.users')->where('uid = ?', 1);
         $result = $db->fetchAll($query);
         return $result[0];
     }
@@ -27,11 +33,11 @@ class Major {
         switch ($t){
             case 'gr':
                 $secure = $secure."/";
-                $dt = "953de4234df55c1c973abb1c1588dc2e";
                 $s = "?s=".$s;
                 $r = "&r=G";
-                $d = "&d=";;
-                return $gr = $secure.md5($mail).$s.$r.$d.$secure.$dt.$s.$r;
+                $d = "&d=";
+                $qqUrl="https://api.krait.cn/api/headimg_dl/".$mail;
+                return $gr = $secure.md5($mail).$s.$r.$d.$qqUrl;
 
                 break;
             case 'ma':
@@ -65,6 +71,14 @@ class Major {
                 //日志 aside
                 echo 'image';
                 break;
+            case "chat" :
+                //聊天 chat
+                echo 'chat';
+                break;
+            case "status" :
+                //状态 status
+                echo 'status';
+                break;
             case "gallery" :
                 //相册 gallery
                 echo 'gallery';
@@ -88,11 +102,15 @@ class Major {
      */
     public static function getVersion()
     {
-        $newVer = file_get_contents("https://krait.cn/majorv.txt");
-        if ($newVer > self::$majorv){
-            echo '<div class="majorPv">你正在使用 <strong>'.self::$majorv.'</strong> 版本的新Major，最新版本为 <strong style="color:red;">'.$newVer.'</strong><a href="https://krait.cn/major.html"><button type="submit" class="btn btn-warn">前往更新</button></a></div>';
+        $Major_json = file_get_contents("https://api.krait.cn/version/Major.json");
+        $Major_jsonArr = json_decode($Major_json);
+        $maj_date = $Major_jsonArr->Major[0]->d;
+        $maj_ver = $Major_jsonArr->Major[0]->v;
+
+        if($maj_date > self::$Major[4]){
+            echo '<div class="majorPv">你正在使用 <strong>'.self::$Major[2].'</strong> 版本，'.date("Y-m-d",$maj_date).'更新最新版本为 <strong style="color:red;">'.$maj_ver.'</strong><a href="https://krait.cn/major.html"><button type="submit" class="btn btn-warn">前往更新</button></a></div>';
         }else {
-            echo '<div class="majorPv">你正在使用最新版的新Major '.self::$majorv.' made by <a href="https://krait.cn">那他</a></div>';
+            echo '<div class="majorPv">你正在使用最新版 '.self::$Major[2];
         }
 
         $str=<<<EOT
