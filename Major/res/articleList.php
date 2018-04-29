@@ -16,27 +16,61 @@
                         </a>
                     <?php endif;?>
 
-                <?php break; case 'quote':?>
-                    <svg class="icon quote-icon" aria-hidden="true">
-                        <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-xiaoxi2"></use>
-                    </svg>
+                <?php break; case 'status':?>
+                    <i class="status-icon icon iconfont icon-xiaoxi2"></i>
                 <?php break; endswitch;?>
 
-                <?php if($newFormat!=="quote"){?>
+                <?php switch ($newFormat){
+                    case 'status':
+                        break;
+                    case 'chat':?>
+                        <div class="major-chats mdui-card-header">
+                            <img class="mdui-card-header-avatar" src="<?php echo Major::getGravatar($this->author->mail,"100",$this->options->masterImgUrl,$this->options->useGravatar); ?>"/>
+                            <div class="chats"><?php $this->content(); ?></div>
+                        </div>
+                    <?php break;
+                    case 'quote':?>
+
+                        <?php break;
+                    default: ?>
                 <h3 class="post-title" itemprop="name headline">
                     <a itemtype="url" href="<?php $this->permalink() ?>"><?php $this->sticky(); $this->title(); ?></a>
                 </h3>
-                <?php }?>
+                <?php } ?>
 
                 <div class="post-contents major-text" itemprop="articleBody">
-                    <?php if($newFormat=="quote"){ $this->content(); }else{ echo '<p>'; $this->excerpt(143, '...'); echo '<span class="read-more"><a href="'. $this->permalink.'">加载全文</a></span></p>';} ?>
+                    <?php switch ($newFormat) :
+                        case 'status':
+                            $this->content();
+                            break;
+                        case 'chat':
+                            //$this->content();
+                            break;
+
+                        case 'quote':
+                            //$this->content();
+                            break;
+                        default:
+                            echo '<p>'; $this->excerpt(143, '...');
+                            echo '</p>';
+                    endswitch; ?>
                 </div>
+
+                <?php switch ($newFormat){
+                    case 'status':
+                        break;
+                    case 'chat':
+                        break;
+                    case 'quote':
+                        break;
+                    default: ?>
                 <footer class="row major-text">
                     <div class="response-count">
-                        <time class="post-mated" datetime="<?php $this->date('c'); ?>" itemprop="datePublished"><?php $this->date('F j, Y');?></time>
-                        <span class="post-mated intro-eye">View <?php majors_Plugin::theViews(); ?></span>
+                        <time class="post-mated" datetime="<?php $this->date('c'); ?>" itemprop="datePublished">发布于 <?php $this->date();?></time>
+                        <span class="post-mated intro-eye">&nbsp;&nbsp;<?php majors_Plugin::theViews(); ?> 次围观</span>
                     </div>
                 </footer>
+                <?php }?>
 
             </div>
         </article>
@@ -80,11 +114,11 @@
             });
 
             iasArt.extension(new IASTriggerExtension({
-                html: '<div class="iasBtn"><button class="mdui-textfield-icon mdui-btn mdui-btn-icon" role="button" data-no-instant><i class="mdui-icon material-icons">add</i></button></div>',
+                html: '<div class="iasBtn mdui-ripple"><span>下一页</span><button class="mdui-textfield-icon mdui-btn mdui-btn-icon" role="button" data-no-instant><i class="mdui-icon material-icons">&#xe913;</i></button></div>',
                 offset: 1 //load多少页后显示加载更多按钮
             }));
             iasArt.extension(new IASSpinnerExtension());    //加载时的图片
-            iasArt.extension(new IASNoneLeftExtension({text: "已经没有更多了"}));    //到底后显示的文字
+            iasArt.extension(new IASNoneLeftExtension({text: '<span>深入低了</span><i class="mdui-icon material-icons">&#xe3f1;</i>'}));    //到底后显示的文字
 
 
             iasArt.on('rendered', function(items) {

@@ -13,7 +13,10 @@
                     </div>
                 </div>
                 <div class="reward-pt">
-                    <p class="reward-paybox"><span class="reward-paywar">打赏无悔，概不退款</span></p>
+                    <p class="reward-paybox">
+                        <a class="reward-pay" href="https://krait.cn/about.html#posTitle-4">收款记录</a>
+                        <span class="reward-paywar">打赏无悔，概不退款</span>
+                    </p>
                 </div>
             </div>
         </div>
