@@ -137,7 +137,6 @@ class Major {
         
 <style>
    .majorPv{
-     font-size:15px;
      font-family:'Microsoft Yahei', sans-serif
    }
    .majorPv a {
