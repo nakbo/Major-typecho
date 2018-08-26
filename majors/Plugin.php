@@ -1,6 +1,6 @@
 <?php
 /**
- * KraitMajor 集成插件
+ * Krait Major 主题集成插件
  * 
  * @package majors 
  * @author 权那他
@@ -31,6 +31,7 @@ class majors_Plugin implements Typecho_Plugin_Interface
 		//编辑文章
 		Typecho_Plugin::factory('Widget_Contents_Post_Edit')->write = array('majors_Plugin', 'formatsSet');
         Typecho_Plugin::factory('Widget_Archive')->indexHandle = array('majors_Plugin', 'sticky');
+        Typecho_Plugin::factory('Widget_Archive')->categoryHandle = array('majors_Plugin', 'sticky');
 
         //添加LT21的Gravatar Server
         Typecho_Plugin::factory('Widget_Abstract_Comments')->gravatar = array('majors_Plugin', 'reGravatar');
@@ -47,8 +48,6 @@ class majors_Plugin implements Typecho_Plugin_Interface
      * @throws Typecho_Plugin_Exception
      */
     public static function deactivate(){
-
-        //Helper::removePanel(4, 'majors/manage.php');
 
         $db = Typecho_Db::get();
         $prefix = $db->getPrefix();
@@ -78,43 +77,6 @@ class majors_Plugin implements Typecho_Plugin_Interface
             '1' => '不删除',
         ), '1', '删除数据表:', '请选择是否在禁用插件时，format字段');
         $form->addInput($delmat);
-
-        $formats = new Typecho_Widget_Helper_Form_Element_Checkbox('format', array(
-            'aside'=>'日志',
-            'gallery'=>'相册',
-            'link'=>'链接',
-            'quote'=>'引语',
-            'status'=>'状态',
-            'video'=>'视频',
-            'audio'=>'音频',
-            'chat'=>'聊天'),array('aside','gallery','link','quote','status','video','chat'),'选取支持的文章形式',_t('被选择的文章形式将会在编写文章时出现在选项里, 一项也不选择将会默认显示所有'));
-        $form->addInput($formats->multiMode());
-
-        $sticky_cids = new Typecho_Widget_Helper_Form_Element_Text(
-          'sticky_cids', NULL, '',
-          '置顶文章的 cid', '按照排序输入, 请以半角逗号或空格分隔 cid.');
-        $form->addInput($sticky_cids);
-
-        /** Gravatar服务器 **/
-        $serverGravatar = new Typecho_Widget_Helper_Form_Element_Radio( 'serverGravatar',  array(
-            'https://gravatar.cat.net/avatar'        =>  'cat Gravatar 镜像 ( https://gravatar.cat.net )',
-            'https://gravatar.loli.net/avatar'        =>  'loli Gravatar 镜像 ( https://gravatar.loli.net )',
-            'https://cdn.v2ex.com/gravatar'   =>  'v2ex Gravatar 镜像 ( https://cdn.v2ex.com )',
-            'https://cn.gravatar.com/avatar'        =>  'Gravatar CN ( https://cn.gravatar.com )',
-            'https://secure.gravatar.com/avatar'   =>  'Gravatar Secure ( https://secure.gravatar.com )'),
-            'https://gravatar.cat.net/avatar', _t('Gravatar选择服务器'), _t('替换Gravatar头像服务器') );
-        $form->addInput($serverGravatar->multiMode());
-
-        /** Gravatar默认头像 **/
-        $defaultGravatar = new Typecho_Widget_Helper_Form_Element_Radio( 'defaultGravatar',  array(
-            'mm'            =>  '<img src=https://secure.gravatar.com/avatar/926f6ea036f9236ae1ceec566c2760ea?s=32&r=G&forcedefault=1&d=mm height="32" width="32" /> 神秘人物',
-            'blank'         =>  '<img src=https://secure.gravatar.com/avatar/926f6ea036f9236ae1ceec566c2760ea?s=32&r=G&forcedefault=1&d=blank height="32" width="32" /> 空白',
-            ''				=>  '<img src=https://secure.gravatar.com/avatar/926f6ea036f9236ae1ceec566c2760ea?s=32&r=G&forcedefault=1&d= height="32" width="32" /> Gravatar 标志',
-            'identicon'     =>  '<img src=https://secure.gravatar.com/avatar/926f6ea036f9236ae1ceec566c2760ea?s=32&r=G&forcedefault=1&d=identicon height="32" width="32" /> 抽象图形（自动生成）',
-            'wavatar'       =>  '<img src=https://secure.gravatar.com/avatar/926f6ea036f9236ae1ceec566c2760ea?s=32&r=G&forcedefault=1&d=wavatar height="32" width="32" /> Wavatar（自动生成）',
-            'monsterid'     =>  '<img src=https://secure.gravatar.com/avatar/926f6ea036f9236ae1ceec566c2760ea?s=32&r=G&forcedefault=1&d=monsterid height="32" width="32" /> 小怪物（自动生成）'),
-            'mm', _t('Gravatar选择默认头像'), _t('当评论者没有设置Gravatar头像时默认显示该头像') );
-        $form->addInput($defaultGravatar->multiMode());
 
 	}
 
@@ -159,9 +121,7 @@ class majors_Plugin implements Typecho_Plugin_Interface
      */
     public static function formatsSelect()
     {
-		$options = Typecho_Widget::widget('Widget_Options');
-		$formats = $options->plugin('majors');
-		$custom_format =  $formats->format;
+		$custom_format =  Helper::options()->format;
 		$regular_format = array(
             'post'=>'标准', 
             'aside'=>'日志', 
@@ -339,44 +299,6 @@ class majors_Plugin implements Typecho_Plugin_Interface
       echo $result[0]['num'];
       
     }
-
-    /**
-     * 拓展开发 输出最受欢迎文章
-     *
-     * 语法: Views_Plugin::theMostViewed();
-     *
-     * @access public
-     * @param int     $limit  文章数目
-     * @param string  $before 前字串
-     * @param string  $after  后字串
-     * @return string
-     */
-    public static function theMostViewed($limit = 10, $before = '<br/> - ( 访问: ', $after = ' 次 ) ')
-    {
-        $db = Typecho_Db::get();
-        $options = Typecho_Widget::widget('Widget_Options');
-        $limit = is_numeric($limit) ? $limit : 10;
-        $posts = $db->fetchAll($db->select()->from('table.contents')
-                 ->where('type = ? AND status = ? AND password IS NULL', 'post', 'publish')
-                 ->order('views', Typecho_Db::SORT_DESC)
-                 ->limit($limit)
-                 );
-
-        if ($posts) {
-            foreach ($posts as $post) {
-                $result = Typecho_Widget::widget('Widget_Abstract_Contents')->push($post);
-                $post_views = number_format($result['views']);
-                $post_title = htmlspecialchars($result['title']);
-                $permalink = $result['permalink'];
-                echo "<li><a href='$permalink' title='$post_title'>$post_title</a><span style='font-size:70%'>$before $post_views $after</span></li>\n";
-            }
-
-        } else {
-            echo "<li>N/A</li>\n";
-        }
-    }
-
-
     
     /**
      * 拓展开发 选取置顶文章
@@ -387,8 +309,8 @@ class majors_Plugin implements Typecho_Plugin_Interface
      */
     public static function sticky($archive, $select)
     {
-        $config  = Typecho_Widget::widget('Widget_Options')->plugin('majors');
-        $sticky_cids = $config->sticky_cids ? explode(',', strtr($config->sticky_cids, ' ', ',')) : '';
+        $options = Helper::options();
+        $sticky_cids = $options->stickyCid ? explode(',', strtr($options->stickyCid, ' ', ',')) : '';
         if (!$sticky_cids) return;
 
         $db = Typecho_Db::get();
@@ -409,7 +331,7 @@ class majors_Plugin implements Typecho_Plugin_Interface
 
     public static function reGravatar($size, $rating, $default, $comments)
     {
-        $default = Typecho_Widget::widget('Widget_Options')->plugin('majors')->defaultGravatar;
+        $default = 'mm';
         $url = self::gravatarUrl($comments->mail, $size, $rating, $default, $comments->request->isSecure());
         echo '<img class="avatar" src="' . $url . '" alt="' . $comments->author . '" width="' . $size . '" height="' . $size . '" />';
     }
@@ -426,8 +348,8 @@ class majors_Plugin implements Typecho_Plugin_Interface
      */
     public static function gravatarUrl($mail, $size, $rating, $default, $isSecure = false)
     {
-        //$url = $isSecure ? 'https://secure.gravatar.com' : Typecho_Widget::widget('Widget_Options')->plugin('majors')->serverGravatar;
-        $url = Typecho_Widget::widget('Widget_Options')->plugin('majors')->serverGravatar;
+        $options = Helper::options();
+        $url = $options->serverGravatar;
         $url .= '/';
         if (!empty($mail)) {
             $url .= md5(strtolower(trim($mail)));
