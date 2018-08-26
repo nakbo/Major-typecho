@@ -10,6 +10,15 @@ function threadedComments($comments, $options) {
             $commentClass .= ' comment-by-user';
         }
     }
+
+    $at_name = "";
+    if($comments->parent > 0){
+        $db = Typecho_Db::get();
+        $at_query= $db->select("author")->from('table.comments')->where('coid = ?', $comments->parent);
+        $at_result = $db->fetchAll($at_query);
+        $at_name = "@".$at_result[0]["author"];
+    }
+
     $commentLevelClass = $comments->levels > 0 ? ' comment-child' : ' comment-parent';
     $depth = $comments->levels +1;
     if ($comments->url) {
@@ -18,7 +27,7 @@ function threadedComments($comments, $options) {
         $author = $comments->author;
     }
 
-    $secure = Typecho_Widget::widget('Widget_Options')->plugin('majors')->serverGravatar;
+    $secure = Helper::options()->serverGravatar;
     $s = "100";
     $secure = $secure."/";
     $s = "?s=".$s;
@@ -59,8 +68,9 @@ function threadedComments($comments, $options) {
             </footer>
             <!-- .comment-meta -->
 
-            <div class="comment-content  major-text">
-                <?php $comments->content(); ?>
+            <div class="comment-content">
+                <span class="comment-author-at"><?php if($at_name){ ?><b><a href="#comment-<?php $comments->parent();?>"><?php echo $at_name;?></a></b><?php } ;?></span>
+                <span class="comment-content-true major-text"><?php $comments->content(); ?></span>
             </div>
             <!-- .comment-content -->
 
@@ -78,126 +88,101 @@ function threadedComments($comments, $options) {
     </li>
 <?php } ?>
 
-<div id="comments" data-no-instant>
-    <div class="comment-respond">
-    <?php $this->comments()->to($comments); /*$this->commentsNum(_t('暂无评论'), _t('仅有 1 条评论'), _t('已有 %d 条评论'));*/ ?>
+<div class="major-comment mdui-panel" id="comment-panel">
 
-        <?php if($this->allow('comment')): ?>
-            <div id="<?php $this->respondId(); ?>" class="respond">
-                <div class="cancel-comment-reply">
-                    <?php $comments->cancelReply(); ?>
+    <div class="mdui-panel-item">
+        <div class="mdui-panel-item-header mdui-ripple"></div>
+        <div class="mdui-panel-item-body">
+
+
+            <div id="comments" data-no-instant>
+                <div class="comment-respond">
+                    <?php $this->comments()->to($comments);?>
+
+                    <?php if($this->allow('comment')): ?>
+                        <div id="<?php $this->respondId(); ?>" class="respond">
+                            <div class="cancel-comment-reply">
+                                <?php $comments->cancelReply(); ?>
+                            </div>
+                            <h4 id="response" class="comment-reply-title">
+                                <?php $comments->cancelReply('取消回复'); ?>
+                            </h4>
+                            <form method="post" action="<?php $this->commentUrl() ?>" id="comment-form" class="comment-form" role="form">
+                                <div class="author-infos guest" id="comment-form-avatar"><img src="<?php $this->options->serverGravatar();?>/?d=mm&s=100" width="100" class="avatar"></div>
+                                <div class="comment-form-main">
+                                    <div class="comment-textarea-wrapper mdui-ripple">
+                                        <p class="comment-form-comment"><label for="comment">评论</label>
+                                            <textarea style="" id="textarea" name="text"  <?php if(!$this->user->hasLogin()): ?> onclick='document.getElementById("comment-form-do").style.display="block";'<?php endif; ?>  cols="45" rows="8" aria-required="true" required="required" placeholder="发泄你的牢骚,留下你的笔言!"><?php $this->remember('text',false); ?></textarea>
+                                        </p>
+                                        <div class="comment-form-toolbar">
+                                            <?php if(isset($this->options->plugins['activated']['Smilies'])) $comments->smilies(); ?>
+
+                                        </div>
+                                    </div>
+
+                                    <?php if(!$this->user->hasLogin()): ?>
+                                        <div class="comment-form-fields" id="comment-form-do">
+                                            <p class="comment-form-author">
+                                                <label for="author">昵称</label> <span class="required">*</span>
+
+                                                <input type="text" name="author" maxlength="12" id="author" placeholder="昵称" value="" required>
+
+                                            </p>
+                                            <p class="comment-form-email">
+                                                <label for="email">邮箱</label> <?php if ($this->options->commentsRequireMail): ?><span class="required">*</span><?php endif; ?>
+
+                                                <input type="email" name="mail" id="mail" placeholder="邮箱" value="" class="inputElem" <?php if ($this->options->commentsRequireMail): ?> required<?php endif; ?>>
+                                            </p>
+                                            <p class="comment-form-url">
+                                                <label for="url">网站</label> <?php if ($this->options->commentsRequireURL): ?><span class="required">*</span><?php endif; ?>
+
+                                                <input type="url" name="url" id="url" placeholder="网站" value="" <?php if ($this->options->commentsRequireURL): ?> required<?php endif; ?>>
+
+                                            </p>
+                                            <p class="comment-form-fast">
+                                                <label for="url">输入QQ号快速评论</label>
+                                                <input placeholder="输入QQ号快速评论" id="qqNum" type="text">
+                                            </p>
+                                        </div>
+                                    <?php endif; ?>
+
+                                    <p class="form-submit">
+                                        <button name="submit" type="submit" id="submit" class="submit"><i class="icon iconfont icon-send"></i></button>
+                                        <?php $security = $this->widget('Widget_Security'); ?>
+                                        <input type="hidden" name="_" value="<?php echo $security->getToken($this->request->getReferer())?>">
+                                    </p>
+                                </div>
+                                <div class="comment-form-extra">
+                                    <div class="comment-receiveMail">
+                                        <label class="mdui-checkbox">
+                                            <input type="checkbox" name="receiveMail" id="receiveMail" value="yes" checked />
+                                            <i class="mdui-checkbox-icon"></i>别人回复时接收邮件提醒
+                                        </label>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    <?php endif; ?>
+
+                    <?php if ($comments->have()): ?>
+                        <?php $comments->listComments(); ?>
+                        <?php $comments->pageNav('&laquo;', '&raquo;'); ?>
+
+                    <?php endif; ?>
+
                 </div>
-                <h4 id="response" class="comment-reply-title">
-                    <span>发表评论</span>
-                    <small>
-                        <span class="response">
-                            <?php if($this->user->hasLogin()): ?>
-                                <a href="<?php $this->options->profileUrl(); ?>"><?php $this->user->screenName(); ?></a>(已登录) <a href="<?php $this->options->logoutUrl(); ?>" class="icon-logout"></a>
-                            <?php else: ?>
-                                <span id="noUserText">你是访客</span> <a href="<?php $this->options->loginUrl(); ?>" class="icon-login"></a>
-                            <?php endif; ?>
-                        </span>
-                    </small>
-                    <?php $comments->cancelReply('取消回复'); ?>
-                </h4>
-                <form method="post" action="<?php $this->commentUrl() ?>" id="comment-form" class="comment-form" role="form">
-                    <div class="author-infos guest" id="comment-form-avatar"><img src="<?php Typecho_Widget::widget('Widget_Options')->plugin('majors')->serverGravatar();?>/?d=mm&s=100" width="100" class="avatar"></div>
-                    <div class="comment-form-main">
-                        <div class="comment-textarea-wrapper mdui-ripple">
-                            <p class="comment-form-comment"><label for="comment">评论</label>
-                                <textarea style="" id="textarea" name="text"  <?php if(!$this->user->hasLogin()): ?> onclick='document.getElementById("comment-form-do").style.display="block";'<?php endif; ?>  cols="45" rows="8" aria-required="true" required="required" placeholder="发泄你的牢骚,留下你的笔言!"><?php $this->remember('text',false); ?></textarea>
-                            </p>
-                            <div class="comment-form-toolbar">
-                              <?php if(isset($this->options->plugins['activated']['Smilies'])) Smilies_Plugin::output(); ?>
-                              
-                            </div>
-                        </div>
-
-                        <?php if(!$this->user->hasLogin()): ?>
-                            <div class="comment-form-fields" id="comment-form-do">
-                                <p class="comment-form-author">
-                                    <label for="author">昵称</label> <span class="required">*</span>
-
-                                    <input type="text" name="author" maxlength="12" id="author" placeholder="昵称" value="" required>
-
-                                </p>
-                                <p class="comment-form-email">
-                                    <label for="email">邮箱</label> <?php if ($this->options->commentsRequireMail): ?><span class="required">*</span><?php endif; ?>
-
-                                    <input type="email" name="mail" id="mail" placeholder="邮箱" value="" class="inputElem" <?php if ($this->options->commentsRequireMail): ?> required<?php endif; ?>>
-                                </p>
-                                <p class="comment-form-url">
-                                    <label for="url">网站</label> <?php if ($this->options->commentsRequireURL): ?><span class="required">*</span><?php endif; ?>
-
-                                    <input type="url" name="url" id="url" placeholder="网站" value="" <?php if ($this->options->commentsRequireURL): ?> required<?php endif; ?>>
-
-                                </p>
-                                <p class="comment-form-fast">
-                                    <label for="url">输入QQ号快速评论</label>
-                                    <input placeholder="输入QQ号快速评论" id="qqNum" type="text">
-                                </p>
-                            </div>
-                        <?php endif; ?>
-
-                        <p class="form-submit">
-                            <button name="submit" type="submit" id="submit" class="submit"><i class="icon iconfont icon-send"></i></button>
-                            <?php $security = $this->widget('Widget_Security'); ?>
-                            <input type="hidden" name="_" value="<?php echo $security->getToken($this->request->getReferer())?>">
-                        </p>
-                    </div>
-                    <div class="comment-form-extra">
-                        <div class="comment-receiveMail">
-                            <label class="mdui-checkbox">
-                                <input type="checkbox" name="receiveMail" id="receiveMail" value="yes" checked />
-                                <i class="mdui-checkbox-icon"></i>别人回复时接收邮件提醒
-                            </label>
-                        </div>
-                    </div>
-                </form>
             </div>
-        <?php endif; ?>
 
-        <?php if ($comments->have()): ?>
-            <?php $comments->listComments(); ?>
-            <?php $comments->pageNav('&laquo;', '&raquo;'); ?>
-
-        <?php endif; ?>
-
+        </div>
     </div>
+
 </div>
 
-<script type="text/javascript">
-    $(document).ready(function() {
-        $('#textarea').textareafullscreen();
-    });
 
-    function iasNew() {
-        try
-        {
-            var iasCent = jQuery.ias({
-                container:  '.comment-list',    //大容器
-                item:       '.comment-list-item.depth-1',    //循环容器
-                pagination: '.page-navigator li',    //分页容器
-                next:       '.next a'    //下一页的class
-            });
-
-            iasCent.extension(new IASTriggerExtension({
-                html: '<div class="iasBtn mdui-ripple"><span>下一页</span><button class="mdui-textfield-icon mdui-btn mdui-btn-icon" role="button" data-no-instant><i class="mdui-icon material-icons">&#xe913;</i></button></div>',
-                offset: 1 //load多少页后显示加载更多按钮
-            }));
-            iasCent.extension(new IASSpinnerExtension());    //加载时的图片
-            iasCent.extension(new IASNoneLeftExtension({text: '<span>深入低了</span><i class="mdui-icon material-icons">&#xe3f1;</i>'}));    //到底后显示的文字
-
-            iasCent.on('rendered', function(items) {
-                liveTimeGo();
-            });
-        }
-        catch(err) {}
-    }
-    iasNew();
-</script>
 
 <script>
+    var inst = new mdui.Panel('#comment-panel');
+
     <?php if(!$this->user->hasLogin()): ?>
     function getCommentCookie(name){
         var arr,reg=new RegExp("(^| )"+name+"=([^;]*)(;|$)");
@@ -215,7 +200,7 @@ function threadedComments($comments, $options) {
         }
         document.getElementById('mail').value = getCommentCookie(md5Get+'__typecho_remember_mail');
         document.getElementById('url').value = getCommentCookie(md5Get+'__typecho_remember_url');
-        document.getElementById("comment-form-avatar").getElementsByTagName("img")[0].src = "<?php Typecho_Widget::widget('Widget_Options')->plugin('majors')->serverGravatar();?>/" + md5(getCommentCookie(md5Get+'__typecho_remember_mail')) + "?s=100&r=G&d=mm";
+        document.getElementById("comment-form-avatar").getElementsByTagName("img")[0].src = "<?php $this->options->serverGravatar();?>/" + md5(getCommentCookie(md5Get+'__typecho_remember_mail')) + "?s=100&r=G&d=mm";
     }
 
     $(document).on("input propertychange", "#qqNum", function(event) {
@@ -250,14 +235,14 @@ function threadedComments($comments, $options) {
             var nval = $("#mail").val();
             if (nval.length > 0 && tval == $("#mail").val()) {
                 document.getElementById("noUserText").innerHTML= '你好,'+$("#author").val();
-                document.getElementById("comment-form-avatar").getElementsByTagName("img")[0].src = "<?php Typecho_Widget::widget('Widget_Options')->plugin('majors')->serverGravatar();?>/" + md5($("#mail").val()) + "?s=100&r=G&d=mm";
+                document.getElementById("comment-form-avatar").getElementsByTagName("img")[0].src = "<?php $this->options->serverGravatar();?>/" + md5($("#mail").val()) + "?s=100&r=G&d=mm";
             }
         }, 400)
     });
 
     addCommentInputValue();
     <?php else:?>
-        document.getElementById("comment-form-avatar").getElementsByTagName("img")[0].src = "<?php Typecho_Widget::widget('Widget_Options')->plugin('majors')->serverGravatar();?>/" + md5("<?php $this->author->mail(); ?>") + "?s=100&r=G&d=mm";
+        document.getElementById("comment-form-avatar").getElementsByTagName("img")[0].src = "<?php $this->options->serverGravatar();?>/" + md5("<?php $this->author->mail(); ?>") + "?s=100&r=G&d=mm";
     <?php endif; ?>
 
     (function () {

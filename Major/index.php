@@ -4,13 +4,15 @@
  * 
  * @package Major
  * @author 权那他
- * @version 1.9
+ * @version 2.0
  * @link https://krait.cn
  */
 
 if (!defined('__TYPECHO_ROOT_DIR__')) exit;
 $this->need('header.php'); 
 ?>
+
+<?php $this->need('Major.php'); ?>
 
 <div class="major-3 object" id="main" role="main">
     <?php include 'res/articleList.php'; //映入统一文章列表 ?>

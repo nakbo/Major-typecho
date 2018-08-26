@@ -9,55 +9,93 @@ if (!defined('__TYPECHO_ROOT_DIR__')) exit;
 ?>
 <?php $this->need('header.php'); ?>
 
+    <div class="articles-post post-header">
+        <div class="post-head">
+            <div class="back">
+                <a href="javascript:;" onclick="javascript:history.back(-1);" class="mdui-btn mdui-btn-icon mdui-ripple"><i class="mdui-icon material-icons">arrow_back</i></a>
+            </div>
+            <div class="container">
+                <div class="title">
+                    <h1><?php $this->sticky(); $this->title(); ?></h1>
+                </div>
+            </div>
+        </div>
+        <div class="post-head-row">
+            <div class="container">
+                <h5 class="subtitle">
+                    <time datetime="<?php $this->date('c'); ?>" itemprop="datePublished"><?php $this->date(); ?></time>
+                </h5>
+            </div>
+        </div>
+    </div>
+
     <div class="archives content-wrap">
         <div class="container">
             <article class="major-article content-wrap" itemscope itemtype="http://schema.org/BlogPosting">
                 <div class="post-archive">
-                    <h4>标签云</h4>
-                    <ul class="arc-tag">
-                        <?php $this->widget('Widget_Metas_Tag_Cloud', array('sort' => 'count', 'ignoreZeroCount' => true, 'desc' => true, 'limit' => 20))->to($tags); ?>
-                        <?php while($tags->next()): ?>
-                            <li><a rel="tag" href="<?php $tags->permalink(); ?>"><?php $tags->name(); ?></a></li>
-                        <?php endwhile; ?>
-                    </ul>
-                    <h4>独立页归档</h4>
-                    <ul class="arc-page">
-                        <?php $this->widget('Widget_Contents_Page_List')->to($pages); ?>
-                        <?php while($pages->next()): ?>
-                            <li>
-                                <a href="<?php $pages->permalink(); ?>" class="mdui-ripple"><?php $pages->title(); ?></a>
-                            </li>
-                        <?php endwhile; ?>
-                    </ul>
 
-                    <h4>分类归档</h4>
-                    <ul class="arc-category">
-                        <?php $this->widget('Widget_Metas_Category_List')->parse('<li><a href="{permalink}" title="{description}">{name}</a></li>'); ?>
-                    </ul>
-
-                    <h4>文章归档</h4>
-                    <?php
-                    $stat = Typecho_Widget::widget('Widget_Stat');
-                    Typecho_Widget::widget('Widget_Contents_Post_Recent', 'pageSize='.$stat->publishedPostsNum)->to($archives);
+                    <?php $this->widget('Widget_Contents_Post_Recent', 'pageSize=10000')->to($archives);
                     $year=0; $mon=0; $i=0; $j=0;
-                    $output = '<div id="try">';
-                    while($archives->next()){
+                    $ml = $archives->options->rootUrl;
+                    $output = '';
+                    while($archives->next()):
+
                         $year_tmp = date('Y',$archives->created);
                         $mon_tmp = date('m',$archives->created);
                         $y=$year; $m=$mon;
-                        if ($year > $year_tmp || $mon > $mon_tmp) {
-                            $output .= '</div></div>';
+
+                        if ($mon != $mon_tmp && $mon > 0) $output .= '</ul>';
+                        if ($year != $year_tmp && $year > 0) $output .= '</div>';
+                        if ($year != $year_tmp) {
+                            $year = $year_tmp;
+                            $output .= ' <div class="archive archive-year" data-date="'. $year .'"><h3>'. $year .'</h3>'; //输出年份
+
+                            if ($mon == $mon_tmp){
+                                $year = $year_tmp;
+                                $mon = $mon_tmp;
+                                if ($this->options->rewrite==0){
+                                    $output .=  ' <ul class="archive-posts archive-month" data-date="'. $year .''. $mon .'">
+                    <h4>
+                        <a class="guidang" href="' . $ml . '/index.php/'. $year .'/'. $mon .'">'. $mon .'月</a>
+                    </h4>'; //输出月份
+                                }else{
+                                    $output .=  ' <ul class="archive-posts archive-month" data-date="'. $year .''. $mon .'">
+                    <h4>
+                        <a class="guidang" href="'. $ml .'/'. $year .'/'. $mon .'">'. $mon .'月</a>
+                    </h4>'; //输出月份
+                                }
+                            }
+
                         }
-                        if ($year != $year_tmp || $mon != $mon_tmp) {
+
+                        if ($mon != $mon_tmp){
+
                             $year = $year_tmp;
                             $mon = $mon_tmp;
-                            $output .= '<div class="arc-falt"><h4>'.date('Y-m',$archives->created).'</h4><div class="aec-lists" data-date="2017-6">';
+                            if ($this->options->rewrite==0){
+                                $output .=  ' <ul class="archive-posts archive-month" data-date="'. $year .''. $mon .'">
+                    <h4>
+                        <a class="guidang" href="' . $ml . '/index.php/'. $year .'/'. $mon .'">'. $mon .'月</a>
+                    </h4>'; //输出月份
+                            }else{
+                                $output .=  ' <ul class="archive-posts archive-month" data-date="'. $year .''. $mon .'">
+                    <h4>
+                        <a class="guidang" href="'. $ml .'/'.$year .'/'. $mon .'">'. $mon .'月</a>
+                    </h4>'; //输出月份
+                            }
                         }
-                        $output .= '<div class="arc-list-item"><a href="'.$archives->permalink .'" target="_blank" title="写于'.date('d日',$archives->created) . '的' . $archives->title .'"><span class="time">  '.date('d日',$archives->created).' </span>'. $archives->title .'</a></div>';
-                    }
-                    $output .= '</div></div></div>';
+
+
+                        $output .= '  <li class="li_guidang archive-post archive-day" data-date="'. $year .''. $mon .''.date('d',$archives->created).'">
+                <a class="guidang" href="'.$archives->permalink .'">'. $archives->title .'</a>
+                <span class="date">'. $year .'-'.date('m',$archives->created).'-'.date('d',$archives->created).'</span>
+            </li>'; //输出文章日期和标题
+
+                    endwhile;
+                    $output .= '</div>';
                     echo $output;
                     ?>
+
                 </div>
             </article>
         </div>
