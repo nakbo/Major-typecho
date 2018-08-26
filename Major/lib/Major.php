@@ -1,62 +1,77 @@
 <?php
 if (!defined('__TYPECHO_ROOT_DIR__')) exit;
+class Major
+{
+    public static $Major;
+    public static $personal;
+    public static $name;
+    public static $screenName;
+    public static $mail;
+    public static $url;
+    public static $group;
+    public static $api;
+    public static $uid = 1;
 
-class Major {
-
-    /**
-     *
-     * Major version.
-     *
-     * @var string
-     */
-    public static $Major = array("Krait","Major","1.9","权那他","1525014000");
-
-
-    /**
-     * Major personal
-     *
-     * @var string
-     */
-    public static function personal(){
-        $db = Typecho_Db::get();
-        $query= $db->select("uid","name","screenName","mail","url","group")->from('table.users')->where('uid = ?', 1);
-        $result = $db->fetchAll($query);
-        return $result[0];
+    public function __construct()
+    {
+        self::personal();
+        self::setMajor();
+        self::setApi();
     }
 
-    /**
-     * @return string
-     */
-    public static function getGravatar($mail,$s,$u,$t)
+    public function personal()
     {
-        $secure = Typecho_Widget::widget('Widget_Options')->plugin('majors')->serverGravatar;
-        switch ($t){
-            case 'gr':
-                $secure = $secure."/";
-                $s = "?s=".$s;
-                $r = "&r=G";
-                $d = "&d=";
-                $qqUrl="https://api.krait.cn/api/headimg_dl/".$mail;
-                return $gr = $secure.md5($mail).$s.$r.$d.$qqUrl;
+        $db = Typecho_Db::get();
+        $query= $db->select("uid","name","screenName","mail","url","group")->from('table.users')->where('uid = ?', self::$uid);
+        $return = $db->fetchAll($query);
+        self::$personal = $return[0];
+        $m = $return[0];
+        self::$name = $m['name'];
+        self::$screenName = $m['screenName'];
+        self::$mail = $m['mail'];
+        self::$url = $m['url'];
+        self::$group = $m['group'];
+    }
 
-                break;
-            case 'ma':
-                return $ma = $u;
+    public function setMajor()
+    {
+        self::$Major = array(
+            "developer"=>"Krait",
+            "author"=>"权那他",
+            "package"=>"Major",
+            "version"=>"2.0",
+            "updateTime"=>"1535300349"
+        );
+    }
+
+    public function setApi()
+    {
+        self::$api = array(
+            "infoMajor" => "https://api.krait.cn/version/Major.json",
+            "introMajor" => "https://krait.cn/major.html",
+            "headimg_dl" => "https://api.krait.cn/api/headimg_dl/"
+        );
+    }
+
+    public static function getGravatar($mail)
+    {
+        $secure = Helper::options()->serverGravatar;
+        $use = Helper::options()->useGravatar;
+        $Img = Helper::options()->masterImgUrl;
+        $s = "100";
+        if($use == "gr"){
+            $secure = $secure."/";
+            $s = "?s=".$s;
+            $r = "&r=G";
+            $d = "&d=";
+            $qqUrl = self::$api['headimg_dl'].$mail;
+            return $gr = $secure.md5($mail).$s.$r.$d.$qqUrl;
+        }elseif($use == "ma"){
+            return $Img;
         }
     }
 
-    public static function artCount($cid){
-        $db=Typecho_Db::get ();
-        $rs=$db->fetchRow ($db->select ('table.contents.text')->from ('table.contents')->where ('table.contents.cid=?',$cid)->order ('table.contents.cid',Typecho_Db::SORT_ASC)->limit (1));
-        return mb_strlen($rs['text'], 'UTF-8');
-    }
-
-    /**
-     * format字符配对
-     *
-     *@remarks: 用于特殊的判断
-     */
-    public static function formats($mat)
+    public function formats($mat)
     {
         switch ($mat) :
             case "post" :
@@ -97,20 +112,16 @@ class Major {
         endswitch;
     }
 
-    /**
-     * @return string
-     */
     public static function getVersion()
     {
-        $Major_json = file_get_contents("https://api.krait.cn/version/Major.json");
-        $Major_jsonArr = json_decode($Major_json);
-        $maj_date = $Major_jsonArr->Major[0]->d;
-        $maj_ver = $Major_jsonArr->Major[0]->v;
+        $infoMajor = json_decode(file_get_contents(self::$api['infoMajor']));
+        $date = $infoMajor->Major[0]->d;
+        $ver = $infoMajor->Major[0]->v;
 
-        if($maj_date > self::$Major[4]){
-            echo '<div class="majorPv">你正在使用 <strong>'.self::$Major[2].'</strong> 版本，'.date("Y-m-d",$maj_date).'更新最新版本为 <strong style="color:red;">'.$maj_ver.'</strong><a href="https://krait.cn/major.html"><button type="submit" class="btn btn-warn">前往更新</button></a></div>';
+        if($date > self::$Major['updateTime']){
+            echo '<div class="majorPv">你正在使用 <strong>'.self::$Major['version'].'</strong> 版本，'.date("Y-m-d",$date). '更新最新版本为 <strong style="color:#000000;">' .$ver.'</strong><a href="'.self::$api['introMajor'].'"><button type="submit" class="btn btn-warn">前往更新</button></a></div>';
         }else {
-            echo '<div class="majorPv">你正在使用最新版 '.self::$Major[2];
+            echo '<div class="majorPv">你正在使用最新版 '.self::$Major['version'].'</div>';
         }
 
         $str=<<<EOT
@@ -156,3 +167,6 @@ EOT;
 
 
 }
+
+new \Major();
+
