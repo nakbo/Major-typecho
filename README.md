@@ -3,11 +3,11 @@
 Major,这是一款采用兼容性开发的 Typecho 主题，科创出品,原创主题,采用兼容性开发!
 
 ## 关于Mjaor ##
-**Mjaor作者**: [权那他][1] 就是我!
+**Mjaor 作者**: [权那他][1] 就是我!
 
 ## 预览图片 ##
 
-![Screenshot_2018-08-26-18-45-37-64.png][2]
+![Screenshot_2018-08-27-17-40-22-04.png][2]
 
 ![Screenshot_2018-08-27-02-50-09-13.png][3]
 ![Screenshot_2018-08-27-02-50-26-67.png][4]
@@ -130,7 +130,7 @@ Github Major : [https://github.com/kraity/Major][9]
 
 
   [1]: https://krait.cn
-  [2]: https://ws3.sinaimg.cn/large/006U7bU2gy1funosqqtr6j30u01hcqu9.jpg
+  [2]: https://ws3.sinaimg.cn/large/006U7bU2gy1fuoef94dtcj30u01hcx6g.jpg
   [3]: https://ws3.sinaimg.cn/large/006U7bU2gy1funot64fruj30u01hcn1p.jpg
   [4]: https://ws3.sinaimg.cn/large/006U7bU2gy1funotct33bj30u01hcgqf.jpg
   [5]: https://ws3.sinaimg.cn/large/006U7bU2gy1funousfseoj30u01hcn02.jpg
