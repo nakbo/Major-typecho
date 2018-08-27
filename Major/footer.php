@@ -87,12 +87,6 @@
                 MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
             }
             if (typeof Prism !== 'undefined') {
-                <?php  if (Helper::options()->plugin('Prismjs')->showln || Helper::options()->plugin('CodeHighlighter')->showLineNumber): ?>
-                var pres = document.getElementsByTagName('pre');
-                for (var i = 0; i < pres.length; i++){
-                    if (pres[i].getElementsByTagName('code').length > 0)
-                        pres[i].className  = 'line-numbers';}
-                <?php endif; ?>
                 Prism.highlightAll(true,null);
             }
             if (typeof _hmt !== 'undefined'){
