@@ -228,12 +228,12 @@ ul {
 }
 
 @media (min-width: 1500px) {
-    .major-grids {
-        position: fixed;
+    .major-home .major-grids {
+        position: fixed !important;
         top: 0;
         left: 0;
         right: 0;
-        /* bottom: 0; */
+        z-index: 999 !important;
     }
 }
 
@@ -438,11 +438,14 @@ ul {
 }
 
 .major-text code {
-    line-height: 30px;
-    color: white;
-    background-color: #3f51b5;
+    background-color: #f2f2f2;
+    font-size: small;
     font-family: 'Microsoft Yahei', sans-serif;
     font-weight: normal;
+    margin: 0 1px 0 1px;
+    color: red;
+    padding: 2px;
+    border-radius: 5px;
 }
 .major-text pre code {
     color: inherit;
@@ -454,7 +457,8 @@ ul {
 }
 .major-text code::-webkit-scrollbar-thumb {
     border-radius: 10px;
-    background-color: #3f51b5;
+    color: red;
+    background-color: #f2f2f2;
 }
 
 .major-text a[href^="https"] {
@@ -641,12 +645,22 @@ Main components
 /****/
 
 .major-grids {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
     overflow: hidden;
     padding-bottom: 10px;
     -webkit-backface-visibility: hidden;
     backface-visibility: hidden;
     z-index: 999;
 }
+
+.major-home .major-grids{
+    position: relative;
+    z-index: auto;
+}
+
 .intro-effect-grid:not(.notrans) .major-grids{
     -webkit-transition-property: -webkit-transform;
     transition-property: transform;
@@ -778,16 +792,22 @@ Main components
 
 .dossier{
     position: relative;
-    margin: 50vh auto 2em;
+    margin: 4em auto 2em;
     float: left;
     width: 100%;
 }
 
+.major-home .dossier{
+    margin: 50vh auto 2em;
+}
+
+
 @media (max-width: 1500px){
-    .dossier {
-        margin: -2em auto 0;
+    .major-home .dossier {
+        margin: -2em auto 0 !important;
     }
 }
+
 .dossier-box ul{
     display:-webkit-flex;
     display: flex;
@@ -1215,10 +1235,10 @@ pre {
     margin: 0 0 10px;
     font-size: 14px;
     line-height: 1.5;
-    color: #eaeaea;
+    color: red;
+    background-color: #f2f2f2;
     word-break: break-all;
     word-wrap: break-word;
-    background-color: #3f51b5;
     border: none;
     border-radius: 2px;
 }

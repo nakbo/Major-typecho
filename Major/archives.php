@@ -12,7 +12,7 @@ if (!defined('__TYPECHO_ROOT_DIR__')) exit;
     <div class="articles-post post-header">
         <div class="post-head">
             <div class="back">
-                <a href="javascript:;" onclick="javascript:history.back(-1);" class="mdui-btn mdui-btn-icon mdui-ripple"><i class="mdui-icon material-icons">arrow_back</i></a>
+                <button onclick="window.history.back();return false;" class="mdui-btn mdui-btn-icon mdui-ripple"><i class="mdui-icon material-icons">arrow_back</i></button>
             </div>
             <div class="container">
                 <div class="title">

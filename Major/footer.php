@@ -1,6 +1,6 @@
 <?php if (!defined('__TYPECHO_ROOT_DIR__')) exit; ?>
 
-<?php if($this->is('index')): ?>
+<?php if($this->is('index') && $this->_currentPage<2): ?>
 <footer class="footer" role="contentinfo">
     <div class="container">
         <div class="footer-t">
@@ -87,11 +87,12 @@
                 MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
             }
             if (typeof Prism !== 'undefined') {
+                <?php  if (Helper::options()->plugin('Prismjs')->showln || Helper::options()->plugin('CodeHighlighter')->showLineNumber): ?>
                 var pres = document.getElementsByTagName('pre');
                 for (var i = 0; i < pres.length; i++){
                     if (pres[i].getElementsByTagName('code').length > 0)
-                        pres[i].className  = 'line-numbers';
-                }
+                        pres[i].className  = 'line-numbers';}
+                <?php endif; ?>
                 Prism.highlightAll(true,null);
             }
             if (typeof _hmt !== 'undefined'){

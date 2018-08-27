@@ -104,9 +104,10 @@
 <script type="text/javascript">
     function scrollMajor(){
         var classScroll = document.getElementById('major-grid');
-        var newSwitch = <?php if($this->is('index') && $this->_currentPage==1){ echo "true";} else{ echo "false";}?>;
+        var newSwitch = <?php if($this->is('index') && $this->_currentPage<2){ echo "true";} else{ echo "false";}?>;
         if(newSwitch) {
             classScroll.classList.add("grid-top");
+            classScroll.classList.add("major-home");
             $(document).scroll(function(){
                 var reveal = false;
                 if ($(document).scrollTop() >= 1) reveal = true;
@@ -121,11 +122,33 @@
             });
         }else{
             classScroll.classList.add("modify");
+            classScroll.classList.remove("major-home");
         }
     }
     scrollMajor();
 </script>
 
+<?php if($this->is('index') && $this->_currentPage>1):?>
+<div class="post-header">
+    <div class="post-head">
+        <div class="back">
+            <button onclick="window.history.back();return false;" class="mdui-btn mdui-btn-icon mdui-ripple"><i class="mdui-icon material-icons">arrow_back</i></button>
+        </div>
+        <div class="container">
+            <div class="title">
+                <h1><?php if($this->_currentPage>1) echo '第 '.$this->_currentPage.' 页 - '; ?><?php $this->options->title(); ?></h1>
+            </div>
+        </div>
+    </div>
+    <div class="post-head-row">
+        <div class="container">
+            <h5 class="subtitle">
+                <span><?php if($this->_currentPage>1) echo '第 '.$this->_currentPage.' 页'; ?></span>
+            </h5>
+        </div>
+    </div>
+</div>
+<?php else:?>
 <div class="dossier">
     <div class="container">
         <div class="dossier-box">
@@ -142,6 +165,7 @@
         </div>
     </div>
 </div>
+<?php endif;?>
 
 <!-- start Major mdui-drawer -->
 <div class="major-mdui-drawer">
