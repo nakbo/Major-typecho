@@ -88,95 +88,86 @@ function threadedComments($comments, $options) {
     </li>
 <?php } ?>
 
-<div class="major-comment mdui-panel" id="comment-panel">
 
-    <div class="mdui-panel-item">
-        <div class="mdui-panel-item-header mdui-ripple"></div>
-        <div class="mdui-panel-item-body">
+<div id="comments" data-no-instant>
+    <div class="comment-respond">
+        <?php $this->comments()->to($comments);?>
+
+        <?php if ($comments->have()): ?>
+            <?php $comments->listComments(); ?>
+            <?php $comments->pageNav('&laquo;', '&raquo;'); ?>
+
+        <?php endif; ?>
 
 
-            <div id="comments" data-no-instant>
-                <div class="comment-respond">
-                    <?php $this->comments()->to($comments);?>
-
-                    <?php if($this->allow('comment')): ?>
-                        <div id="<?php $this->respondId(); ?>" class="respond">
-                            <div class="cancel-comment-reply">
-                                <?php $comments->cancelReply(); ?>
-                            </div>
-                            <h4 id="response" class="comment-reply-title">
-                                <?php $comments->cancelReply('取消回复'); ?>
-                            </h4>
-                            <form method="post" action="<?php $this->commentUrl() ?>" id="comment-form" class="comment-form" role="form">
-                                <div class="author-infos guest" id="comment-form-avatar"><img src="<?php $this->options->serverGravatar();?>/?d=mm&s=100" width="100" class="avatar"></div>
-                                <div class="comment-form-main">
-                                    <div class="comment-textarea-wrapper mdui-ripple">
-                                        <p class="comment-form-comment"><label for="comment">评论</label>
-                                            <textarea style="" id="textarea" name="text"  <?php if(!$this->user->hasLogin()): ?> onclick='document.getElementById("comment-form-do").style.display="block";'<?php endif; ?>  cols="45" rows="8" aria-required="true" required="required" placeholder="发泄你的牢骚,留下你的笔言!"><?php $this->remember('text',false); ?></textarea>
-                                        </p>
-                                        <div class="comment-form-toolbar">
-                                            <?php if(isset($this->options->plugins['activated']['Smilies'])) $comments->smilies(); ?>
-
-                                        </div>
-                                    </div>
-
-                                    <?php if(!$this->user->hasLogin()): ?>
-                                        <div class="comment-form-fields" id="comment-form-do">
-                                            <p class="comment-form-author">
-                                                <label for="author">昵称</label> <span class="required">*</span>
-
-                                                <input type="text" name="author" maxlength="12" id="author" placeholder="昵称" value="" required>
-
-                                            </p>
-                                            <p class="comment-form-email">
-                                                <label for="email">邮箱</label> <?php if ($this->options->commentsRequireMail): ?><span class="required">*</span><?php endif; ?>
-
-                                                <input type="email" name="mail" id="mail" placeholder="邮箱" value="" class="inputElem" <?php if ($this->options->commentsRequireMail): ?> required<?php endif; ?>>
-                                            </p>
-                                            <p class="comment-form-url">
-                                                <label for="url">网站</label> <?php if ($this->options->commentsRequireURL): ?><span class="required">*</span><?php endif; ?>
-
-                                                <input type="url" name="url" id="url" placeholder="网站" value="" <?php if ($this->options->commentsRequireURL): ?> required<?php endif; ?>>
-
-                                            </p>
-                                            <p class="comment-form-fast">
-                                                <label for="url">输入QQ号快速评论</label>
-                                                <input placeholder="输入QQ号快速评论" id="qqNum" type="text">
-                                            </p>
-                                        </div>
-                                    <?php endif; ?>
-
-                                    <p class="form-submit">
-                                        <button name="submit" type="submit" id="submit" class="submit"><i class="icon iconfont icon-send"></i></button>
-                                        <?php $security = $this->widget('Widget_Security'); ?>
-                                        <input type="hidden" name="_" value="<?php echo $security->getToken($this->request->getReferer())?>">
-                                    </p>
-                                </div>
-                                <div class="comment-form-extra">
-                                    <div class="comment-receiveMail">
-                                        <label class="mdui-checkbox">
-                                            <input type="checkbox" name="receiveMail" id="receiveMail" value="yes" checked />
-                                            <i class="mdui-checkbox-icon"></i>别人回复时接收邮件提醒
-                                        </label>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                    <?php endif; ?>
-
-                    <?php if ($comments->have()): ?>
-                        <?php $comments->listComments(); ?>
-                        <?php $comments->pageNav('&laquo;', '&raquo;'); ?>
-
-                    <?php endif; ?>
-
+        <?php if($this->allow('comment')): ?>
+            <div id="<?php $this->respondId(); ?>" class="respond">
+                <div class="cancel-comment-reply">
+                    <?php $comments->cancelReply(); ?>
                 </div>
+                <h4 id="response" class="comment-reply-title">
+                    <?php $comments->cancelReply('取消回复'); ?>
+                </h4>
+                <form method="post" action="<?php $this->commentUrl() ?>" id="comment-form" class="comment-form" role="form">
+                    <div class="author-infos guest" id="comment-form-avatar"><img src="<?php $this->options->serverGravatar();?>/?d=mm&s=100" width="100" class="avatar"></div>
+                    <div class="comment-form-main">
+                        <div class="comment-textarea-wrapper mdui-ripple">
+                            <p class="comment-form-comment"><label for="comment">评论</label>
+                                <textarea style="" id="textarea" name="text"  <?php if(!$this->user->hasLogin()): ?> onclick='document.getElementById("comment-form-do").style.display="block";'<?php endif; ?>  cols="45" rows="8" aria-required="true" required="required" placeholder="发泄你的牢骚,留下你的笔言!"><?php $this->remember('text',false); ?></textarea>
+                            </p>
+                            <div class="comment-form-toolbar">
+                                <?php if(isset($this->options->plugins['activated']['Smilies'])) $comments->smilies(); ?>
+
+                            </div>
+                        </div>
+
+                        <?php if(!$this->user->hasLogin()): ?>
+                            <div class="comment-form-fields" id="comment-form-do">
+                                <p class="comment-form-author">
+                                    <label for="author">昵称</label> <span class="required">*</span>
+
+                                    <input type="text" name="author" maxlength="12" id="author" placeholder="昵称" value="" required>
+
+                                </p>
+                                <p class="comment-form-email">
+                                    <label for="email">邮箱</label> <?php if ($this->options->commentsRequireMail): ?><span class="required">*</span><?php endif; ?>
+
+                                    <input type="email" name="mail" id="mail" placeholder="邮箱" value="" class="inputElem" <?php if ($this->options->commentsRequireMail): ?> required<?php endif; ?>>
+                                </p>
+                                <p class="comment-form-url">
+                                    <label for="url">网站</label> <?php if ($this->options->commentsRequireURL): ?><span class="required">*</span><?php endif; ?>
+
+                                    <input type="url" name="url" id="url" placeholder="网站" value="" <?php if ($this->options->commentsRequireURL): ?> required<?php endif; ?>>
+
+                                </p>
+                                <p class="comment-form-fast">
+                                    <label for="url">输入QQ号快速评论</label>
+                                    <input placeholder="输入QQ号快速评论" id="qqNum" type="text">
+                                </p>
+                            </div>
+                        <?php endif; ?>
+
+                        <p class="form-submit">
+                            <button name="submit" type="submit" id="submit" class="submit"><i class="icon iconfont icon-send"></i></button>
+                            <?php $security = $this->widget('Widget_Security'); ?>
+                            <input type="hidden" name="_" value="<?php echo $security->getToken($this->request->getReferer())?>">
+                        </p>
+                    </div>
+                    <div class="comment-form-extra">
+                        <div class="comment-receiveMail">
+                            <label class="mdui-checkbox">
+                                <input type="checkbox" name="receiveMail" id="receiveMail" value="yes" checked />
+                                <i class="mdui-checkbox-icon"></i>别人回复时接收邮件提醒
+                            </label>
+                        </div>
+                    </div>
+                </form>
             </div>
+        <?php endif; ?>
 
-        </div>
     </div>
-
 </div>
+
 
 
 

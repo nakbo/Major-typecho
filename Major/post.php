@@ -41,6 +41,7 @@ switch ($newFormat){
                         <?php majors_Plugin::theViews(); ?>
                     </span>
                 </h5>
+                <?php include 'res/postAuthor.php';?>
             </div>
         </div>
     </div>
@@ -49,7 +50,7 @@ switch ($newFormat){
         <div class="container">
             <article class="major-article article-shadow content-wrap" itemscope itemtype="http://schema.org/BlogPosting">
                 <div class="post-content major-text" data-wow-offset="10" itemprop="articleBody">
-                    <?php if($this->fields->thumbUrl) :?><p><img src="<?php $this->fields->thumbUrl(); ?>" alt="<?php $this->title(); ?>" /></p><?php endif;?>
+                    <?php if($this->fields->thumbUrl && !empty($this->options->useBlock) && in_array('usePangu', $this->options->useBlock)) :?><p><img src="<?php $this->fields->thumbUrl(); ?>" alt="<?php $this->title(); ?>" /></p><?php endif;?>
                     <?php $this->content(); ?>
                 </div>
                 <?php include 'res/showfoot.php'?>

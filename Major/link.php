@@ -23,8 +23,9 @@ if (!defined('__TYPECHO_ROOT_DIR__')) exit; ?>
         <div class="post-head-row">
             <div class="container">
                 <h5 class="subtitle">
-                    <time datetime="<?php $this->date('c'); ?>" itemprop="datePublished"><?php $this->date(); ?></time>
+                    <?php $this->sticky(); $this->title(); ?>
                 </h5>
+                <?php include 'res/postAuthor.php';?>
             </div>
         </div>
     </div>

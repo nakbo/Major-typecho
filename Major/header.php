@@ -1,6 +1,4 @@
-<?php
-if (!defined('__TYPECHO_ROOT_DIR__')) exit;
-/*if (!$this->user->hasLogin()){ echo '抱歉啦,权那他正在编写调试 Major2.0 !'; exit;}*/?>
+<?php if (!defined('__TYPECHO_ROOT_DIR__')) exit;?>
 <!DOCTYPE html>
 <html class="no-js">
 <head>

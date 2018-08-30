@@ -3,7 +3,7 @@
 <div class="major-grids">
     <div id="major">
         <div class="major-main <?php $this->options->lightAble(); ?>">
-            <div class="major-1 major-mat" data-rippleria>
+            <div class="major-1 major-mat">
                 <div class="major-A0" id="major-A0" data-mata0="<?php $this->options->majorA0(); ?>"></div>
                 <div class="major-A3"></div>
                 <div class="major-A1"></div>
@@ -28,12 +28,6 @@
                         });
                     }
                 </script>
-            </div>
-
-            <div class="major-menu-bar">
-                <button id="menu-toggle" class="mdui-btn mdui-btn-icon mdui-ripple">
-                    <i class="mdui-icon material-icons">menu</i>
-                </button>
             </div>
 
             <div class="major-t1 scroll-view-t1">
@@ -149,6 +143,27 @@
     </div>
 </div>
 <?php else:?>
+    <!-- start Major mdui-drawer -->
+    <div class="major-menu-bar">
+        <div class="major-mdui-menu">
+            <button mdui-menu="{target: '#menu-drawer'}" class="mdui-btn mdui-btn-icon mdui-ripple">
+                <i class="mdui-icon material-icons">menu</i>
+            </button>
+            <ul class="mdui-menu" id="menu-drawer">
+                <li>
+                    <a class="mdui-list-item mdui-ripple" href="<?php $this->options->siteUrl(); ?>">首页</a>
+                </li>
+                <?php $this->widget('Widget_Contents_Page_List')->to($pages); ?>
+                <?php while($pages->next()): ?>
+                    <li>
+                        <a class="mdui-list-item mdui-ripple <?php if($this->is('page', $pages->slug)): ?>mdui-list-item-active<?php endif; ?>" href="<?php $pages->permalink(); ?>"><?php $pages->title(); ?></a>
+                    </li>
+                <?php endwhile; ?>
+            </ul>
+        </div>
+    </div>
+    <!-- ends Major mdui-drawer -->
+
 <div class="dossier">
     <div class="container">
         <div class="dossier-box">
@@ -166,89 +181,3 @@
     </div>
 </div>
 <?php endif;?>
-
-<!-- start Major mdui-drawer -->
-<div class="major-mdui-drawer">
-    <div class="mdui-drawer mdui-drawer-close mdui-shadow-1" id="menu-drawer">
-        <ul class="mdui-list">
-            <li class="mdui-list-item mdui-ripple" onclick="javascript:linkGo('<?php $this->options->siteUrl(); ?>')">
-                <div class="mdui-list-item-content">首页</div>
-            </li>
-            <li class="mdui-list-item mdui-ripple dropdown">
-                <div class="mdui-list-item ripple-effect dropdown-toggle" data-toggle="dropdown">
-                    <div class="mdui-list-item-content">归档 <b class="caret"></b></div>
-                </div>
-                <ul class="dropdown-menu">
-                    <?php $this->widget('Widget_Contents_Post_Date', 'type=month&format=F Y')->parse('<li><a href="{permalink}">{date}</a></li>'); ?>
-                </ul>
-            </li>
-            <li class="mdui-list-item mdui-ripple dropdown">
-                <div class="mdui-list-item ripple-effect dropdown-toggle" data-toggle="dropdown">
-                    <div class="mdui-list-item-content">分类 <b class="caret"></b></div>
-                </div>
-                <ul class="dropdown-menu">
-                    <?php $this->widget('Widget_Metas_Category_List')->parse('<li><a href="{permalink}" title="{description}">{name} <span class="dropdown-menu-count">{count}</span></a></li>'); ?>
-                </ul>
-            </li>
-            <li class="mdui-divider"></li>
-
-            <?php $this->widget('Widget_Contents_Page_List')->to($pages); ?>
-            <?php while($pages->next()): ?>
-                <li>
-                    <a class="mdui-list-item mdui-ripple <?php if($this->is('page', $pages->slug)): ?>mdui-list-item-active<?php endif; ?>" href="<?php $pages->permalink(); ?>"><?php $pages->title(); ?></a>
-                </li>
-            <?php endwhile; ?>
-
-        </ul>
-    </div>
-    <script>
-        //document.getElementById("drawer-masterName").innerHTML= window.bzName;
-        var inst = new mdui.Drawer('#menu-drawer', {overlay: true, swipe: true});
-        $("#menu-toggle").click(function(){
-            inst.toggle();
-        });
-        $(".major-mdui-drawer-close").click(function(){
-            inst.toggle();
-        });
-        function linkGo(l){
-            window.location.href=l;
-        }
-    </script>
-</div>
-<!-- ends Major mdui-drawer -->
-
-<div id="rewards">
-    <div class="rewards" >
-        <div class="reward-com">
-            <div class="reward-comint">
-                <h3 class="reward-title"><span class="reward-urd">加载中...</span></h3>
-                <div class="reward-ud">
-                    <div class="reward-intor">
-                        <a class="reward-imx"><img class="reward-hg"></a>
-                        <p class="reward-ue">加载中...</p>
-                        <img class="reward-code">
-                    </div>
-                </div>
-                <div class="reward-pt">
-                    <p class="reward-paybox">
-                        <span class="reward-paywar">打赏无悔，概不退款</span>
-                    </p>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<script type="text/javascript">
-    function rewardLoad() {
-        var rewardJson = [<?php $this->options->rewardJson(); ?>];
-        var reward = rewardJson[0];
-        document.getElementsByClassName('reward-urd')[0].innerHTML="给"+reward.name+"打赏";
-        document.getElementsByClassName('reward-hg')[0].style.src = reward.uImg;
-        $(".reward-hg").attr("src",reward.uImg);
-        document.getElementsByClassName('reward-ue')[0].innerHTML="收款人:"+reward.name;
-        $(".reward-code").attr("src",reward.codeImg);
-    }
-    rewardLoad();
-</script>
-
-

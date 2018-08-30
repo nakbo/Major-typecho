@@ -35,9 +35,10 @@ function themeConfig($form) {
             'A1' => _t('渲染夹层渐变黑'),
             'A2' => _t('渲染夹层紫红色'),
             'A3' => _t('渲染夹层雅棕色'),
+            'mat' => _t('渲染夹方格图层'),
             'svgMountain' => _t('渲染夹层大山')
         ),
-        array('A0'), _t('Material light 背景渲染组件'));
+        array('A0','mat'), _t('Material light 背景渲染组件'));
     $form->addInput($matAAble->multiMode());
 
 
@@ -70,10 +71,10 @@ function themeConfig($form) {
         'https://gravatar.loli.net/avatar', _t('Gravatar选择服务器'), _t('替换Gravatar头像服务器') );
     $form->addInput($serverGravatar->multiMode());
 
-    $stickyCid = new Typecho_Widget_Helper_Form_Element_Text('stickyCid', NULL, '1628,1671', _t('置顶文章的 cid'), _t('按照排序输入, 请以半角逗号或空格分隔 cid.'));
+    $stickyCid = new Typecho_Widget_Helper_Form_Element_Text('stickyCid', NULL, '1739,1671,1628', _t('置顶文章的 cid'), _t('按照排序输入, 请以半角逗号或空格分隔 cid.'));
     $form->addInput($stickyCid);
 
-    $rewardJson = new Typecho_Widget_Helper_Form_Element_Textarea('rewardJson', NULL, '{"name":"那他","uImg":"https://secure.gravatar.com/avatar/953de4234df55c1c973abb1c1588dc2e?s=100&r=G&d=mm","codeImg":"https://wx4.sinaimg.cn/large/006U7bU2gy1fl6dogepplj30u00u0gps.jpg"}', _t('打赏Json'), _t('此处填入打赏的Json。'));
+    $rewardJson = new Typecho_Widget_Helper_Form_Element_Textarea('rewardJson', NULL, '{ reward: [{ name: "支付宝" }, { img: "https://wx4.sinaimg.cn/large/006U7bU2gy1fl6dogepplj30u00u0gps.jpg"}] },{ reward: [{ name: "微信" }, { img: "https://ws3.sinaimg.cn/large/006U7bU2gy1furtrmqw95j30w00w0q6u.jpg"}] },{ reward: [{ name: "QQ" }, { img: "https://ws3.sinaimg.cn/large/006U7bU2gy1fus05omzozj30k00u0abg.jpg"}] }', _t('打赏Json'), _t('此处填入打赏的Json。'));
     $form->addInput($rewardJson);
 
     $socialJsonUrl = new Typecho_Widget_Helper_Form_Element_Text('socialJsonUrl', NULL, '//at.alicdn.com/t/font_569951_ou3gfpi8iyp.css', _t('社交Json Font class'), _t('此处填入阿里巴巴矢量图标库中你的项目中Font class的在线链接.'));
@@ -93,9 +94,10 @@ function themeConfig($form) {
 
     $useBlock = new Typecho_Widget_Helper_Form_Element_Checkbox('useBlock',
         array(
-            'usePangu' => _t('Pangu 文章里中英文间加空格')
+            'usePangu' => _t('文章里中英文间加空格'),
+            'usePostContentImg' => _t('文章里中加入文章缩略图在其中')
             ),
-        array('usePangu'), _t('插件显示'));
+        array('usePangu','usePostContentImg'), _t('其他开关'));
     $form->addInput($useBlock->multiMode());
 
 }

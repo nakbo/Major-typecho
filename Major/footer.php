@@ -1,5 +1,6 @@
 <?php if (!defined('__TYPECHO_ROOT_DIR__')) exit; ?>
 
+
 <?php if($this->is('index') && $this->_currentPage<2): ?>
 <footer class="footer" role="contentinfo">
     <div class="container">
@@ -19,17 +20,6 @@
         var s = document.getElementsByTagName("script")[0];
         s.parentNode.insertBefore(hm, s);
     })();
-</script>
-
-<script>
-    function randInt(min, max) {
-        var rand = min + Math.random() * (max - min);
-        rand = Math.round(rand);
-        return rand;
-    }
-    $('.major-mat').click(function(e) {
-        $(this).rippleria('changeColor','rgba('+randInt(0,255)+','+randInt(0,255)+','+randInt(0,255)+',0.'+randInt(3,5));
-    });
 </script>
 
 <script type="text/javascript" src="<?php $this->options->themeUrl("vendors/liveTimeAgo/jquery.liveTimeAgo.js"); ?>"></script>

@@ -20,8 +20,9 @@
     <div class="post-head-row">
         <div class="container">
             <h5 class="subtitle">
-                <span><?php if($this->_currentPage>1) echo '第 '.$this->_currentPage.' 页 - '; ?></span>
+                <span><?php echo '第 '.$this->_currentPage.' 页'; ?></span>
             </h5>
+            <?php if($this->is('author')) include 'res/postAuthor.php';?>
         </div>
     </div>
 </div>
