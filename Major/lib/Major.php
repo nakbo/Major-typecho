@@ -44,7 +44,7 @@ class Major
             "author"=>"权那他",
             "package"=>"Major",
             "version"=>"2.0",
-            "updateTime"=>"1535651000"
+            "updateTime"=>"1537714970"
         );
     }
 
@@ -53,7 +53,8 @@ class Major
         self::$api = array(
             "infoMajor" => "https://api.krait.cn/version/Major.json",
             "introMajor" => "https://krait.cn/major.html",
-            "headimg_dl" => "https://api.krait.cn/api/headimg_dl/"
+            "headimg_dl" => "https://api.krait.cn/api/headimg_dl/",
+            "api" => "https://api.krait.cn/"
         );
     }
 
