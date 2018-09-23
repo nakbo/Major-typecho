@@ -28,6 +28,7 @@
     <link href="//cdn.bootcss.com/simple-line-icons/2.4.1/css/simple-line-icons.css" rel="stylesheet">
     <link href="<?php $this->options->socialJsonUrl(); ?>" rel="stylesheet">
     <script src="//cdn.bootcss.com/mdui/0.4.1/js/mdui.min.js"></script>
+    <script src="<?php $this->options->themeUrl("js/rgbaster.min.js?v="); echo Major::$Major['version']; ?>"></script>
     <script src="//cdn.bootcss.com/modernizr/2.8.3/modernizr.min.js"></script>
     <script src="<?php $this->options->themeUrl("js/toast.script.js"); ?>"></script>
     <script src="//cdn.bootcss.com/venobox/1.8.3/venobox.min.js"></script>

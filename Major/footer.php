@@ -82,10 +82,13 @@
             if (typeof _hmt !== 'undefined'){
                 _hmt.push(['_trackPageview', location.pathname + location.search]);
             }
-
+        }
+        if (typeof RGBiamge !== 'undefined'){
+            RGBiamge();
         }
         majorsMtheme();
         liveTimeGo();
+
     });
     InstantClick.init('mousedown');
 </script>

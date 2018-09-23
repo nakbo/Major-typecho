@@ -12,7 +12,7 @@ if (!defined('__TYPECHO_ROOT_DIR__')) exit; ?>
     <div class="articles-post post-header">
         <div class="post-head">
             <div class="back">
-                <button onclick="window.history.back();return false;" class="mdui-btn mdui-btn-icon mdui-ripple"><i class="mdui-icon material-icons">arrow_back</i></button>
+                <button onclick="backClick()" class="mdui-btn mdui-btn-icon mdui-ripple"><i class="mdui-icon material-icons">arrow_back</i></button>
             </div>
             <div class="container">
                 <div class="title">
@@ -46,7 +46,15 @@ if (!defined('__TYPECHO_ROOT_DIR__')) exit; ?>
             </article>
         </div>
     </div>
-
+    <script>
+        function backClick(){
+            if(history.length<1){
+                window.location.href = "<?php $this->options->siteUrl(); ?>";
+            }else{
+                window.history.back();
+            }
+        }
+    </script>
     <div class="comment-here">
         <div class="container">
             <?php $this->need('comments.php'); ?>
