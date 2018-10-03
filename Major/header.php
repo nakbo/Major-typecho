@@ -9,8 +9,9 @@
     <meta http-equiv="x-dns-prefetch-control" content="on">
     <link rel="icon" href="<?php $this->options->faviconUrl(); ?>">
     <link rel="dns-prefetch" href="//cdn.mathjax.org" />
-    <link rel="dns-prefetch" href="//cdn.bootcss.com" />
-    <link rel="dns-prefetch" href="//secure.gravatar.com" />
+    <link rel="dns-prefetch" href="<?php $this->options->siteUrl(); ?>" />
+    <link rel="dns-prefetch" href="<?php echo Major::$api['kraitLibrary']; ?>" />
+    <link rel="dns-prefetch" href="<?php $this->options->libCdnjs();?>" />
     <link rel="dns-prefetch" href="<?php $this->options->serverGravatar();?>" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php $this->archiveTitle(array(
@@ -20,26 +21,39 @@
             'author'    =>  _t('%s ')
         ), '', ' - '); ?><?php $this->options->title(); ?></title>
     <?php $this->header('generator=&commentReply='); ?>
-    <link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <script src="//cdn.bootcss.com/jquery/2.1.1/jquery.min.js"></script>
-    <script src="//cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" href="//cdn.bootcss.com/mdui/0.4.1/css/mdui.min.css">
+
+    <link rel="stylesheet" type="text/css" href="<?php echo Major::$api['kraitLibrary']; ?>bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="<?php echo Major::$api['kraitLibrary']; ?>jquery/2.1.1/jquery.min.js"></script>
+    <script src="<?php echo Major::$api['kraitLibrary']; ?>bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="<?php $this->options->libCdnjs();?>mdui/0.4.1/css/mdui.min.css">
     <link href="<?php $this->options->themeUrl("style.css?v="); echo Major::$Major['version']; ?>" rel="stylesheet" />
-    <link href="//cdn.bootcss.com/simple-line-icons/2.4.1/css/simple-line-icons.css" rel="stylesheet">
+    <link href="<?php $this->options->libCdnjs();?>simple-line-icons/2.4.1/css/simple-line-icons.css" rel="stylesheet">
     <link href="<?php $this->options->socialJsonUrl(); ?>" rel="stylesheet">
-    <script src="//cdn.bootcss.com/mdui/0.4.1/js/mdui.min.js"></script>
+    <script src="<?php $this->options->libCdnjs();?>mdui/0.4.1/js/mdui.min.js"></script>
     <script src="<?php $this->options->themeUrl("js/rgbaster.min.js?v="); echo Major::$Major['version']; ?>"></script>
-    <script src="//cdn.bootcss.com/modernizr/2.8.3/modernizr.min.js"></script>
+    <script src="<?php $this->options->libCdnjs();?>modernizr/2.8.3/modernizr.min.js"></script>
     <script src="<?php $this->options->themeUrl("js/toast.script.js"); ?>"></script>
-    <script src="//cdn.bootcss.com/venobox/1.8.3/venobox.min.js"></script>
-    <script src="//cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.min.js"></script>
+    <script src="<?php $this->options->libCdnjs();?>venobox/1.8.3/venobox.min.js"></script>
+    <script src="<?php $this->options->libCdnjs();?>blueimp-md5/2.10.0/js/md5.min.js"></script>
     <script type="text/javascript">
-        window.bzName = "<?php echo Major::$screenName; ?>";
-        window.bzMail = "<?php echo Major::$mail; ?>";
+        //以调用全局方式
+        function objectPersonal() {
+            var personal = new Object;
+            personal.name = "<?php echo Major::$screenName; ?>";
+            personal.mail = "<?php echo Major::$mail; ?>";
+            personal.themeUrl = "<?php $this->options->themeUrl();?>";
+            personal.siteUrl = "<?php $this->options->siteUrl(); ?>";
+            personal.showName = function() {
+                document.write(this.name);
+            };
+            return personal;
+        }
+        window.personal = objectPersonal();
+        console.log(window.personal);
     </script>
     <!--[if lt IE 9]>
-    <script src="//cdn.bootcss.com/html5shiv/r29/html5.min.js"></script>
-    <script src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/r29/html5.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
     <script type="text/javascript">jQuery(document).ready(function($) {$(".scroll").click(function(event){event.preventDefault();$('html,body').animate({scrollTop:$(this.hash).offset().top},1000);});});</script>
 </head>
