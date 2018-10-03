@@ -6,18 +6,17 @@ Major,这是一款采用兼容性开发的 Typecho 主题，科创出品,原创�
 **Mjaor 作者**: [权那他][1] 就是我!
 
 ## 预览图片 ##
-
-![Screenshot_2018-08-27-17-40-22-04.png][2]
-
-![Screenshot_2018-08-27-02-50-09-13.png][3]
-![Screenshot_2018-08-27-02-50-26-67.png][4]
-![Screenshot_2018-08-27-02-50-33-00.png][5]
-![Screenshot_2018-08-27-02-50-56-39.png][6]
-![Screenshot_2018-08-27-02-51-08-25.png][7]
-![Screenshot_2018-08-27-02-51-16-61.png][8]
+![Screenshot_2018-10-03-19-00-35-03.png][2]
+![Screenshot_2018-10-03-19-00-49-49.png][3]
+![Screenshot_2018-10-03-19-01-42-19.png][4]
+![Screenshot_2018-10-03-19-01-53-41.png][5]
+![Screenshot_2018-10-03-19-02-05-84.png][6]
+![Screenshot_2018-10-03-19-02-25-86.png][7]
+![Screenshot_2018-10-03-19-03-46-14.png][8]
+![Screenshot_2018-10-03-19-04-15-80.png][9]
 
 ## 下载 ##
-Github Major : [https://github.com/kraity/Major][9]
+Github Major : [https://github.com/kraity/Major][10]
 
 #### 文件树 #### 
 `Major`  主题文件
@@ -26,7 +25,7 @@ Github Major : [https://github.com/kraity/Major][9]
 
 ## 使用说明 ##
 
-[https://krait.cn/major/1628.html][10] 因为Major开发必须需要插件才能实现,切记看说明!
+[https://krait.cn/major/1628.html][11] 因为Major开发必须需要插件才能实现,切记看说明!
 
 ## 特别说明 ##
 >以Typecho 1.0.14.10.10 开发,较低版本略有影响。
@@ -34,13 +33,21 @@ Github Major : [https://github.com/kraity/Major][9]
 >若在Git里下载**和我博客的不一样**,是正常,因为我们在经常测试兼容性。
 
 ## 站点演示 ##
-[那他 - Krait.cn][11] 详细到我的博客里介绍。
+[那他 - Krait.cn][12] 详细到我的博客里介绍。
 
 ## License 许可证 ##
 >Open sourced under the MIT license.
 >根据 MIT 许可证开源。
 
 ## 更新历史 ##
+#### 2018-10.03 日 更新 v2.1 ####
+
+ 1. 新增主题模版数据备份功能
+ 2. 解决点击返回按钮无响应的问题
+ 3. 增加可选择公共库方法
+ 4. 手机端和电脑端都注重
+ 5. 新增文章页背景根据图片自动变色
+ 6. 等等解决了很多错误的方法
 
 #### 2018-08.27 日 更新 v2.0 ####
 
@@ -48,7 +55,7 @@ Github Major : [https://github.com/kraity/Major][9]
  2. 将插件里的配置转到主题配置页来配置
  3. 全站用material design风格
  4. 版本2.0注重手机端
- 5. 等等(由很久才更新,所有改的地方比较多，这里不再一列举)
+ 5. 等等，列举不完
 
 #### 2018-04.29 日 更新 v1.9 ####
 
@@ -130,13 +137,14 @@ Github Major : [https://github.com/kraity/Major][9]
 
 
   [1]: https://krait.cn
-  [2]: https://ws3.sinaimg.cn/large/006U7bU2gy1fuoef94dtcj30u01hcx6g.jpg
-  [3]: https://ws3.sinaimg.cn/large/006U7bU2gy1funot64fruj30u01hcn1p.jpg
-  [4]: https://ws3.sinaimg.cn/large/006U7bU2gy1funotct33bj30u01hcgqf.jpg
-  [5]: https://ws3.sinaimg.cn/large/006U7bU2gy1funousfseoj30u01hcn02.jpg
-  [6]: https://ws3.sinaimg.cn/large/006U7bU2gy1funovb1ig5j30u01hcwh9.jpg
-  [7]: https://ws3.sinaimg.cn/large/006U7bU2gy1funovr53zwj30u01hch64.jpg
-  [8]: https://ws3.sinaimg.cn/large/006U7bU2gy1funovx2hiwj30u01hc0w9.jpg
-  [9]: https://krait.cn/d/major
-  [10]: https://krait.cn/major/1628.html
-  [11]: https://krait.cn
+  [2]: https://ws3.sinaimg.cn/large/006U7bU2gy1fvv8y39yrpj30u01hc1kx.jpg
+  [3]: https://ws3.sinaimg.cn/large/006U7bU2gy1fvv8y9nsqnj30u01hcgpr.jpg
+  [4]: https://ws3.sinaimg.cn/large/006U7bU2gy1fvv8yi8elaj30u01hc0vk.jpg
+  [5]: https://ws3.sinaimg.cn/large/006U7bU2gy1fvv8ynqi2yj30u01hcjtg.jpg
+  [6]: https://ws3.sinaimg.cn/large/006U7bU2gy1fvv8yt2spxj30u01hcdhp.jpg
+  [7]: https://ws3.sinaimg.cn/large/006U7bU2gy1fvv8yydoydj30u01hcdk1.jpg
+  [8]: https://ws3.sinaimg.cn/large/006U7bU2gy1fvv8z3qjnsj30u01hcwh9.jpg
+  [9]: https://ws3.sinaimg.cn/large/006U7bU2gy1fvv8zakiavj30u01hcgol.jpg
+  [10]: https://krait.cn/d/major
+  [11]: https://krait.cn/major/1628.html
+  [12]: https://krait.cn
