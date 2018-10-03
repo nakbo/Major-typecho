@@ -97,7 +97,7 @@
 <div class="post-header">
     <div class="post-head">
         <div class="back">
-            <button onclick="backClick()" class="mdui-btn mdui-btn-icon mdui-ripple"><i class="mdui-icon material-icons">arrow_back</i></button>
+            <button onclick="historyBack();" class="mdui-btn mdui-btn-icon mdui-ripple"><i class="mdui-icon material-icons">arrow_back</i></button>
         </div>
         <div class="container">
             <div class="title">
@@ -113,15 +113,6 @@
         </div>
     </div>
 </div>
-<script>
-    function backClick(){
-        if(history.length<1){
-            window.location.href = "<?php $this->options->siteUrl(); ?>";
-        }else{
-            window.history.back();
-        }
-    }
-</script>
     <style>
         #major{
             display: none!important;
