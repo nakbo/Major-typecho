@@ -20,7 +20,7 @@ switch ($newFormat){
         <div class="JudgmentProject <?php if($this->fields->thumbUrl && !empty($this->options->useBlock) && in_array('usePostContentImg', $this->options->useBlock)) :?>usePostContentImg<?php endif;?>">
             <div class="post-head" id="post-image">
                 <div class="back">
-                    <button onclick="backClick();" class="mdui-btn mdui-btn-icon mdui-ripple"><i class="mdui-icon material-icons">arrow_back</i></button>
+                    <button onclick="historyBack();" class="mdui-btn mdui-btn-icon mdui-ripple"><i class="mdui-icon material-icons">arrow_back</i></button>
                 </div>
                 <div class="container">
                     <div class="title">
@@ -63,16 +63,16 @@ switch ($newFormat){
         </div>
     </div>
     <script>
-        function backClick(){
-            if(history.length<1){
-                window.location.href = "<?php $this->options->siteUrl(); ?>";
-            }else{
-                window.history.back();
-            }
-        }
         function RGBiamge(){
             if(document.getElementById("imageSrc")){
-                var img = '<?php echo Major::$api['api']."api/?it=rgbaster&url="; $this->fields->thumbUrl(); ?>';
+                var thumbUrl = "<?php $this->fields->thumbUrl(); ?>";
+                var site = document.domain;
+                var img;
+                if( thumbUrl.indexOf(site) > 0) {
+                    img = thumbUrl;
+                }else{
+                    img = '<?php echo Major::$api['api']."proxy/?proxy="; ?>'+thumbUrl;
+                }
                 RGBaster.colors(img, {
                     // return up to 30 top colors from the palette
                     paletteSize: 30,
