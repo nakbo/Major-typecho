@@ -43,8 +43,9 @@ class Major
             "developer"=>"Krait",
             "author"=>"权那他",
             "package"=>"Major",
-            "version"=>"2.0",
-            "updateTime"=>"1537714970"
+            "version"=>"2.1",
+            "github"=>"https://github.com/kraity/Major",
+            "updateTime"=>"1538561120"
         );
     }
 
@@ -52,6 +53,7 @@ class Major
     {
         self::$api = array(
             "infoMajor" => "https://api.krait.cn/version/Major.json",
+            "kraitLibrary" => "https://lib.krait.cn/library/",
             "introMajor" => "https://krait.cn/major.html",
             "headimg_dl" => "https://api.krait.cn/api/headimg_dl/",
             "api" => "https://api.krait.cn/"
@@ -141,61 +143,6 @@ class Major
                 echo 'text';
         endswitch;
     }
-
-    public static function getVersion()
-    {
-        $infoMajor = json_decode(file_get_contents(self::$api['infoMajor']));
-        $date = $infoMajor->Major[0]->d;
-        $ver = $infoMajor->Major[0]->v;
-
-        if($date > self::$Major['updateTime']){
-            echo '<div class="majorPv">你正在使用 <strong>'.self::$Major['version'].'</strong> 版本，'.date("Y-m-d",$date). '更新最新版本为 <strong style="color:#000000;">' .$ver.'</strong><a href="'.self::$api['introMajor'].'"><button type="submit" class="btn btn-warn">前往更新</button></a></div>';
-        }else {
-            echo '<div class="majorPv">你正在使用最新版 '.self::$Major['version'].'</div>';
-        }
-
-        $str=<<<EOT
-<script type="text/javascript" src="./js/jquery.js"></script>
-<script type="text/javascript">
-	$(function() {
-		var Gra1 = $("#useGravatar-ma"),
-			Gra0 = $("#useGravatar-gr");
-		if(!Gra1.is(":checked")) {
-			var Grat = $("#typecho-option-item-masterImgUrl-1");
-			Grat.attr("style","color:#999")
-			.find("input").attr("disabled","disabled");
-			Gra1.click(function() {
-				Grat.removeAttr("style")
-				.find("input").removeAttr("disabled");
-			});
-			Gra0.click(function() {
-				Grat.attr("style","color:#999")
-				.find("input").attr("disabled","disabled");
-			});
-		}
-	});
-	</script>       
-        
-<style>
-   .majorPv{
-     font-family:'Microsoft Yahei', sans-serif
-   }
-   .majorPv a {
-      color:black;
-   }
-   .majorPv .btn {
-    padding: 0 7px;
-    height: 20px;
-    margin-left: 10px;
-    font-size: 10px;
-    margin-top: -7px;
-   }
-</style>
-EOT;
-        echo $str;
-    }
-
-
 }
 
 new \Major();
