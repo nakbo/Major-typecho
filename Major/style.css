@@ -614,7 +614,7 @@ Main components
 
 #major {
     position: relative;
-    background: #4b0083;
+    background: #2e32bd;
     -webkit-box-shadow: 1px 3px 10px -4px rgb(0, 0, 0);
     box-shadow: 1px 3px 10px -4px rgb(0, 0, 0);
     -webkit-transform: translateZ(0);
@@ -1587,8 +1587,7 @@ pre {
 
 
 .post-head{
-    /*background: #2e32bd;*/
-    background-color: #4b0083;
+    background: #2e32bd;
 }
 .post-header .title{
     color: #fff;
@@ -2653,7 +2652,7 @@ img.figlio{
     padding: 0;
     overflow: hidden;
     color: #FFF;
-    background: #4b0083;
+    background: #2e32bd;
     border: 0;
     border-radius: 50%;
     box-shadow: 0 2px 6px rgba(0, 0, 0, .2);
