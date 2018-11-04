@@ -14,11 +14,18 @@ class Major
     public static $api;
     public static $uid = 1;
 
+    public static $Widget_Archive;
+    public static $archiveType;
+
+    public static $formats;
+    public static $formatPostAble;
+
     public function __construct()
     {
         self::personal();
         self::setMajor();
         self::setApi();
+        self::formats();
     }
 
     public function personal()
@@ -35,6 +42,12 @@ class Major
         self::$group = $m['group'];
         self::$activated = $m['activated'];
         self::$logged = $m['logged'];
+        Typecho_Widget::widget('Widget_Archive')->to(self::$Widget_Archive);
+        self::$archiveType = self::$Widget_Archive->_archiveType;
+    }
+
+    public static function prints($data){
+        echo $data;
     }
 
     public function setMajor()
@@ -43,9 +56,9 @@ class Major
             "developer"=>"Krait",
             "author"=>"权那他",
             "package"=>"Major",
-            "version"=>"2.1",
+            "version"=>"2.2",
             "github"=>"https://github.com/kraity/Major",
-            "updateTime"=>"1538561120"
+            "updateTime"=>"1541308952"
         );
     }
 
@@ -62,86 +75,57 @@ class Major
 
     public static function getGravatar($mail)
     {
-        $secure = Helper::options()->serverGravatar;
-        $use = Helper::options()->useGravatar;
-        $Img = Helper::options()->masterImgUrl;
-        $s = "100";
-        if($use == "gr"){
-            $secure = $secure."/";
-            $s = "?s=".$s;
-            $r = "&r=G";
-            $d = "&d=";
-            $qqUrl = self::$api['headimg_dl'].$mail;
-            return $gr = $secure.md5($mail).$s.$r.$d.$qqUrl;
-        }else{
-            return $Img;
-        }
+        $gr = Helper::options()->serverGravatar."/".md5($mail)."?s=100&r=G&d=".self::$api['headimg_dl'].$mail;
+        $type = array(
+            "gr" => $gr,
+            "ma" => Helper::options()->masterImgUrl
+        );
+        return $type[Helper::options()->useGravatar];
     }
 
-    public static function mdate($time = NULL) {
-        $text = '';
-        $time -=1;
-        $time = $time === NULL || $time > time() ? time() : intval($time);
-        $t = time() - $time;
-        $y = date('Y', $time)-date('Y', time());
-        switch($t){
-            case $t < 60 * 60 * 24:
-                $text = "It's today";
-                break;
-            case $t < 60 * 60 * 24 * 30:
-                $text = 'Just a few days ago';
-                break;
-            case $t < 60 * 60 * 24 * 365 && $y==0:
-                $text = 'Just a few months ago';
-                break;
-            default:
-                $text = "Just several years ago";
-                break;
-        }
-        return $text;
+    public function formats(){
+        self::$formats = array(
+            "post" => "text",
+            "quote" => "quote",
+            "aside" => "image",
+            "chat" => "chat",
+            "status" => "status",
+            "gallery" => "gallery",
+            "video" => "video",
+            "link" => "link"
+        );
+
+        self::$formatPostAble = array(
+            "post" => true,
+            "quote" => false,
+            "aside" => true,
+            "chat" => false,
+            "status" => false,
+            "gallery" => true,
+            "video" => true,
+            "link" => true
+        );
+
     }
 
+    public static function postAble($newFormat){
+        $thisIs = false;/**!self::thisIs("attachment")**/
+        if(self::$Widget_Archive->is("attachment") || !self::$formatPostAble[$newFormat]){
+            $thisIs = true;
+        }
+        return $thisIs;
+    }
 
+    public static function majorHeaderAble($currentPage){
+        $thisIs = false;
+        if(self::$Widget_Archive->is("index") && $currentPage <2){
+            $thisIs = true;
+        }
+        return $thisIs;
+    }
 
-    public function formats($mat)
-    {
-        switch ($mat) :
-            case "post" :
-                //标准 post
-                echo 'text';
-                break;
-            case "quote" :
-                //引语 quote
-                echo 'quote';
-                break;
-            case "aside" :
-                //日志 aside
-                echo 'image';
-                break;
-            case "chat" :
-                //聊天 chat
-                echo 'chat';
-                break;
-            case "status" :
-                //状态 status
-                echo 'status';
-                break;
-            case "gallery" :
-                //相册 gallery
-                echo 'gallery';
-                break;
-            case "video" :
-                //视频 video
-                echo "video";
-                break;
-            case "link" :
-                //链接 link
-                echo "link";
-                break;
-            default:
-                //其他 post
-                echo 'text';
-        endswitch;
+    public static function footerInfoAble($currentPage){
+        return self::majorHeaderAble($currentPage);
     }
 }
 
