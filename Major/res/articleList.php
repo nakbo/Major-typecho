@@ -26,7 +26,7 @@
                     case 'chat':?>
                         <div class="major-chats mdui-card-header">
                             <img class="mdui-card-header-avatar" src="<?php echo Major::getGravatar($this->author->mail) ?>"/>
-                            <div class="chats"><?php $this->content(); ?></div>
+                            <div class="chats major-text"><?php $this->content(); ?></div>
                         </div>
                     <?php break;
                     case 'quote':?>
