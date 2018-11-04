@@ -148,7 +148,7 @@ function threadedComments($comments, $options) {
                         <?php endif; ?>
 
                         <p class="form-submit">
-                            <button name="submit" type="submit" id="submit" class="submit"><i class="icon iconfont icon-send"></i></button>
+                            <button name="submit" type="submit" id="submit" class="submit mdui-color-theme"><i class="icon iconfont icon-send"></i></button>
                             <?php $security = $this->widget('Widget_Security'); ?>
                             <input type="hidden" name="_" value="<?php echo $security->getToken($this->request->getReferer())?>">
                         </p>
@@ -169,8 +169,7 @@ function threadedComments($comments, $options) {
 </div>
 
 
-
-
+<!--<nocompress>-->
 <script>
     var inst = new mdui.Panel('#comment-panel');
 
@@ -270,6 +269,7 @@ function threadedComments($comments, $options) {
                     response.parentNode.insertBefore(holder, response);
                 }
                 comment.appendChild(response);
+
                 this.dom('cancel-comment-reply-link').style.display = '';
                 if (null != textarea && 'text' == textarea.name) {
                     textarea.focus();
@@ -291,6 +291,7 @@ function threadedComments($comments, $options) {
                 return false;
             }
         };
+
     })();
 </script>
 <script type = "text/javascript" data-no-instant>
@@ -320,27 +321,27 @@ function threadedComments($comments, $options) {
                                 input.name = '_';
                                 input.value = (function() {
                                     var _a8C5A = //'xr'
-                                            '8d0' + //'vI'
-                                            'vI' + /* 'mj'//'mj' */ '' + //'P'
-                                            '06' + 'd' //'chS'
-                                            + //'wo'
-                                            '0ef' + '41' //'9G'
-                                            + '8c8' //'R'
-                                            + //'p1'
-                                            'd0' + //'mi'
-                                            'mi' + 'baf' //'lu'
-                                            + 'c' //'dm'
-                                            + //'ED'
-                                            '1a9' + //'Lh'
-                                            'd9' + '6' //'luM'
-                                            + //'xH'
-                                            'f1' + //'W'
-                                            '2c7' + 'f' //'f'
-                                            + //'9'
-                                            '9' + //'Nd'
-                                            'Nd' + /* '8ys'//'8ys' */ '' + '' ///*'6Yc'*/'6Yc'
-                                            + //'H'
-                                            '0',
+                                        '8d0' + //'vI'
+                                        'vI' + /* 'mj'//'mj' */ '' + //'P'
+                                        '06' + 'd' //'chS'
+                                        + //'wo'
+                                        '0ef' + '41' //'9G'
+                                        + '8c8' //'R'
+                                        + //'p1'
+                                        'd0' + //'mi'
+                                        'mi' + 'baf' //'lu'
+                                        + 'c' //'dm'
+                                        + //'ED'
+                                        '1a9' + //'Lh'
+                                        'd9' + '6' //'luM'
+                                        + //'xH'
+                                        'f1' + //'W'
+                                        '2c7' + 'f' //'f'
+                                        + //'9'
+                                        '9' + //'Nd'
+                                        'Nd' + /* '8ys'//'8ys' */ '' + '' ///*'6Yc'*/'6Yc'
+                                        + //'H'
+                                        '0',
                                         _LceE8M = [
                                             [3, 5],
                                             [16, 18],

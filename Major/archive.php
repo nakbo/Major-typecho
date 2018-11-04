@@ -2,7 +2,7 @@
 <?php $this->need('header.php'); ?>
 
 <div class="post-header">
-    <div class="post-head">
+    <div class="post-head mdui-color-theme">
         <div class="back">
             <button onclick="historyBack();" class="mdui-btn mdui-btn-icon mdui-ripple"><i class="mdui-icon material-icons">arrow_back</i></button>
         </div>
@@ -19,9 +19,9 @@
     </div>
     <div class="post-head-row">
         <div class="container">
-            <h5 class="subtitle">
+            <div class="subtitle">
                 <span><?php echo '第 '.$this->_currentPage.' 页'; ?></span>
-            </h5>
+            </div>
             <?php if($this->is('author')) include 'res/postAuthor.php';?>
         </div>
     </div>

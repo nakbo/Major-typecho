@@ -10,7 +10,7 @@ if (!defined('__TYPECHO_ROOT_DIR__')) exit; ?>
 
 
     <div class="articles-post post-header">
-        <div class="post-head">
+        <div class="post-head mdui-color-theme">
             <div class="back">
                 <button onclick="historyBack();" class="mdui-btn mdui-btn-icon mdui-ripple"><i class="mdui-icon material-icons">arrow_back</i></button>
             </div>
@@ -22,9 +22,9 @@ if (!defined('__TYPECHO_ROOT_DIR__')) exit; ?>
         </div>
         <div class="post-head-row">
             <div class="container">
-                <h5 class="subtitle">
+                <div class="subtitle">
                     <?php $this->sticky(); $this->title(); ?>
-                </h5>
+                </div>
                 <?php include 'res/postAuthor.php';?>
             </div>
         </div>

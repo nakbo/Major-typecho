@@ -1,15 +1,16 @@
 <?php if (!defined('__TYPECHO_ROOT_DIR__')) exit; ?>
-
-<?php if($this->is('index') && $this->_currentPage<2): ?>
+<?php switch (Major::footerInfoAble($this->_currentPage)): case true : ?>
 <footer class="footer" role="contentinfo">
     <div class="container">
         <div class="footer-t">
             <p><?php $this->options->viceLeftright();?></p>
-            <p><?php $this->options->leftright();?> Theme by <a href="<?php echo Major::$Major['github'];?>" rel="nofollow" target="_blank">Major</a></p>
+            <p><?php $this->options->leftright();?> Theme by <a href="<?php Major::prints(Major::$Major['github']);?>" rel="nofollow" target="_blank">Major</a></p>
         </div>
     </div>
 </footer>
-<?php endif;?>
+<?php default: endswitch;?>
+
+<?php $this->options->footerCode();?>
 
 <script type="text/javascript" src="<?php $this->options->themeUrl("vendors/liveTimeAgo/jquery.liveTimeAgo.js"); ?>"></script>
 <script type="text/javascript">
@@ -28,10 +29,7 @@
 
 <?php $this->footer(); ?>
 
-<?php if (!empty($this->options->useBlock) && in_array('usePangu', $this->options->useBlock)): ?>
-    <script src="<?php $this->options->libCdnjs();?>pangu/3.3.0/pangu.min.js"></script>
-    <script>pangu.spacingElementByClassName('content-wrap'); /*英文间加上空格*/</script>
-<?php endif; ?>
+<?php echo in_array('usePangu', $this->options->useBlock) ? '<script src="'.$this->options->libCdnjs.'pangu/3.3.0/pangu.min.js"></script><script>pangu.spacingElementByClassName("content-wrap");</script>':''; ?>
 
 <script src="<?php $this->options->themeUrl("js/theme.js?v="); echo Major::$Major['version']; ?>" data-no-instant></script>
 <script type="text/javascript">$(document).ready(function() {$().UItoTop();});</script>

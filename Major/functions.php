@@ -36,79 +36,89 @@ function themeConfig($form) { ?>
     <script>
         function backData() {
             var newLocal= localStorage.backupData;
-            if (newLocal!= "" && newLocal!= undefined) {
-                var jsonData = JSON.parse(newLocal);
-                var data = jsonData;
-                for(var i in data){
-                    switch (data[i].type) {
-                        case "text":
-                            $('#'+document.getElementsByName(data[i].name)[0].id).val(data[i].value);
-                            break;
-                        case "textarea":
-                            $('#'+document.getElementsByName(data[i].name)[0].id).val(data[i].val);
-                            break;
-                        case "checkbox":
-                            switch (data[i].checked) {
-                                case 'true':
-                                    document.getElementById(data[i].id).checked = true;
-                                    break;
-                                case 'false':
-                                    document.getElementById(data[i].id).checked = false;
-                                    break;
-                            }
-                            break;
+            var r = confirm("是否执行回复配置数据");
+            if (r){
+                if (newLocal!= "" && newLocal!= undefined) {
+                    var jsonData = JSON.parse(newLocal);
+                    var data = jsonData;
+                    for(var i in data){
+                        switch (data[i].type) {
+                            case "text":
+                                $('#'+document.getElementsByName(data[i].name)[0].id).val(data[i].value);
+                                break;
+                            case "textarea":
+                                $('#'+document.getElementsByName(data[i].name)[0].id).val(data[i].val);
+                                break;
+                            case "checkbox":
+                                switch (data[i].checked) {
+                                    case 'true':
+                                        document.getElementById(data[i].id).checked = true;
+                                        break;
+                                    case 'false':
+                                        document.getElementById(data[i].id).checked = false;
+                                        break;
+                                }
+                                break;
 
-                        case "radio":
-                            switch (data[i].checked) {
-                                case 'true':
-                                    $('#'+data[i].id).prop("checked","checked");
-                                    break;
-                                case 'false':
-                                    $('#'+data[i].id).removeAttr("checked");
-                            }
-                            break;
+                            case "radio":
+                                switch (data[i].checked) {
+                                    case 'true':
+                                        $('#'+data[i].id).prop("checked","checked");
+                                        break;
+                                    case 'false':
+                                        $('#'+data[i].id).removeAttr("checked");
+                                }
+                                break;
+                        }
                     }
+                    alert("恢复成功!");
+                }else{
+                    alert("恢复失败!");
                 }
             }
         }
         function backupData() {
-            var json = [];
-            var inputs = $("input");
-            var textareas = $("textarea");
-            for (i = 0, len = inputs.length; i < len; i++) {
-                var j = {};
-                var input = inputs[i];
-                j.name = input.name;
-                j.type = input.type;
-                j.id = input.id;
-                switch (input.type){
-                    case "text":
-                        j.value = input.value;
-                        break;
+            var r = confirm("是否执行备份配置数据");
+            if (r) {
+                var json = [];
+                var inputs = $("input");
+                var textareas = $("textarea");
+                for (i = 0, len = inputs.length; i < len; i++) {
+                    var j = {};
+                    var input = inputs[i];
+                    j.name = input.name;
+                    j.type = input.type;
+                    j.id = input.id;
+                    switch (input.type) {
+                        case "text":
+                            j.value = input.value;
+                            break;
 
-                    case "radio":
-                        j.checked = ''+input.checked+'';
-                        break;
+                        case "radio":
+                            j.checked = '' + input.checked + '';
+                            break;
 
-                    case "checkbox":
-                        j.checked = ''+input.checked+'';
-                        break;
-                    default:
+                        case "checkbox":
+                            j.checked = '' + input.checked + '';
+                            break;
+                        default:
+                    }
+                    json.push(j);
                 }
-                json.push(j);
-            }
-            for (i = 0, len = textareas.length; i < len; i++) {
-                var j = {};
-                var textarea = textareas[i];
-                j.name = textarea.name;
-                j.type = 'textarea';
-                j.id = textarea.id;
-                j.val = $('#'+textarea.id).val();
+                for (i = 0, len = textareas.length; i < len; i++) {
+                    var j = {};
+                    var textarea = textareas[i];
+                    j.name = textarea.name;
+                    j.type = 'textarea';
+                    j.id = textarea.id;
+                    j.val = $('#' + textarea.id).val();
 
-                json.push(j);
+                    json.push(j);
+                }
+                var dataUp = JSON.stringify(json);
+                localStorage.backupData = dataUp;
+                alert("备份数据成功!");
             }
-            var dataUp = JSON.stringify(json);
-            localStorage.backupData = dataUp;
         }
         jQuery(function(){
             $(".typecho-option-submit").append("<li><button type=\"button\" class=\"btn primary\" onclick=\"backupData()\">备份</button></li><li><button type=\"button\" class=\"btn primary\" onclick=\"backData()\">恢复</button></li>");
@@ -169,8 +179,17 @@ function themeConfig($form) { ?>
         'gr', _t('引用头像方式'), _t('默认启用公认头像，公认头像是全球公认头像(Gravatar),使用的邮箱是管理员的邮箱.自定头像是你自己自定义的头像,在这里的下方设置即可.'));
     $form->addInput($useGravatar);
 
+    $bloggerGx = new Typecho_Widget_Helper_Form_Element_Text('bloggerGx', NULL, '期待已久的“创造”之旅即将开始', _t('首页描述说明'), _t('此处填入首页描述说明,它用于在首页描述说明。'));
+    $form->addInput($bloggerGx);
+
     $masterImgUrl = new Typecho_Widget_Helper_Form_Element_Text('masterImgUrl', NULL, 'https://secure.gravatar.com/avatar/4e4559eceb7fbd4bca7925710592b1b9?s=70&r=G&d=mm', _t('自定头像'), _t('此处填入头像地址,用于mat头部显示,文章页时显示作者头像 '));
     $form->addInput($masterImgUrl);
+
+    $primaryColor = new Typecho_Widget_Helper_Form_Element_Text('primaryColor', NULL, 'deep-purple', _t('主色'), _t('此处填入设置主题中的主色,详情到 <a href="https://www.mdui.org/docs/color" target="_blank">MDUI 开发文档</a>'));
+    $form->addInput($primaryColor);
+
+    $accentColor = new Typecho_Widget_Helper_Form_Element_Text('accentColor', NULL, 'deep-purple', _t('强调色'), _t('此处填入设置主题中的强调色'));
+    $form->addInput($accentColor);
 
     $majorA0 = new Typecho_Widget_Helper_Form_Element_Text('majorA0', NULL, 'https://ws3.sinaimg.cn/large/006U7bU2gy1fun7a9g7foj312w0pwaqx.jpg', _t('Material light 背景图'), _t('此处填入Material light 背景图的路径,页头处的,需要下方勾选背景图才能启用.注意是超链接形式.'));
     $form->addInput($majorA0->addRule('xssCheck', _t('请不要在链接中使用特殊字符')));
@@ -193,7 +212,7 @@ function themeConfig($form) { ?>
         'ml60'        =>  '黑色中饱和度',
         'ml30'        =>  '黑色低饱和度',
         'ml00'        =>  '黑色无饱和度',),
-        'ml30', _t('渐变背景'), _t('Material light 背景的渐变背景') );
+        'ml00', _t('渐变背景'), _t('Material light 背景的渐变背景') );
     $form->addInput($lightAble->multiMode());
 
     $formats = new Typecho_Widget_Helper_Form_Element_Checkbox('format', array(
@@ -238,8 +257,11 @@ function themeConfig($form) { ?>
     $socialJson = new Typecho_Widget_Helper_Form_Element_Textarea('socialJson', NULL, '{s:"github",u:"https://github.com/kraity"},{s:"mayun",u:"https://gitee.com/kraity"},{s:"weibo",u:"https://weibo.com/Kraity"},{s:"qq",u:"javascript:;",content:"QQ 1696674719"},{s:"weixin",u:"javascript:;",content:"微信号 Kraity"},{s:"mail",u:"javascript:;",content:"邮箱 kraits@qq.com"}', _t('社交Json'), _t('此处填入社交的Json。'));
     $form->addInput($socialJson);
 
-    $bloggerGx = new Typecho_Widget_Helper_Form_Element_Text('bloggerGx', NULL, '期待已久的“创造”之旅即将开始', _t('首页描述说明'), _t('此处填入首页描述说明,它用于在首页描述说明。'));
-    $form->addInput($bloggerGx);
+    $headCode = new Typecho_Widget_Helper_Form_Element_Textarea('headCode', NULL, NULL, _t('JavaScript headCode'), _t('此处填入 headCode 带有标签 script / script 的 JavaScript 代码,注意此放入Head中'));
+    $form->addInput($headCode);
+
+    $footerCode = new Typecho_Widget_Helper_Form_Element_Textarea('footerCode', NULL, '', _t('JavaScript footerCode'), _t('此处填入 footerCode 带有标签 script / script 的 JavaScript 代码,注意此放入Footer中'));
+    $form->addInput($footerCode);
 
     $viceLeftright = new Typecho_Widget_Helper_Form_Element_Text('viceLeftright', NULL, 'BY-NC-SA 4.0 版权协议', _t('副页脚版权'), _t('此处填入页脚版权,它用于在页脚显示的版权声明,第一行'));
     $form->addInput($viceLeftright);
