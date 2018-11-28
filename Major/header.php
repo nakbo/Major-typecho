@@ -22,9 +22,9 @@
         ), '', ' - '); ?><?php $this->options->title(); ?></title>
     <?php $this->header('generator=&commentReply='); ?>
 
-    <link rel="stylesheet" type="text/css" href="<?php echo Major::$api['kraitLibrary']; ?>bootstrap/3.3.7/css/bootstrap.min.css">
-    <script src="<?php Major::prints(Major::$api['kraitLibrary']); ?>jquery/2.1.1/jquery.min.js"></script>
-    <script src="<?php Major::prints(Major::$api['kraitLibrary']); ?>bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="<?php $this->options->libCdnjs();?>twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="<?php $this->options->libCdnjs();?>jquery/2.1.1/jquery.min.js"></script>
+    <script src="<?php $this->options->libCdnjs();?>twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="<?php $this->options->libCdnjs();?>mdui/0.4.2/css/mdui.min.css">
     <link href="<?php $this->options->themeUrl("style.css?v="); echo Major::$Major['version']; ?>" rel="stylesheet" />
     <link href="<?php $this->options->libCdnjs();?>simple-line-icons/2.4.1/css/simple-line-icons.css" rel="stylesheet">
