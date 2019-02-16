@@ -14,11 +14,13 @@ class Major
     public static $api;
     public static $uid = 1;
 
+    public static $bodyType;
     public static $Widget_Archive;
-    public static $archiveType;
+    public static $Widget_Stat;
 
     public static $formats;
     public static $formatPostAble;
+    public static $commonDir = 'layout';
 
     public function __construct()
     {
@@ -42,12 +44,12 @@ class Major
         self::$group = $m['group'];
         self::$activated = $m['activated'];
         self::$logged = $m['logged'];
-        Typecho_Widget::widget('Widget_Archive')->to(self::$Widget_Archive);
-        self::$archiveType = self::$Widget_Archive->_archiveType;
-    }
 
-    public static function prints($data){
-        echo $data;
+        Typecho_Widget::widget('Widget_Archive')->to(self::$Widget_Archive);
+        Typecho_Widget::widget('Widget_Stat')->to(self::$Widget_Stat);
+
+        self::$bodyType = self::$Widget_Archive->getArchiveType();
+
     }
 
     public function setMajor()
@@ -56,9 +58,9 @@ class Major
             "developer"=>"Krait",
             "author"=>"权那他",
             "package"=>"Major",
-            "version"=>"2.2",
+            "version"=>"2.4",
             "github"=>"https://github.com/kraity/Major",
-            "updateTime"=>"1541308952"
+            "updateTime"=>"1550289600"
         );
     }
 
@@ -68,14 +70,14 @@ class Major
             "infoMajor" => "https://api.krait.cn/version/Major.json",
             "kraitLibrary" => "https://lib.krait.cn/library/",
             "introMajor" => "https://krait.cn/major.html",
-            "headimg_dl" => "https://api.krait.cn/api/headimg_dl/",
+            "headPortrait" => "https://api.krait.cn/api/tencent/headPortrait/",
             "api" => "https://api.krait.cn/"
         );
     }
 
     public static function getGravatar($mail)
     {
-        $gr = Helper::options()->serverGravatar."/".md5($mail)."?s=100&r=G&d=".self::$api['headimg_dl'].$mail;
+        $gr = Helper::options()->serverGravatar."/".md5($mail)."?s=100&r=G&d=".self::$api['headPortrait'].$mail;
         $type = array(
             "gr" => $gr,
             "ma" => Helper::options()->masterImgUrl
@@ -109,7 +111,7 @@ class Major
     }
 
     public static function postAble($newFormat){
-        $thisIs = false;/**!self::thisIs("attachment")**/
+        $thisIs = false; /**!self::thisIs("attachment")**/
         if(self::$Widget_Archive->is("attachment") || !self::$formatPostAble[$newFormat]){
             $thisIs = true;
         }
@@ -127,7 +129,89 @@ class Major
     public static function footerInfoAble($currentPage){
         return self::majorHeaderAble($currentPage);
     }
+
+
+    public static function hotArticles($day = 90,$num = 3,$defaults){
+        $db = Typecho_Db::get();
+        $sql = $db->select()->from('table.contents')
+            ->where('created >= ?', time() - (24 * 60 * 60 * $day))
+            ->where('type = ?', 'post')
+            ->limit($num)
+            ->order('views',Typecho_Db::SORT_DESC);
+        $result = $db->fetchAll($sql);
+        $returns = "";
+        foreach($result as $val){
+            $val = Typecho_Widget::widget('Widget_Abstract_Contents')->filter($val);
+            $returns .= str_replace(array('{permalink}', '{title}', '{views}', '{avatar}'), array($val['permalink'], $val['title'], $val['views'],Major::getGravatar(Major::$mail)), $defaults);
+        }
+        return $returns;
+
+    }
+
+    public static function reRouter(){
+        $validated = false;
+        $archiveType = self::$bodyType;
+        $archiveSlug = self::$Widget_Archive->getArchiveSlug();
+        $themeDir = self::$Widget_Archive->getThemeDir();
+        $themeFileNull = '';
+        $dirMid = self::$commonDir.'/layout-';
+
+        //~ 首先找具体路径, 比如 category/default.php
+        if (!empty($archiveSlug)) {
+            $themeFile = $archiveType . '/' . $archiveSlug . '.php';
+            if (file_exists($themeDir . $dirMid . $themeFile)) {
+                $themeFileNull = $themeFile;
+                $validated = true;
+            }
+        }
+
+        //~ 然后找归档类型路径, 比如 category.php
+        if (!$validated) {
+            $themeFile = $archiveType . '.php';
+            if (file_exists($themeDir . $dirMid . $themeFile)) {
+                $themeFileNull = $themeFile;
+                $validated = true;
+            }
+        }
+
+        //针对attachment的hook
+        if (!$validated && 'attachment' == $archiveType) {
+            if (file_exists($themeDir . $dirMid . 'page.php')) {
+                $themeFileNull = 'page.php';
+                $validated = true;
+            } else if (file_exists($themeDir. $dirMid . 'post.php')) {
+                $themeFileNull = 'post.php';
+                $validated = true;
+            }
+        }
+
+        //~ 最后找归档路径, 比如 archive.php 或者 single.php
+        if (!$validated && 'index' != $archiveType && 'front' != $archiveType) {
+            $themeFile = self::$Widget_Archive->_archiveSingle ? 'single.php' : 'archive.php';
+            if (file_exists($themeDir . $dirMid . $themeFile)) {
+                $themeFileNull = $themeFile;
+                $validated = true;
+            }
+        }
+
+        if (!$validated) {
+            $themeFile = 'index.php';
+            if (file_exists($themeDir . $dirMid . $themeFile)) {
+                $themeFileNull = $themeFile;
+                $validated = true;
+            }
+        }
+
+        /** 文件不存在 */
+        if (!$validated) {
+            Typecho_Common::error(500);
+        }
+
+        /** 输出模板 */
+        return  $themeDir . $dirMid . $themeFileNull;
+
+    }
+
 }
 
-new \Major();
-
+new Major();
