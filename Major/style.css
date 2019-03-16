@@ -330,12 +330,6 @@ Main components
     .mat-1 .info-qr {
         color: rgba(255, 255, 255, 0.5);
     }
-    .activity-social{
-        background: white!important;
-    }
-    .social-nav li {
-        padding: 0 5px!important;
-    }
 }
 
 @media (max-width: 750px) {
@@ -360,10 +354,6 @@ Main components
 
     .major-personal {
         margin: 0;
-    }
-
-    .activity-social{
-        display: none !important;
     }
 }
 
@@ -1349,10 +1339,7 @@ pre {
 }
 
 .show-social {
-    text-align: center;
-    padding: 10px 0;
     border-radius: 2px;
-    max-width: 30rem;
     margin: 0 auto;
     color: rgba(0, 0, 0, 0.6) !important;
 }
@@ -1377,7 +1364,6 @@ pre {
 
 .social-nav li {
     display: inline;
-    padding: 0 5px;
 }
 
 .social-box {
@@ -1412,7 +1398,7 @@ pre {
 }
 
 .major-3 {
-    padding: 30px 0 3em;
+    padding: 3em 0 15px;
 }
 
 .major-3 .pagination {
@@ -1961,7 +1947,6 @@ article .mdui-table-fluid {
 
 .abouts {
     padding: 15px 0 0;
-    background: white;
 }
 
 .abouts .content-wrap h2 {
@@ -4216,7 +4201,7 @@ img.figlio {
 /* footer */
 
 .footer {
-    padding: 3rem 0;
+    padding: 2rem 0;
     color: dimgray;
     font-size: 12px;
     text-align: center;
@@ -4228,7 +4213,7 @@ img.figlio {
 
 .footer-t {
     padding: 15px 0 0;
-    line-height: 1;
+    line-height: 1.5;
 }
 
 .footer a {

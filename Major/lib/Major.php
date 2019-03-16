@@ -4,20 +4,10 @@ class Major
 {
     public static $Major;
     public static $personal;
-    public static $name;
-    public static $screenName;
-    public static $mail;
-    public static $url;
-    public static $group;
-    public static $activated;
-    public static $logged;
     public static $api;
-    public static $uid = 1;
-
     public static $bodyType;
     public static $Widget_Archive;
     public static $Widget_Stat;
-
     public static $formats;
     public static $formatPostAble;
     public static $commonDir = 'layout';
@@ -33,21 +23,11 @@ class Major
     public function personal()
     {
         $db = Typecho_Db::get();
-        $query= $db->select("uid","name","screenName","mail","url","group","activated","logged")->from('table.users')->where('uid = ?', self::$uid);
+        $query= $db->select("uid","name","screenName","mail","url","group","activated","logged")->from('table.users')->where('uid = ?', Helper::options()->uid);
         $return = $db->fetchAll($query);
         self::$personal = $return[0];
-        $m = $return[0];
-        self::$name = $m['name'];
-        self::$screenName = $m['screenName'];
-        self::$mail = $m['mail'];
-        self::$url = $m['url'];
-        self::$group = $m['group'];
-        self::$activated = $m['activated'];
-        self::$logged = $m['logged'];
-
         Typecho_Widget::widget('Widget_Archive')->to(self::$Widget_Archive);
         Typecho_Widget::widget('Widget_Stat')->to(self::$Widget_Stat);
-
         self::$bodyType = self::$Widget_Archive->getArchiveType();
 
     }
@@ -130,6 +110,15 @@ class Major
         return self::majorHeaderAble($currentPage);
     }
 
+    public static function matAble($majorA0){
+        $able = NULL;
+        if ($majorA0 && self::$Widget_Archive->is("index")){
+            $able = "Able";
+        }else{
+            $able = "unAble";
+        }
+        return $able;
+    }
 
     public static function hotArticles($day = 90,$num = 3,$defaults){
         $db = Typecho_Db::get();
@@ -142,7 +131,7 @@ class Major
         $returns = "";
         foreach($result as $val){
             $val = Typecho_Widget::widget('Widget_Abstract_Contents')->filter($val);
-            $returns .= str_replace(array('{permalink}', '{title}', '{views}', '{avatar}'), array($val['permalink'], $val['title'], $val['views'],Major::getGravatar(Major::$mail)), $defaults);
+            $returns .= str_replace(array('{permalink}', '{title}', '{views}', '{avatar}'), array($val['permalink'], $val['title'], $val['views'],Major::getGravatar(Major::$personal['mail'])), $defaults);
         }
         return $returns;
 

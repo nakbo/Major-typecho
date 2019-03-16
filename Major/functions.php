@@ -133,7 +133,7 @@ function themeConfig($form) {
             var Gra1 = $("#useGravatar-ma"),
                 Gra0 = $("#useGravatar-gr");
             if(!Gra1.is(":checked")) {
-                var Grat = $("#typecho-option-item-masterImgUrl-1");
+                var Grat = $("#typecho-option-item-masterImgUrl-3");
                 Grat.attr("style","color:#999")
                     .find("input").attr("disabled","disabled");
                 Gra1.click(function() {
@@ -173,6 +173,10 @@ function themeConfig($form) {
     </style>
 EOD;
     echo $updateCode;
+
+    $uid = new Typecho_Widget_Helper_Form_Element_Select('uid', array_map('basename', array(0,1,2,3,4,5,6,7,8,9)), '1', _t('选择博主的UID'));
+    $form->addInput($uid->addRule('enum', _t('必须选择UID'), array(0,1,2,3,4,5,6,7,8,9)));
+
     $faviconUrl = new Typecho_Widget_Helper_Form_Element_Text('faviconUrl', NULL, '/favicon.ico', _t('Favicon.ico'), _t('此处填入favicon.ico地址'));
     $form->addInput($faviconUrl);
 
@@ -183,11 +187,11 @@ EOD;
         'gr', _t('引用头像方式'), _t('默认启用公认头像，公认头像是全球公认头像(Gravatar),使用的邮箱是管理员的邮箱.自定头像是你自己自定义的头像,在这里的下方设置即可.'));
     $form->addInput($useGravatar);
 
-    $bloggerGx = new Typecho_Widget_Helper_Form_Element_Text('bloggerGx', NULL, '正在创作 Major 主题', _t('首页描述说明'), _t('此处填入首页描述说明,它用于在首页描述说明。'));
-    $form->addInput($bloggerGx);
-
     $masterImgUrl = new Typecho_Widget_Helper_Form_Element_Text('masterImgUrl', NULL, 'https://secure.gravatar.com/avatar/4e4559eceb7fbd4bca7925710592b1b9?s=70&r=G&d=mm', _t('自定头像'), _t('此处填入头像地址,用于mat头部显示,文章页时显示作者头像 '));
     $form->addInput($masterImgUrl);
+
+    $bloggerGx = new Typecho_Widget_Helper_Form_Element_Text('bloggerGx', NULL, '正在创作 Major 主题', _t('首页描述说明'), _t('此处填入首页描述说明,它用于在首页描述说明。'));
+    $form->addInput($bloggerGx);
 
     $primaryColor = new Typecho_Widget_Helper_Form_Element_Text('primaryColor', NULL, 'deep-purple', _t('主色'), _t('此处填入设置主题中的主色,详情到 <a href="https://www.mdui.org/docs/color" target="_blank">MDUI 开发文档</a>'));
     $form->addInput($primaryColor);
@@ -246,10 +250,10 @@ EOD;
     $footerCode = new Typecho_Widget_Helper_Form_Element_Textarea('footerCode', NULL, '', _t('JavaScript footerCode'), _t('此处填入 footerCode 带有标签 script / script 的 JavaScript 代码,注意此放入Footer中'));
     $form->addInput($footerCode);
 
-    $viceLeftright = new Typecho_Widget_Helper_Form_Element_Text('viceLeftright', NULL, 'BY-NC-SA 4.0 版权协议', _t('副页脚版权'), _t('此处填入页脚版权,它用于在页脚显示的版权声明,第一行'));
+    $viceLeftright = new Typecho_Widget_Helper_Form_Element_Text('viceLeftright', NULL, '渝ICP备18001767号-1', _t('副页脚版权'), _t('此处填入页脚版权,它用于在页脚显示的版权声明,第一行'));
     $form->addInput($viceLeftright);
 
-    $leftright = new Typecho_Widget_Helper_Form_Element_Text('leftright', NULL, 'Copyright © 2017 权那他 , 渝ICP备18001767号-1', _t('页脚版权'), _t('此处填入页脚版权,它用于在页脚显示的版权声明,第二行'));
+    $leftright = new Typecho_Widget_Helper_Form_Element_Text('leftright', NULL, 'Copyright © 2019 权那他', _t('页脚版权'), _t('此处填入页脚版权,它用于在页脚显示的版权声明,第二行'));
     $form->addInput($leftright);
 
     $useBlock = new Typecho_Widget_Helper_Form_Element_Checkbox('useBlock',
