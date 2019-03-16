@@ -1,6 +1,6 @@
 <?php if (!defined('__TYPECHO_ROOT_DIR__')) exit; ?>
 <!-- start Major -->
-<div class="major mat-<?php echo $this->_currentPage;?> <?php if($this->options->majorA0){echo "Able";}?>">
+<div class="major mat-<?php echo $this->_currentPage;?> <?php _e(Major::matAble($this->options->majorA0));?>">
     <div class="major-personal">
         <div class="major-mat mat-p<?php echo $this->_currentPage;?>">
             <div class="major-toolbar">
@@ -47,12 +47,12 @@
             </div>
             <div class="mat-master mat-p<?php echo $this->_currentPage;?>">
                 <div class="major-master">
-                    <img src="<?php echo Major::getGravatar(Major::$mail); ?>" />
+                    <img src="<?php echo Major::getGravatar(Major::$personal['mail']); ?>" />
                 </div>
                 <div class="major-info">
                     <div class="info-name">
                         <h4 class="screenName" id="major-bloggerName">
-                            <?php _e(Major::$screenName); ?>
+                            <?php _e(Major::$personal['screenName']); ?>
                         </h4>
                         <div class="info-qr">
                             <button class="info-btn" mdui-menu="{target: '#social-qr'}">
@@ -98,39 +98,6 @@
             </div>
         </div>
     </div>
-    <div class="activity-social">
-        <div class="show-social">
-            <ul class="social-nav" id="social-nav"></ul>
-        </div>
-        <script type="text/javascript">
-            function socialJsonTr() {
-                var social = "",socialJson = window.personal.interactive.social.json;
-                for(var o in socialJson){
-                    var code,
-                        goLink = '<a href=\"'+socialJson[o].u+'\" class=\"sola_'+socialJson[o].s+'\" target="_blank">', goLinks = '</a>';
-                    if(typeof socialJson[o].content !== 'undefined' && typeof socialJson[o].img !== 'undefined') {
-                        code = '<ul class="mdui-menu social-box have-img" id="social-' + socialJson[o].s + '"><img src="' + socialJson[o].img + '" class="social-img"/>' + socialJson[o].content + '</ul>';goLink = '';goLinks = '';
-                    }else if(typeof socialJson[o].content !== 'undefined'){
-                        code = '<ul class="mdui-menu social-box" id="social-' + socialJson[o].s + '">' + socialJson[o].content + '</ul>';goLink = '';goLinks = '';
-                    }else if(typeof socialJson[o].img !== 'undefined'){
-                        code = '<ul class="mdui-menu social-box have-img" id="social-' + socialJson[o].s + '"><img src="' + socialJson[o].img + '" class="social-img"/></ul>';goLink = '';goLinks = '';
-                    }else{
-                        code = "";
-                    }
-                    social =
-                        social+ '<li class=\"social_'+socialJson[o].s+'\" data-no-instant>' + '<button class=\"mdui-textfield-icon mdui-btn mdui-btn-icon" mdui-menu=\"{target: \'#social-'+socialJson[o].s+'\'}">' + goLink+ '<i class=\"icon iconfont icon-'+socialJson[o].s+'\"></i>' + goLinks + '</button>' + code + '</li>';
-                }
-                document.getElementById("social-nav").innerHTML=social;
-            }
-            socialJsonTr();
-            try {
-                document.getElementsByClassName("sola_weibo")[0].setAttribute("data-vbtype","iframe");
-                $(document).ready(function(){$('.sola_weibo').venobox({framewidth: '90%', frameheight: '100vh', border: '0'});});
-            } catch(err) {
-                console.log("Execution of venobox framework error")
-            }
-        </script>
-    </div>
     <!-- major end -->
 </div>
 
@@ -172,7 +139,7 @@
     <article class="majors-post chat  mdui-ripple" itemscope="" itemtype="http://schema.org/BlogPosting">
         <div class="majors-postContent">
             <div class="major-chats mdui-card-header">
-                <img class="mdui-card-header-avatar" src="<?php echo Major::getGravatar(Major::$mail); ?>">
+                <img class="mdui-card-header-avatar" src="<?php echo Major::getGravatar(Major::$personal['mail']); ?>">
                 <div class="chats major-text"><p>围观: <?php majors_Plugin::sumViews(); ?>    作品: <?php Major::$Widget_Stat->publishedPostsNum() ?>    评论: <?php Major::$Widget_Stat->publishedCommentsNum() ?></p></div>
             </div>
             <div class="post-contents major-text" itemprop="articleBody">

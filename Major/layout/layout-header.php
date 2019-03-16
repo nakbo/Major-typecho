@@ -3,7 +3,7 @@
 <html class="no-js">
 <head>
     <meta charset="<?php $this->options->charset(); ?>">
-    <meta name="author" content="<?php _e(Major::$screenName.','.Major::$mail); ?>">
+    <meta name="author" content="<?php _e(Major::$personal['screenName'].','.Major::$personal['mail']); ?>">
     <meta name="renderer" content="webkit">
     <meta http-equiv="content-language" content="zh-CN" />
     <meta http-equiv="x-dns-prefetch-control" content="on">
@@ -45,8 +45,8 @@
             var personal;
             personal = {
                 identity:{
-                    name: "<?php _e(Major::$screenName); ?>",
-                    mail: "<?php _e(Major::$mail); ?>"
+                    name: "<?php _e(Major::$personal['screenName']); ?>",
+                    mail: "<?php _e(Major::$personal['mail']); ?>"
                 },
                 interactive:{
                     url:{

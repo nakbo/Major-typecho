@@ -4,9 +4,8 @@
     <div class="container">
         <div class="footer-t">
             <p><?php $this->options->viceLeftright();?></p>
-            <p><?php $this->options->leftright();?></p>
             <!-- 好歹也给作者权那他留个版权啊 -->
-            <p>The theme of Major by <a href="<?php _e(Major::$Major['github']);?>" rel="nofollow" target="_blank">Kraity</a></p>
+            <p><?php $this->options->leftright();?>, The theme by <a href="<?php _e(Major::$Major['github']);?>" rel="nofollow" target="_blank">Kraity</a></p>
         </div>
     </div>
 </footer>
