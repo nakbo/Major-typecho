@@ -2,32 +2,22 @@
 
 >Major,这是一款采用兼容性开发的 Typecho 主题，科创出品,原创主题,采用兼容性开发!
 
-## General 概括 ##
-- Author 作者：[权那他(Krait)][1]
-- Version 版本：2.4
-- Compatibility 兼容：PHP 7.0+, MySQL, Typecho 1.0+
+## 概括 ##
+- 开发者：[权那他(Krait)][1]
+- 版本：3.0
+- 兼容：PHP 7.0+, MySQL, Typecho 1.0+
   - 推荐使用 PHP 7+ 以获得最佳体验
   - 当前测试均在 PHP 7.2 与 Typecho 1.1 正式版下完成，在可能的情况下请尽量接近此环境
 
-## Update Special Notes 更新特别说明 ##
-**Major v2.4** 版本即新版本启用用出现一个小问题，如下:
-```
-Fatal error: Cannot redeclare themeInit() (previously declared in xx/xx/xx/functions.php:266) in xx/xx/xx//functions.php on line 167
-```
-**原因** 这个原因我也不清楚，反正是函数名冲突，欢迎各位大佬帮我解决。
-**临时解决方案:** 新建一个文件夹放在 `themes` 里面，如名为 `typechoSwitch` 里面放仅一个空文件 `index.php` ，然后在后台主题启用它，在转换启用本主题`Major`
+## 更新说明 ##
+
+版本3.0,需要删除原来的主题文件和插件,此后不再需要插件,3.0撤掉了对插件的依赖,解决了启用主题的错误。
 
 ## Demo 演示
 
 Experience the Major theme in live: [Krait Major Demo](https://krait.cn)
 
-![Screenshot_2019-02-16-10-41-07-57.png][2]
-![Screenshot_2019-02-16-10-41-32-16.png][3]
-![Screenshot_2019-02-16-10-41-40-02.png][4]
-![Screenshot_2019-02-16-10-41-58-93.png][5]
-![Screenshot_2019-02-16-10-42-11-74.png][6]
-![Screenshot_2019-02-16-11-05-47-23.png][7]
-
+![major.jpg][2]
 
 ## Setup 设置
 
@@ -35,64 +25,22 @@ Experience the Major theme in live: [Krait Major Demo](https://krait.cn)
 - 在“设置外观”中打造一个属于你自己的博客
 
 ## Download 下载 ##
-Github Major : [https://github.com/kraity/Major][8]
-
-#### File tree 文件树 #### 
-```
-Major
-     assets
-           fonts
-                toast.eot
-                toast.svg
-                toast.ttf
-                toast.woff
-           js
-             rgbaster.min.js
-             theme.js
-             toast.script.js
-           vendors
-                liveTimeAgo
-                           jquery.liveTimeAgo.js
-                zoomify
-                       zoomify.min.js
-     layout
-           res
-              layout-comments.php
-              layout-list.php
-              layout-postAuthor.php
-              layout-showfoot.php
-           layout-404.php
-           layout-Major.php
-           layout-archive.php
-           layout-footer.php
-           layout-head.php
-           layout-header.php
-           layout-index.php
-           layout-page.php
-           layout-post.php
-     lib
-        Major.php
-     functions.php
-     index.php
-     layout-about.php
-     layout-archives.php
-     layout-friend.php
-     screenshot.png
-     style.css
-majors
-      HyperDown.php
-      Plugin.php
-```
+Github Major : [https://github.com/kraity/Major][3]
 
 ## Instructions 使用说明 ##
 
-[https://krait.cn/major/1628.html][9] 因为Major开发必须需要插件才能实现,切记看说明!
+[https://krait.cn/major/1628.html][4] 切记看说明!
 
 ## License 许可证 ##
 >Open sourced under the MIT license.
 >根据 MIT 许可证开源。
 
 ## 更新历史 ##
+#### 2019-08.18 Update v3.0 ####
+
+ 1. 重新排版
+ 2. 撤掉对插件的依赖
+
 #### 2019-02.16 Update v2.4 ####
 
  1. Major 结构改变，请先保存主题设置数据，再删除后上传。
@@ -203,12 +151,6 @@ majors
 
 
   [1]: https://krait.cn
-  [2]: https://ws3.sinaimg.cn/large/006U7bU2ly1g083twuzonj30u01hcwi6.jpg
-  [3]: https://ws3.sinaimg.cn/large/006U7bU2ly1g083uch9dkj30u01hcjv3.jpg
-  [4]: https://ws3.sinaimg.cn/large/006U7bU2ly1g083uj8pbsj30u01hc79c.jpg
-  [5]: https://ws3.sinaimg.cn/large/006U7bU2ly1g083uoklk3j30u01hc76y.jpg
-  [6]: https://ws3.sinaimg.cn/large/006U7bU2ly1g083utwhgmj30u01hcdii.jpg
-  [7]: https://ws3.sinaimg.cn/large/006U7bU2ly1g083uy3jj2j30u01hcwgw.jpg
-  [8]: https://krait.cn/d/major
-  [9]: https://krait.cn/major/1628.html
-  [10]: https://krait.cn
+  [2]: https://library.krait.cn/usr/uploads/2019/08/3257005576.jpg
+  [3]: https://krait.cn/d/major
+  [4]: https://krait.cn/major/1628.html
