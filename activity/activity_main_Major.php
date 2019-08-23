@@ -36,7 +36,7 @@
                                 </a>
                             </li>
                             <li>
-                                <a onclick="loginGithub()" class="mdui-list-item mdui-ripple" data-no-instant>
+                                <a href="<?php $this->options->adminUrl('register.php'); ?>" class="mdui-list-item mdui-ripple" data-no-instant>
                                     <i class="mdui-icon material-icons">person_add</i>
                                     <span>注册</span>
                                 </a>
