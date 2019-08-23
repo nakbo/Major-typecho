@@ -30,7 +30,7 @@
                             </li>
                         <?php else: ?>
                             <li>
-                                <a onclick="loginGithub()" class="mdui-list-item mdui-ripple" data-no-instant>
+                                <a href="<?php $this->options->adminUrl('login.php'); ?>" class="mdui-list-item mdui-ripple" data-no-instant>
                                     <i class="mdui-icon material-icons">fingerprint</i>
                                     <span>登录</span>
                                 </a>
