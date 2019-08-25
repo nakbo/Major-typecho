@@ -57,7 +57,6 @@ include 'activity/adapter/adapter_author.php';
                 ?>
 
             </div>
+            <?php  include 'activity/activity_main_footer.php'; ?>
         </article>
     </div>
-
-<?php  include 'activity/activity_main_footer.php'; ?>

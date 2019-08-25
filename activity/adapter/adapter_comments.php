@@ -20,14 +20,6 @@ function threadedComments($comments, $options)
         $author = $comments->author;
     }
 
-    $secure = Helper::options()->serverGravatar;
-    $s = "100";
-    $secure = $secure . "/";
-    $s = "?s=" . $s;
-    $r = "&r=G";
-    $d = "&d=";
-    $qqUrl = "https://api.krait.cn/api/tencent/headPortrait/" . $comments->mail;
-    $avatar = $secure . md5($comments->mail) . $s . $r . $d . $qqUrl;
 
     ?>
 
@@ -44,7 +36,8 @@ function threadedComments($comments, $options)
         <article id="<?php $comments->theId(); ?>" class="comment-body">
             <footer class="comment-meta">
                 <div class="comment-author vcard">
-                    <img class="avatar" src="<?php echo $avatar; ?>" alt="<?php echo $comments->author; ?>" width="40"
+                    <img class="avatar" src="<?php echo \Krait\Major::getGravatarNew($comments->mail); ?>"
+                         alt="<?php echo $comments->author; ?>" width="40"
                          height="40">
                     <?php /*$comments->gravatar(40);*/ ?>
                     <b class="fn <?php echo $commentClass; ?> " itemprop="author">
@@ -104,15 +97,19 @@ function threadedComments($comments, $options)
                     <div class="comment-form-main">
                         <div class="comment-textarea-wrapper mdui-ripple">
                             <p class="comment-form-comment"><label for="comment">评论</label>
-                                <textarea style="" id="textarea"
+                                <label for="textarea"></label>
+                                <textarea style="" id="textarea" class="textarea"
                                           name="text"  <?php if (!$this->user->hasLogin()): ?> onclick='document.getElementById("comment-form-do").style.display="block";'<?php endif; ?>  cols="45"
                                           rows="8" aria-required="true" required="required"
-                                          placeholder="发泄你的牢骚,留下你的笔言!"><?php $this->remember('text', false); ?></textarea>
+                                          placeholder="发泄你的牢骚,留下你的笔言!"><?php $this->remember('text'); ?></textarea>
                             </p>
                             <div class="comment-form-toolbar">
                                 <?php if (isset($this->options->plugins['activated']['Smilies'])) $comments->smilies(); ?>
-
                             </div>
+                        </div>
+
+                        <div class="comment-form-toolbar-OwO">
+                            <div class="OwO"></div>
                         </div>
 
                         <div class="comment-form-fields" id="comment-form-do">
@@ -120,21 +117,30 @@ function threadedComments($comments, $options)
                                 <p class="comment-form-author">
                                     <label for="author">昵称</label> <span class="required">*</span>
                                     <input type="text" name="author" maxlength="12" id="author" placeholder="昵称"
-                                           value="" required>
+                                           value="<?php $this->remember('author'); ?>" required>
                                 </p>
                                 <p class="comment-form-email">
                                     <label for="email">邮箱</label> <?php if ($this->options->commentsRequireMail): ?>
                                         <span class="required">*</span><?php endif; ?>
-                                    <input type="email" name="mail" id="mail" placeholder="邮箱" value=""
+                                    <input type="email" name="mail" id="mail" placeholder="邮箱"
+                                           value="<?php $this->remember('mail'); ?>"
                                            class="inputElem" <?php if ($this->options->commentsRequireMail): ?> required<?php endif; ?>>
                                 </p>
                                 <p class="comment-form-url">
                                     <label for="url">网站</label> <?php if ($this->options->commentsRequireURL): ?>
                                         <span
                                                 class="required">*</span><?php endif; ?>
-
                                     <input type="url" name="url" id="url" placeholder="网站"
-                                           value="" <?php if ($this->options->commentsRequireURL): ?> required<?php endif; ?>>
+                                           value="<?php $this->remember('url'); ?>" <?php if ($this->options->commentsRequireURL): ?> required<?php endif; ?>>
+                                </p>
+                                <p class="comment-form-fast">
+                                    <label for="url">Github快速评论</label>
+                                    <input placeholder="Github用户名输入快速评论" id="githubNum" type="text"
+                                           style="font-size: 12px;">
+                                </p>
+                                <p class="comment-form-fast">
+                                    <label for="url">QQ快速评论</label>
+                                    <input placeholder="QQ账号输入快速快评论" id="qqNum" type="text" style="font-size: 12px;">
                                 </p>
                             <?php endif; ?>
                         </div>
@@ -161,39 +167,84 @@ function threadedComments($comments, $options)
     </div>
 </div>
 <!--<nocompress>-->
+<link rel="stylesheet" href="<?php $this->options->themeUrl('res/plugins/OwO/OwO.min.css'); ?>">
+<script src="<?php $this->options->themeUrl('res/plugins/OwO/OwO.js'); ?>"></script>
+<script>
+    let OwO_demo = new OwO({
+        logo: 'OωO',
+        container: document.getElementsByClassName('OwO')[0],
+        target: document.getElementsByClassName('textarea')[0],
+        api: '<?php $this->options->themeUrl("res/plugins/OwO/OwO.json"); ?>',
+        position: 'down',
+        width: '100%',
+        maxHeight: '250px'
+    });
+</script>
 <script>
     <?php if(!$this->user->hasLogin()): ?>
-    function getCommentCookie(name) {
-        let arr, reg = new RegExp("(^| )" + name + "=([^;]*)(;|$)");
-        if (arr = document.cookie.match(reg))
-            return unescape(decodeURI(arr[2]));
-        else
-            return null;
+    function isEmpty(obj) {
+        return typeof obj == "undefined" || obj == null || obj == "";
     }
+    $(document).on("input propertychange", "#qqNum", function (event) {
+        event.preventDefault();
+        let oldVal = $(this).val();
+        let qq = window.setTimeout(function () {
+            let newVal = $("#qqNum").val();
+            if (newVal.length > 0 && oldVal === $("#qqNum").val() && !newVal.isNaN) {
+                $.ajax({
+                    url: 'https://api.krait.cn/?interface=personage&target=tencent&object=' + newVal,
+                    dataType: 'jsonp',
+                    jsonpCallback: 'portraitCallBack',
+                    scriptCharset: "GBK",
+                    contentType: "text/html; charset=GBK",
+                    success: function (data) {
+                        console.log(data);
+                        document.getElementById("comment-form-avatar").getElementsByTagName("img")[0].src = data["avatar_encryption_url"];
+                        $('#author').val(data["nickname"]);
+                        $('#mail').val(data["email"]);
+                    }
+                })
+            }
+        }, 500);
+    });
 
-    function addCommentInputValue() {
-        let authorGet = getCommentCookie('<?php echo md5($this->request->getUrlPrefix()); ?>__typecho_remember_author');
-        let md5Get = '<?php echo md5($this->request->getUrlPrefix()); ?>';
-        document.getElementById('author').value = authorGet;
-        document.getElementById('mail').value = getCommentCookie(md5Get + '__typecho_remember_mail');
-        document.getElementById('url').value = getCommentCookie(md5Get + '__typecho_remember_url');
-        document.getElementById("comment-form-avatar").getElementsByTagName("img")[0].src = "<?php $this->options->serverGravatar();?>/" + md5(getCommentCookie(md5Get + '__typecho_remember_mail')) + "?s=100&r=G&d=mm";
-    }
+    $(document).on("input propertychange", "#githubNum", function (event) {
+        event.preventDefault();
+        let oldVal = $(this).val();
+        let github = window.setTimeout(function () {
+            let newVal = $("#githubNum").val();
+            if (newVal.length > 0 && oldVal === $("#githubNum").val()) {
+                $.ajax({
+                    url: 'https://api.github.com/users/' + newVal,
+                    dataType: 'jsonp',
+                    scriptCharset: "GBK",
+                    contentType: "text/html; charset=GBK",
+                    success: function (data) {
+                        console.log(data);
+                        let personal = data["data"];
+                        document.getElementById("comment-form-avatar").getElementsByTagName("img")[0].src = personal["avatar_url"];
+                        $('#author').val(isEmpty(personal["name"]) ? personal["login"] : personal["name"]);
+                        $('#url').val(isEmpty(personal["blog"]) ? personal["html_url"] : personal["blog"]);
+                        $('#mail').val(isEmpty(personal["email"]) ? personal["login"] + "@" : personal["email"]);
+                    }
+                })
+            }
+        }, 1000);
+    });
 
     $(document).on("input propertychange", "#mail", function (event) {
         event.preventDefault();
-        let tval = $(this).val();
+        let oldVal = $(this).val();
         let mail = window.setTimeout(function () {
-            let nval = $("#mail").val();
-            if (nval.length > 0 && tval == $("#mail").val()) {
-                document.getElementById("noUserText").innerHTML = '你好,' + $("#author").val();
+            let newVal = $("#mail").val();
+            if (newVal.length > 0 && oldVal === $("#mail").val()) {
                 document.getElementById("comment-form-avatar").getElementsByTagName("img")[0].src = "<?php $this->options->serverGravatar();?>/" + md5($("#mail").val()) + "?s=100&r=G&d=mm";
             }
         }, 400);
     });
 
-    addCommentInputValue();
+    document.getElementById("comment-form-avatar").getElementsByTagName("img")[0].src = "<?php echo \Krait\Major::getGravatarNew(Typecho_Cookie::get("__typecho_remember_mail", null));?>";
     <?php else:?>
-    document.getElementById("comment-form-avatar").getElementsByTagName("img")[0].src = "<?php $this->options->serverGravatar();?>/" + md5("<?php $this->author->mail(); ?>") + "?s=100&r=G&d=mm";
+    document.getElementById("comment-form-avatar").getElementsByTagName("img")[0].src = "<?php echo \Krait\Major::getGravatarNew($this->author->mail);?>";
     <?php endif; ?>
 </script>

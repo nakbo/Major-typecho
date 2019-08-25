@@ -22,10 +22,9 @@ include 'adapter/adapter_author.php';
                 <?php $this->content(); ?>
             </div>
             <p itemprop="keywords" class="tags"><?php _e('标签: '); ?><?php $this->tags(', ', true, 'none'); ?></p>
+            <?php include 'adapter/adapter_footer.php'; ?>
         </article>
     </div>
-
-    <?php include 'adapter/adapter_footer.php'; ?>
 
     <script type="text/javascript">
         (function () {

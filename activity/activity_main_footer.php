@@ -24,8 +24,9 @@
     <div class="container">
         <div class="footer-t">
             <p><?php $this->options->viceLeftright();?></p>
+            <p><a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=50022702000383">渝公网安备 50022702000383号</a></p>
             <!-- 好歹也给作者权那他留个版权啊 -->
-            <p><?php $this->options->leftright();?>, The theme by <a href="<?php _e($krait->Major['github']);?>" rel="nofollow" target="_blank">Kraity</a></p>
+            <p><?php $this->options->leftright();?>, The theme <a href="<?php _e($krait->Major['github']);?>" rel="nofollow" target="_blank">Major</a></p>
         </div>
     </div>
 </footer>

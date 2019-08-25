@@ -180,11 +180,13 @@ EOD;
     $form->addInput($formats->multiMode());
 
     $serverGravatar = new Typecho_Widget_Helper_Form_Element_Radio( 'serverGravatar',  array(
-        'https://gravatar.loli.net/avatar'        =>  'loli Gravatar 镜像 ( https://gravatar.loli.net )',
-        'https://gravatar.cat.net/avatar'        =>  'cat Gravatar 镜像 ( https://gravatar.cat.net )',
-        'https://cdn.v2ex.com/gravatar'   =>  'v2ex Gravatar 镜像 ( https://cdn.v2ex.com )',
-        'https://cn.gravatar.com/avatar'        =>  'Gravatar CN ( https://cn.gravatar.com )',
-        'https://secure.gravatar.com/avatar'   =>  'Gravatar Secure ( https://secure.gravatar.com )'),
+        'https://gravatar.loli.net/avatar' => 'Gravatar loli 镜像 ( https://gravatar.loli.net )',
+        'https://gravatar.cat.net/avatar' => 'Gravatar cat 镜像 ( https://gravatar.cat.net )',
+        'https://cdn.v2ex.com/gravatar' => 'Gravatar v2ex 镜像 ( https://cdn.v2ex.com )',
+        'https://dn-qiniu-avatar.qbox.me/avatar/' => 'Gravatar qiniu 镜像 ( https://dn-qiniu-avatar.qbox.me )',
+        'https://sdn.geekzu.org/avatar/' => 'Gravatar 极客 镜像 ( https://sdn.geekzu.org )',
+        'http://cn.gravatar.com/avatar' => 'Gravatar CN ( http://cn.gravatar.com )',
+        'https://secure.gravatar.com/avatar' => 'Gravatar Secure ( https://secure.gravatar.com )'),
         'https://gravatar.loli.net/avatar', _t('Gravatar选择服务器'), _t('替换Gravatar头像服务器') );
     $form->addInput($serverGravatar->multiMode());
 

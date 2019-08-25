@@ -21,10 +21,9 @@ include 'activity/adapter/adapter_author.php';
                 $str = preg_replace('#</ul>#','</ul>', $str);
                 echo $str;?>
             </div>
+            <?php include 'activity/adapter/adapter_footer.php'; ?>
         </article>
     </div>
-
-     <?php include 'activity/adapter/adapter_footer.php'; ?>
 
     <div class="comment-here">
         <div class="container">

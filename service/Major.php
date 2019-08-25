@@ -61,19 +61,48 @@ class Major
             "infoMajor" => "https://api.krait.cn/version/Major.json",
             "kraitLibrary" => "https://lib.krait.cn/library/",
             "introMajor" => "https://krait.cn/major.html",
-            "headPortrait" => "https://api.krait.cn/api/tencent/headPortrait/",
             "api" => "https://api.krait.cn/"
         );
     }
 
     public function getGravatar($mail)
     {
-        $gr = $this->options->serverGravatar . "/" . md5($mail) . "?s=100&r=G&d=" . $this->api['headPortrait'] . $mail;
         $type = array(
-            "gr" => $gr,
+            "gr" => $this->getGravatarNew($mail),
             "ma" => $this->options->masterImgUrl
         );
         return $type[$this->options->useGravatar];
+    }
+
+    public static function getGravatarNew($mail)
+    {
+        $reg = "/^\d{5,11}@[qQ][Qq]\.(com)$/";
+        if (preg_match($reg, $mail)) {
+            $object = explode("@", $mail)[0];
+            $avatar = self::curl_file_get_contents("https://ptlogin2.qq.com/getface?appid=1006102&uin=" . $object . "&imgtype=3");
+            $pattern2 = '/pt.setHeader\((.*)\)/is';
+            preg_match($pattern2, $avatar, $result2);
+            return json_decode($result2[1], true)["$object"];
+        } else {
+            $secure = Helper::options()->serverGravatar;
+            $secure = $secure . "/";
+            $s = "?s=100";
+            $r = "&r=G";
+            $d = "&d=mm";
+            return $secure . md5($mail) . $s . $r . $d;
+        }
+    }
+
+    public static function curl_file_get_contents($url)
+    {
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);          //抓取指定网页
+        curl_setopt($ch, CURLOPT_HEADER, 0);         //设置header
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); //要求结果为字符串且输出到屏幕上
+        curl_setopt($ch, CURLOPT_TIMEOUT, 10);
+        $data = curl_exec($ch);
+        curl_close($ch);
+        return $data;
     }
 
     public function getAuthorMeta()

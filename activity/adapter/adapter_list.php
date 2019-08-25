@@ -33,7 +33,7 @@ if ($sticky && $this->is('index') || $this->is('front')) {
 ?>
 <div class="major-posts" id="major-posts">
     <?php if ($this->have()): ?>
-        <?php while ($this->next()): $newFormat = $this->fields->format; ?>
+        <?php while ($this->next()): $newFormat = $this->fields->format == null ? "post" : $this->fields->format; ?>
         <article class="majors-post <?php echo $newFormat; ?>  mdui-ripple" itemscope
                  itemtype="http://schema.org/BlogPosting">
             <div class="majors-postContent">
