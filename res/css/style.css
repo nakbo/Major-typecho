@@ -1,4 +1,4 @@
-﻿@charset "UTF-8";
+@charset "UTF-8";
 /**
   * @thememaster-y name: Major
   * @author 权那他(Krait)
@@ -1349,11 +1349,7 @@ article pre code::after {
     .post-author {
         background: white;
         margin: 0;
-        padding: 20px 0;
-    }
-
-    .author-post {
-        margin-bottom: 2em;
+        padding: 3em 0 0;
     }
 
     .major-article {
